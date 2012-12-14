@@ -3,7 +3,7 @@
 Plugin Name: Announce from the Dashboard
 Description: Announcement to the dashboard by User Role.
 Plugin URI: http://gqevu6bsiz.chicappa.jp
-Version: 1.0.0
+Version: 1.0.1
 Author: gqevu6bsiz
 Author URI: http://gqevu6bsiz.chicappa.jp/author/admin/
 Text Domain: announce-from-the-dashboard
