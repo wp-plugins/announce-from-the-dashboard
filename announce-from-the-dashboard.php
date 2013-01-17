@@ -3,7 +3,7 @@
 Plugin Name: Announce from the Dashboard
 Description: Announcement to the dashboard by User Role.
 Plugin URI: http://gqevu6bsiz.chicappa.jp
-Version: 1.0.1
+Version: 1.1
 Author: gqevu6bsiz
 Author URI: http://gqevu6bsiz.chicappa.jp/author/admin/
 Text Domain: announce-from-the-dashboard
@@ -28,7 +28,7 @@ Domain Path: /languages
 
 load_plugin_textdomain('announce-from-the-dashboard', false, basename(dirname(__FILE__)).'/languages');
 
-define ('ANNOUNCE_FROM_THE_DASHBOARD_VER', '1.0.0');
+define ('ANNOUNCE_FROM_THE_DASHBOARD_VER', '1.1');
 define ('ANNOUNCE_FROM_THE_DASHBOARD_PLUGIN_NAME', 'Announce from the Dashboard');
 define ('ANNOUNCE_FROM_THE_DASHBOARD_MANAGE_URL', admin_url('options-general.php').'?page=announce_from_the_dashboard');
 define ('ANNOUNCE_FROM_THE_DASHBOARD_RECORD_NAME', 'announce_from_the_dashboard');
@@ -320,7 +320,7 @@ jQuery(document).ready(function($) {
 
 // get type
 function announce_from_the_dashboard_typeload() {
-	$Displaytype = array('normal', 'error', 'updated');
+	$Displaytype = array('normal', 'error', 'updated', 'metabox');
 
 	return $Displaytype;
 }
@@ -349,6 +349,8 @@ function announce_from_the_dashboard_typecolor($type) {
 		$color = __('yellow', 'announce-from-the-dashboard');
 	} else if($type == 'error') {
 		$color = __('red', 'announce-from-the-dashboard');
+	} else if($type == 'metabox') {
+		$color = __('gray', 'announce-from-the-dashboard');
 	}
 	echo $color;
 }
@@ -376,8 +378,11 @@ function announce_from_the_dashboard_show() {
 
 			$Msg = '';
 			foreach($Data as $key => $an) {
-				if(!empty($an["role"][$Userroles])) {
-					$Msg .= '<div class="announce updated '.$an["type"].'"><p><strong>'.strip_tags($an["title"]).'</strong>'.apply_filters('the_content', stripslashes($an["content"])).'</p></div>';
+				$type = $an["type"];
+				if( !empty( $type ) && $type == 'updated' or $type == 'error' or $type == 'normal' ) {
+					if(!empty($an["role"][$Userroles])) {
+						$Msg .= '<div class="announce updated '.$an["type"].'"><p><strong>'.strip_tags($an["title"]).'</strong>'.apply_filters('the_content', stripslashes($an["content"])).'</p></div>';
+					}
 				}
 			}
 
@@ -390,5 +395,49 @@ function announce_from_the_dashboard_show() {
 	}
 }
 add_filter('admin_notices', 'announce_from_the_dashboard_show', 99);
+
+
+
+// announce show metaxo
+function announce_from_the_dashboard_show_metabox() {
+	// get data
+	$Data = get_option(ANNOUNCE_FROM_THE_DASHBOARD_RECORD_NAME);
+
+	if(!empty($Data)) {
+		// get type
+		$Displaytype = announce_from_the_dashboard_typeload();
+	
+		// get role
+		$UserRole = announce_from_the_dashboard_roleload();
+
+		$User = wp_get_current_user();
+		$Userroles = $User->roles[0];
+
+		foreach($Data as $key => $an) {
+			$type = $an["type"];
+			if( !empty( $type ) && $type == 'metabox' ) {
+				if(!empty($an["role"][$Userroles])) {
+					add_meta_box( 'announce_from_the_dashboard-' . $key , strip_tags($an["title"]) , "nnounce_from_the_dashboard_callback" , 'dashboard' , 'normal' , '' , array( "announce" => $key ) );
+				}
+			}
+		}
+
+	}
+
+}
+function nnounce_from_the_dashboard_callback( $post , $metabox ) {
+	
+	if( !empty( $metabox["args"]["announce"] ) ) {
+
+		// get data
+		$Data = get_option(ANNOUNCE_FROM_THE_DASHBOARD_RECORD_NAME);
+
+		if( !empty( $Data[$metabox["args"]["announce"]] ) ) {
+			echo apply_filters('the_content', stripslashes($Data[$metabox["args"]["announce"]]["content"]));
+		}
+
+	}
+}
+add_action('wp_dashboard_setup', 'announce_from_the_dashboard_show_metabox');
 
 ?>

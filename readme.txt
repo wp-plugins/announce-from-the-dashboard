@@ -2,9 +2,9 @@
 Contributors: gqevu6bsiz
 Donate link: 
 Tags: admin, dashboard, news, announce, role, user
-Requires at least: 3.4.1
+Requires at least: 3.4.2
 Tested up to: 3.5
-Stable tag: 1.0.1
+Stable tag: 1.1
 License: GPL2
 
 Announcement to the dashboard by User Role.
@@ -34,6 +34,9 @@ Change the display to a different user role.
 3. Dashboard screen
 
 == Changelog ==
+
+= 1.1 =
+view to metabox.
 
 = 1.0.1 =
 I've changed the readme.txt.
