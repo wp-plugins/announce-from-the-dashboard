@@ -1,6 +1,6 @@
 === Announce from the Dashboard ===
 Contributors: gqevu6bsiz
-Donate link: 
+Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/
 Tags: admin, dashboard, news, announce, role, user
 Requires at least: 3.4.2
 Tested up to: 3.5
