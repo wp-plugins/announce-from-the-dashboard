@@ -4,7 +4,7 @@ Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/
 Tags: admin, dashboard, news, announce, role, user
 Requires at least: 3.4.2
 Tested up to: 3.5
-Stable tag: 1.1
+Stable tag: 1.1.1
 License: GPL2
 
 Announcement to the dashboard by User Role.
@@ -34,6 +34,9 @@ Change the display to a different user role.
 3. Dashboard screen
 
 == Changelog ==
+
+= 1.1.1 =
+Translations for German have been updated.
 
 = 1.1 =
 view to metabox.

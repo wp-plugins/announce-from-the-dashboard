@@ -3,7 +3,7 @@
 Plugin Name: Announce from the Dashboard
 Description: Announcement to the dashboard by User Role.
 Plugin URI: http://gqevu6bsiz.chicappa.jp
-Version: 1.1
+Version: 1.1.1
 Author: gqevu6bsiz
 Author URI: http://gqevu6bsiz.chicappa.jp/author/admin/
 Text Domain: announce-from-the-dashboard
@@ -28,7 +28,7 @@ Domain Path: /languages
 
 load_plugin_textdomain('announce-from-the-dashboard', false, basename(dirname(__FILE__)).'/languages');
 
-define ('ANNOUNCE_FROM_THE_DASHBOARD_VER', '1.1');
+define ('ANNOUNCE_FROM_THE_DASHBOARD_VER', '1.1.1');
 define ('ANNOUNCE_FROM_THE_DASHBOARD_PLUGIN_NAME', 'Announce from the Dashboard');
 define ('ANNOUNCE_FROM_THE_DASHBOARD_MANAGE_URL', admin_url('options-general.php').'?page=announce_from_the_dashboard');
 define ('ANNOUNCE_FROM_THE_DASHBOARD_RECORD_NAME', 'announce_from_the_dashboard');
