@@ -1,0 +1,66 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0.0\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2013-05-11 22:31+0900\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-Language: Japanese\n"
+"X-Poedit-Country: JAPAN\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Last-Translator: Gqevu6bsiz <gqevu6bsiz@gmail.com>\n"
+
+msgid "Announcement to the dashboard screen for users."
+msgstr ""
+
+msgid "Announcement settings for Dashboard"
+msgstr ""
+
+msgid "Create a new announce to the dashboard."
+msgstr ""
+
+msgid "Announce title"
+msgstr ""
+
+msgid "Announce content"
+msgstr ""
+
+msgid "Announce type"
+msgstr ""
+
+msgid "Select the type"
+msgstr ""
+
+msgid "List of announce that you created"
+msgstr ""
+
+msgid "Not created announce."
+msgstr ""
+
+msgid "normal"
+msgstr ""
+
+msgid "updated"
+msgstr ""
+
+msgid "error"
+msgstr ""
+
+msgid "metabox"
+msgstr ""
+
+msgid "nonstyle"
+msgstr ""
+
+msgid "gray"
+msgstr ""
+
+msgid "red"
+msgstr ""
+
+msgid "yellow"
+msgstr ""
+

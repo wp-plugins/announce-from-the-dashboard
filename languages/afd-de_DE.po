@@ -1,0 +1,67 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: v1.1 Announce from the Dashboard\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2013-05-11 23:25+0900\n"
+"Last-Translator: Gqevu6bsiz <gqevu6bsiz@gmail.com>\n"
+"Language-Team: Thorsten Wollenhoefer <thorsten.wollenhoefer@gmail.com>\n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+msgid "Announcement to the dashboard screen for users."
+msgstr "Ank&uuml;ndigung auf dem Armaturenbrett Bildschirm f&uuml;r die Nutzer."
+
+msgid "Announcement settings for Dashboard"
+msgstr "Ank&uuml;ndigung Einstellung f&uuml;r Armaturenbrett"
+
+msgid "Create a new announce to the dashboard."
+msgstr "Erstelle eine neue Ank&uuml;ndigung für das Dashboard"
+
+msgid "Announce title"
+msgstr "Ank&uuml;ndigung Titel"
+
+msgid "Announce content"
+msgstr "Ank&uuml;ndigung Inhalt"
+
+msgid "Announce type"
+msgstr "Ank&uuml;ndigung Typ"
+
+msgid "Select the type"
+msgstr "W&auml;hle den Typ"
+
+msgid "List of announce that you created"
+msgstr "Liste der Ank&uuml;ndigungen, die Sie erstellt haben"
+
+msgid "Not created announce."
+msgstr "Ank&uuml;ndigung Titel nicht erstellt."
+
+msgid "normal"
+msgstr "normal"
+
+msgid "updated"
+msgstr "aktualisiert"
+
+msgid "error"
+msgstr "Fehler"
+
+msgid "metabox"
+msgstr "Metabox"
+
+msgid "nonstyle"
+msgstr "nicht Stil"
+
+msgid "gray"
+msgstr "grau"
+
+msgid "red"
+msgstr "rot"
+
+msgid "yellow"
+msgstr "gelb"
+

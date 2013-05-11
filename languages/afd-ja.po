@@ -1,0 +1,67 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: v1.1 Announce from the Dashboard\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2013-05-11 22:32+0900\n"
+"Last-Translator: Gqevu6bsiz <gqevu6bsiz@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-Language: Japanese\n"
+"X-Poedit-Country: JAPAN\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Last-Translator: Gqevu6bsiz <gqevu6bsiz@gmail.com>\n"
+
+msgid "Announcement to the dashboard screen for users."
+msgstr "ユーザーのダッシュボードにお知らせを表示します。"
+
+msgid "Announcement settings for Dashboard"
+msgstr "ダッシュボードへのお知らせ設定"
+
+msgid "Create a new announce to the dashboard."
+msgstr "ダッシュボードへのお知らせを作成します。"
+
+msgid "Announce title"
+msgstr "お知らせタイトル"
+
+msgid "Announce content"
+msgstr "お知らせ内容"
+
+msgid "Announce type"
+msgstr "お知らせの種類"
+
+msgid "Select the type"
+msgstr "表示の種類を選択"
+
+msgid "List of announce that you created"
+msgstr "作成したお知らせ一覧"
+
+msgid "Not created announce."
+msgstr "作成したお知らせはありません。"
+
+msgid "normal"
+msgstr "標準"
+
+msgid "updated"
+msgstr "更新時の表示"
+
+msgid "error"
+msgstr "エラー表示"
+
+msgid "metabox"
+msgstr "メタボックス"
+
+msgid "nonstyle"
+msgstr "スタイル無し"
+
+msgid "gray"
+msgstr "灰色"
+
+msgid "red"
+msgstr "赤"
+
+msgid "yellow"
+msgstr "黄色"
+

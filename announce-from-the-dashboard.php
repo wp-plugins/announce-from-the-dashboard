@@ -1,12 +1,12 @@
 <?php
 /*
 Plugin Name: Announce from the Dashboard
-Description: Announcement to the dashboard by User Role.
-Plugin URI: http://gqevu6bsiz.chicappa.jp
-Version: 1.1.2
+Description: Announcement to the dashboard screen for users.
+Plugin URI: http://wordpress.org/extend/plugins/announce-from-the-dashboard/
+Version: 1.2
 Author: gqevu6bsiz
-Author URI: http://gqevu6bsiz.chicappa.jp/author/admin/
-Text Domain: announce-from-the-dashboard
+Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_2
+Text Domain: afd
 Domain Path: /languages
 */
 
@@ -26,418 +26,395 @@ Domain Path: /languages
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-load_plugin_textdomain('announce-from-the-dashboard', false, basename(dirname(__FILE__)).'/languages');
-
-define ('ANNOUNCE_FROM_THE_DASHBOARD_VER', '1.1.2');
-define ('ANNOUNCE_FROM_THE_DASHBOARD_PLUGIN_NAME', 'Announce from the Dashboard');
-define ('ANNOUNCE_FROM_THE_DASHBOARD_MANAGE_URL', admin_url('options-general.php').'?page=announce_from_the_dashboard');
-define ('ANNOUNCE_FROM_THE_DASHBOARD_RECORD_NAME', 'announce_from_the_dashboard');
-define ('ANNOUNCE_FROM_THE_DASHBOARD_PLUGIN_DIR', WP_PLUGIN_URL.'/'.dirname(plugin_basename(__FILE__)).'/');
-?>
-<?php
-function announce_from_the_dashboard_add_menu() {
-	// add menu
-	add_options_page(__('Dashboard announce setting', 'announce-from-the-dashboard'), __('Announce Dashboard', 'announce-from-the-dashboard'), 'administrator', 'announce_from_the_dashboard', 'announce_from_the_dashboard_setting');
-
-	// plugin links
-	add_filter('plugin_action_links', 'announce_from_the_dashboard_plugin_setting', 10, 2);
-}
 
 
 
-// plugin setup
-function announce_from_the_dashboard_plugin_setting($links, $file) {
-	if(plugin_basename(__FILE__) == $file) {
-		$settings_link = '<a href="'.ANNOUNCE_FROM_THE_DASHBOARD_MANAGE_URL.'">'.__('Settings').'</a>'; 
-		array_unshift( $links, $settings_link );
+
+class Afd
+{
+
+	var $Ver,
+		$Name,
+		$Url,
+		$ltd,
+		$ltd_p,
+		$RecordName,
+		$Slug,
+		$UPFN,
+		$Msg;
+
+
+	function __construct() {
+		$this->Ver = '1.2';
+		$this->Name = 'Announce from the Dashboard';
+		$this->Url = WP_PLUGIN_URL . '/' . dirname( plugin_basename( __FILE__ ) ) . '/';
+		$this->ltd = 'afd';
+		$this->ltd_p = $this->ltd . '_plugin';
+		$this->Slug = 'announce_from_the_dashboard';
+		$this->RecordName = 'announce_from_the_dashboard';
+		$this->UPFN = 'Y';
+		$this->DonateKey = 'd77aec9bc89d445fd54b4c988d090f03';
+		$this->Msg = '';
+
+		$this->PluginSetup();
+		add_action( 'load-index.php' , array( $this , 'FilterStart' ) );
 	}
-	return $links;
-}
-add_action('admin_menu', 'announce_from_the_dashboard_add_menu');
+
+	// PluginSetup
+	function PluginSetup() {
+		// load text domain
+		load_plugin_textdomain( $this->ltd , false , basename( dirname( __FILE__ ) ) . '/languages' );
+		load_plugin_textdomain( $this->ltd_p , false , basename( dirname( __FILE__ ) ) . '/languages' );
+
+		// plugin links
+		add_filter( 'plugin_action_links' , array( $this , 'plugin_action_links' ) , 10 , 2 );
+
+		// add menu
+		add_action( 'admin_menu' , array( $this , 'admin_menu' ) );
+
+		// get donation toggle
+		add_action( 'wp_ajax_afd_get_donation_toggle' , array( $this , 'wp_ajax_afd_get_donation_toggle' ) );
+
+		// set donation toggle
+		add_action( 'wp_ajax_afd_set_donation_toggle' , array( $this , 'wp_ajax_afd_set_donation_toggle' ) );
+
+	}
+
+	// Translation File Check
+	function TransFileCk() {
+		$file = false;
+		$moFile = WP_PLUGIN_DIR . '/' . dirname( plugin_basename( __FILE__ ) ) . '/languages/' . $this->ltd . '-' . get_locale() . '.mo';
+		if( file_exists( $moFile ) ) {
+			$file = true;
+		}
+		return $file;
+	}
+
+	// PluginSetup
+	function plugin_action_links( $links , $file ) {
+		if( plugin_basename(__FILE__) == $file ) {
+
+			$mofile = $this->TransFileCk();
+			if( $mofile == false ) {
+				$translation_link = '<a href="http://gqevu6bsiz.chicappa.jp/please-translation/?utm_source=use_plugin&utm_medium=side&utm_content=' . $this->ltd . '&utm_campaign=' . str_replace( '.' , '_' , $this->Ver ) . '" target="_blank">Please translation</a>'; 
+				array_unshift( $links, $translation_link );
+			}
+			$support_link = '<a href="http://wordpress.org/support/plugin/announce-from-the-dashboard" target="_blank">' . __( 'Support Forums' ) . '</a>';
+			array_unshift( $links, $support_link );
+			array_unshift( $links, '<a href="' . admin_url( 'options-general.php?page=' . $this->Slug ) . '">' . __('Settings') . '</a>' );
+
+		}
+		return $links;
+	}
+
+	// PluginSetup
+	function admin_menu() {
+		add_options_page( $this->Name , __( 'Announcement settings for Dashboard' , $this->ltd ), 'administrator' , $this->Slug , array( $this , 'setting' ) );
+	}
 
 
 
-// setting
-function announce_from_the_dashboard_setting() {
-	$UPFN = 'sett';
-	$Msg = '';
 
-	// get type
-	$Displaytype = announce_from_the_dashboard_typeload();
-
-	// get role
-	$UserRole = announce_from_the_dashboard_roleload();
+	// SettingPage
+	function setting() {
+		add_filter( 'admin_footer_text' , array( $this , 'layout_footer' ) );
+		$this->DisplayDonation();
+		include_once 'inc/setting.php';
+	}
 
 
-	if(isset($_GET["delete"])) {
-		// delete
-		$id = $_GET["delete"];
-		$Data = get_option(ANNOUNCE_FROM_THE_DASHBOARD_RECORD_NAME);
-		unset($Data[$id]);
-		update_option(ANNOUNCE_FROM_THE_DASHBOARD_RECORD_NAME, $Data);
-		echo '<div class="updated"><p><strong>'.__('Settings saved.').'</strong></p></div>';
-	} else if(!empty($_POST[$UPFN])) {
-		// update
-		if($_POST[$UPFN] == 'Y') {
-			unset($_POST[$UPFN]);
 
-			$Update = array();
-			if(!empty($_POST["update"])) {
-				foreach ($_POST["update"] as $key => $val) {
-					$type = '';
-					if(!empty($val["type"])) {
-						$type = strip_tags($val["type"]);
-					} else {
-						$type = $Displaytype[0];
-					}
+
+	// SetList
+	function wp_ajax_afd_get_donation_toggle() {
+		echo get_option( $this->ltd . '_donate_width' );
+		die();
+
+	}
+
+	// SetList
+	function wp_ajax_afd_set_donation_toggle() {
+		update_option( $this->ltd . '_donate_width' , strip_tags( $_POST["f"] ) );
+		die();
+	}
+
+	// SetList
+	function AllTypes() {
+		$Displaytype = array( 'normal' , 'updated' , 'error' , 'metabox' , 'nonstyle' );
 	
-					$role = array();
-					if(!empty($val["role"])) {
-						foreach($val["role"] as $tmp) {
-							$role[$tmp] = strip_tags($tmp);
+		return $Displaytype;
+	}
+
+	// SetList
+	function get_color( $type ) {
+		$color = '';
+		if($type == 'normal') {
+			$color = __( 'gray' , $this->ltd );
+		} else if($type == 'updated') {
+			$color = __( 'yellow' , $this->ltd );
+		} else if($type == 'error') {
+			$color = __( 'red' , $this->ltd );
+		} else if($type == 'metabox') {
+			$color = __( 'gray' , $this->ltd );
+		}
+		return $color;
+	}
+
+	// SetList
+	function get_user_role() {
+		$editable_roles = get_editable_roles();
+		foreach ( $editable_roles as $role => $details ) {
+			$UserRole[$role] = translate_user_role( $details['name'] );
+		}
+
+		return $UserRole;
+	}
+
+
+
+
+	// GetData
+	function get_data( $user = false ) {
+		$GetData = get_option( $this->RecordName );
+
+		$Data = array();
+		if( !empty( $GetData ) ) {
+			if( !empty( $user ) ) {
+				$SettData = array();
+				foreach( $GetData as $k => $sett ) {
+					if( array_key_exists( $user , $sett["role"] ) ) {
+						$SettData[] = $sett;
+					}
+				}
+				$Data = $SettData;
+			} else {
+				$Data = $GetData;
+			}
+		}
+
+		return $Data;
+	}
+
+
+
+
+	// DataUpdate
+	function DonatingCheck() {
+		$Update = $this->update_validate();
+
+		if( !empty( $Update ) ) {
+			if( !empty( $_POST["donate_key"] ) ) {
+				$SubmitKey = md5( strip_tags( $_POST["donate_key"] ) );
+				if( $this->DonateKey == $SubmitKey ) {
+					update_option( $this->ltd . '_donated' , $SubmitKey );
+					$this->Msg .= '<div class="updated"><p><strong>' . __( 'Thank you for your donation.' , $this->ltd_p ) . '</strong></p></div>';
+				}
+			}
+		}
+
+	}
+
+	// DataUpdate
+	function update_validate() {
+		$Update = array();
+
+		if( !empty( $_POST[$this->UPFN] ) ) {
+			$UPFN = strip_tags( $_POST[$this->UPFN] );
+			if( $UPFN == $this->UPFN ) {
+				$Update["UPFN"] = strip_tags( $_POST[$this->UPFN] );
+			}
+		}
+
+		return $Update;
+	}
+
+	// DataUpdate
+	function update() {
+		$Update = $this->update_validate();
+		if( !empty( $Update ) ) {
+
+			if( !empty( $_POST["data"]["create"] ) ) {
+				
+				$Create = $_POST["data"]["create"];
+				if( !empty( $Create["title"] ) && !empty( $Create["content"] ) ) {
+					
+					$title = strip_tags ( $Create["title"] );
+					$Content = $Create["content"];
+					if( !empty( $Create["type"] ) ) {
+						$Type = $Create["type"];
+					} else {
+						$Type = 'normal';
+					}
+					$Roles = array();
+					if( !empty( $Create["role"] ) ) {
+						foreach( $Create["role"] as $name => $val ) {
+							$Roles[strip_tags( $name )] = intval( $val );
 						}
+					}
+					$Update = $this->get_data();
+					
+					$Update[] = array( "title" => $title , "content" => $Content , "type" => $Type , "role" => $Roles );
+					
+				}
+				
+			} elseif( !empty( $_POST["data"]["update"] ) ) {
+				
+				foreach( $_POST["data"]["update"] as $key => $Announce ) {
+
+					$title = strip_tags ( $Announce["title"] );
+					$Content = $Announce["content"];
+					if( !empty( $Announce["type"] ) ) {
+						$Type = $Announce["type"];
 					} else {
-						$role = $UserRole;
+						$Type = 'normal';
 					}
-
-					$Update[$key] = array(
-						"title" => strip_tags($val["title"]),
-						"content" => $val["content"],
-						"type" => $type,
-						"role" => $role
-					);
-				}
-			}
-			if(!empty($_POST["create"]) && !empty($_POST["create"]["title"]) && !empty($_POST["create"]["content"])) {
-				$type = '';
-				if(!empty($_POST["create"]["type"])) {
-					$type = strip_tags($_POST["create"]["type"]);
-				} else {
-					$type = $Displaytype[0];
-				}
-
-				$role = array();
-				if(!empty($_POST["create"]["role"])) {
-					foreach($_POST["create"]["role"] as $val) {
-						$role[$val] = strip_tags($val);
+					$Roles = array();
+					if( !empty( $Announce["role"] ) ) {
+						foreach( $Announce["role"] as $name => $val ) {
+							$Roles[strip_tags( $name )] = intval( $val );
+						}
 					}
-				} else {
-					$role = $UserRole;
-				}
-				$Update[] = array(
-					"title" => strip_tags($_POST["create"]["title"]),
-					"content" => $_POST["create"]["content"],
-					"type" => $type,
-					"role" => $role
-				);
-			}
+					$Update[$key] = array( "title" => $title , "content" => $Content , "type" => $Type , "role" => $Roles );
 
-			if(!empty($Update)) {
-				update_option(ANNOUNCE_FROM_THE_DASHBOARD_RECORD_NAME, $Update);
-				$Msg = '<div class="updated"><p><strong>'.__('Settings saved.').'</strong></p></div>';
-			}
-		}
-	}
-	
-	// get data
-	$Data = get_option(ANNOUNCE_FROM_THE_DASHBOARD_RECORD_NAME);
-
-	// include js css
-	$ReadedJs = array('jquery', 'thickbox');
-	wp_enqueue_script('announce-from-the-dashboard', ANNOUNCE_FROM_THE_DASHBOARD_PLUGIN_DIR.dirname(plugin_basename(__FILE__)).'.js', $ReadedJs, ANNOUNCE_FROM_THE_DASHBOARD_VER);
-	wp_enqueue_style('thickbox');
-	wp_enqueue_style('announce-from-the-dashboard', ANNOUNCE_FROM_THE_DASHBOARD_PLUGIN_DIR.dirname(plugin_basename(__FILE__)).'.css', array(), ANNOUNCE_FROM_THE_DASHBOARD_VER);
-?>
-<div class="wrap">
-	<div class="icon32" id="icon-themes"></div>
-	<h2><?php _e('Dashboard announce setting', 'announce-from-the-dashboard'); ?></h2>
-	<?php echo $Msg; ?>
-	<p>&nbsp;</p>
-
-	<form id="announce_from_the_dashboard" method="post" action="<?php echo ANNOUNCE_FROM_THE_DASHBOARD_MANAGE_URL; ?>">
-		<input type="hidden" name="<?php echo $UPFN; ?>" value="Y">
-		<?php wp_nonce_field(-1, '_wpnonce', false); ?>
-
-		<div id="create">
-			<h3><?php _e('Create a new announce to the dashboard.', 'announce-from-the-dashboard'); ?></h3>
-			<?php $mode = 'create'; ?>
-			<table class="form-table">
-				<tbody>
-					<tr>
-						<th><label for="<?php echo $mode; ?>_title"><?php _e('Announce title', 'announce-from-the-dashboard'); ?></label> *</th>
-						<td>
-							<input type="text" class="regular-text" id="<?php echo $mode; ?>_title" name="<?php echo $mode; ?>[title]">
-						</td>
-					</tr>
-					<tr>
-						<th><label for="<?php echo $mode; ?>_content"><?php _e('Announce content', 'announce-from-the-dashboard'); ?></label> *</th>
-						<td>
-							<?php wp_editor("", $mode."_content", array('textarea_name' => $mode.'[content]', 'media_buttons' => false)); ?>
-						</td>
-					</tr>
-					<tr>
-						<th><label for="<?php echo $mode; ?>_type"><?php _e('Announce type', 'announce-from-the-dashboard'); ?></label></th>
-						<td>
-							<select name="<?php echo $mode; ?>[type]" id="<?php echo $mode; ?>_type">
-								<option value="" selected="selected">- <?php _e('Select the type', 'announce-from-the-dashboard'); ?> -</option>
-								<?php foreach($Displaytype as $val) : ?>
-									<option value="<?php echo $val; ?>"><?php _e($val, 'announce-from-the-dashboard'); ?> (<?php announce_from_the_dashboard_typecolor($val); ?> )</option>
-								<?php endforeach; ?>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<th><label for="<?php echo $mode; ?>_role"><?php _e('User Roles'); ?></label></th>
-						<td>
-							<?php foreach($UserRole as $role => $rolename) : ?>
-								<label><input type="checkbox" name="<?php echo $mode; ?>[role][<?php echo $role; ?>]" value="<?php echo $role; ?>" /> <?php echo $rolename; ?></label>
-							<?php endforeach; ?>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<p class="submit">
-				<input type="button" class="button-primary" value="<?php _e('Save'); ?>" />
-			</p>
-		</div>
-
-		<div id="update">
-			<h3><?php _e('List of announce that you created', 'announce-from-the-dashboard'); ?></h3>
-			<?php if(!empty($Data)) : ?>
-				<?php $mode = 'update'; ?>
-
-				<table cellspacing="0" class="widefat fixed">
-					<thead>
-						<tr>
-							<th class="title"><strong><?php _e('Announce title', 'announce-from-the-dashboard'); ?></strong> / <?php _e('Announce type', 'announce-from-the-dashboard'); ?></th>
-							<th class="content"><?php _e('Announce content', 'announce-from-the-dashboard'); ?></th>
-							<th class="role"><?php _e('User Roles'); ?></th>
-							<th class="operation">&nbsp;</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php foreach($Data as $key => $content) : ?>
-							<tr id="tr_<?php echo $key; ?>" class="<?php echo $content["type"]; ?>">
-								<td class="title">
-									<input type="text" value="<?php echo strip_tags($content["title"]); ?>" name="<?php echo $mode; ?>[<?php echo $key; ?>][title]">
-									<span><strong><?php echo strip_tags($content["title"]); ?></strong></span>
-									<?php $val = strip_tags($content["type"]); ?>
-
-									<select name="<?php echo $mode; ?>[<?php echo $key; ?>][type]">
-										<?php foreach($Displaytype as $type) : ?>
-											<?php $Selected = ''; ?>
-											<?php if($type == $val) : ?>
-												<?php $Selected = 'selected="selected"'; ?>
-											<?php endif; ?>
-											<option value="<?php echo $type; ?>" <?php echo $Selected; ?>><?php _e($type, 'announce-from-the-dashboard'); ?>(<?php announce_from_the_dashboard_typecolor($type); ?>)</option>
-										<?php endforeach; ?>
-									</select>
-									<span class="description">
-										<?php echo _e(strip_tags($content["type"]), 'announce-from-the-dashboard'); ?>
-										(<?php announce_from_the_dashboard_typecolor(strip_tags($content["type"])); ?> )
-									</span>
-								</td>
-								<td class="content">
-									<?php wp_editor(stripslashes($content["content"]), $mode.'_'.$key.'_content', array('textarea_name' => $mode.'['.$key.'][content]', 'media_buttons' => false)); ?>
-									<span><?php echo stripslashes(esc_html($content["content"])); ?></span>
-								</td>
-								<td class="role">
-									<?php $val = $content["role"]; ?>
-									<?php foreach($UserRole as $role => $rolename) : ?>
-										<?php $Checked = ''; ?>
-										<?php if(array_key_exists($role, $val)) : ?>
-											<?php $Checked = 'checked="checked"'; ?>
-										<?php endif; ?>
-										<label><input type="checkbox" name="<?php echo $mode; ?>[<?php echo $key; ?>][role][<?php echo $role; ?>]" value="<?php echo $role; ?>" <?php echo $Checked; ?> /> <?php echo $rolename; ?></label>
-									<?php endforeach; ?>
-									<span>
-										<?php if(!empty($content["role"])) : ?>
-											<ul>
-												<?php foreach($content["role"] as $role => $tmp) : ?>
-													<li><?php echo $UserRole[strip_tags($role)]; ?></li>
-												<?php endforeach; ?>
-											</ul>
-										<?php endif; ?>
-									</span>
-								</td>
-								<td class="operation">
-									<span>
-										<a class="edit" href="javascript:void(0)"><?php _e('Edit'); ?></a>
-										&nbsp;|&nbsp;
-										<a class="delete" href="<?php echo ANNOUNCE_FROM_THE_DASHBOARD_MANAGE_URL; ?>&delete=<?php echo $key; ?>"><?php _e('Delete'); ?></a>
-									</span>
-									<p class="submit">
-										<input type="button" class="button-primary" value="<?php _e('Save'); ?>" />
-									</p>
-								</td>
-							</tr>
-						<?php endforeach; ?>
-					</tbody>
-				</table>
-
-				<div id="Confirm">
-					<div id="ConfirmSt">
-						<p>&nbsp;</p>
-						<a class="button-secondary" id="cancelbtn" href="javascript:void(0);"><?php _e('Cancel'); ?></a>
-						<a class="button-secondary" id="deletebtn" href=""><?php _e('Continue'); ?></a>
-					</div>
-				</div>
-
-<script type="text/javascript">
-jQuery(document).ready(function($) {
-	// delete
-	$("a.delete").click(function() {
-		var $DelUrl = $(this).attr("href");
-		var $DelName = $(this).parent().parent().parent().children('td.title').children('span').children('strong').text();
-		var $ConfDlg = $("#Confirm #ConfirmSt");
-		$ConfDlg.children("a#deletebtn").attr("href", $DelUrl);
-		$ConfDlg.children("p").html('<?php echo sprintf( __( 'You are about to delete <strong>%s</strong>.' ), '' ); ?>');
-		$ConfDlg.children("p").children("strong").text($DelName);
-		
-		tb_show('<?php _e('Confirm Deletion'); ?>', '#TB_inline?height=100&width=240&inlineId=Confirm', '');
-		return false;
-	});
-	
-	$("a#cancelbtn").click(function() {
-		tb_remove();
-	});
-});
-</script>
-
-			<?php else : ?>
-
-				<p><?php _e('Not created announce.', 'announce-from-the-dashboard'); ?></p>
-
-			<?php endif; ?>
-		</div>
-
-	</form>
-</div>
-<?php
-}
-
-
-
-// get type
-function announce_from_the_dashboard_typeload() {
-	$Displaytype = array('normal', 'error', 'updated', 'metabox');
-
-	return $Displaytype;
-}
-
-
-
-// get role
-function announce_from_the_dashboard_roleload() {
-	$UserRole = array();
-	$editable_roles = get_editable_roles();
-	foreach ( $editable_roles as $role => $details ) {
-		$UserRole[$role] = translate_user_role($details['name'] );
-	}
-
-	return $UserRole;
-}
-
-
-
-// get color
-function announce_from_the_dashboard_typecolor($type) {
-	$color = '';
-	if($type == 'normal') {
-		$color = __('gray', 'announce-from-the-dashboard');
-	} else if($type == 'updated') {
-		$color = __('yellow', 'announce-from-the-dashboard');
-	} else if($type == 'error') {
-		$color = __('red', 'announce-from-the-dashboard');
-	} else if($type == 'metabox') {
-		$color = __('gray', 'announce-from-the-dashboard');
-	}
-	echo $color;
-}
-
-
-// announce show
-function announce_from_the_dashboard_show() {
-	$screen = get_current_screen();
-
-	if($screen->base == 'dashboard') {
-		// get data
-		$Data = get_option(ANNOUNCE_FROM_THE_DASHBOARD_RECORD_NAME);
-
-		if(!empty($Data)) {
-			// get type
-			$Displaytype = announce_from_the_dashboard_typeload();
-	
-			// get role
-			$UserRole = announce_from_the_dashboard_roleload();
-
-			wp_enqueue_style('announce-from-the-dashboard', ANNOUNCE_FROM_THE_DASHBOARD_PLUGIN_DIR.dirname(plugin_basename(__FILE__)).'.css', array(), ANNOUNCE_FROM_THE_DASHBOARD_VER);
-
-			$User = wp_get_current_user();
-			$Userroles = $User->roles[0];
-
-			$Msg = '';
-			foreach($Data as $key => $an) {
-				$type = $an["type"];
-				if( !empty( $type ) && $type == 'updated' or $type == 'error' or $type == 'normal' ) {
-					if(!empty($an["role"][$Userroles])) {
-						$Msg .= '<div class="announce updated '.$an["type"].'"><p><strong>'.strip_tags($an["title"]).'</strong>'.apply_filters('the_content', stripslashes($an["content"])).'</p></div>';
-					}
 				}
 			}
+			
+			if( !empty( $Update ) ) {
+				unset( $Update["UPFN"] );
 
-			if(!empty($Msg)) {
-				echo $Msg;
+				update_option( $this->RecordName , $Update );
+				$Msg = '<div class="updated"><p><strong>' . __( 'Settings saved.' ) . '</strong></p></div>';
+
 			}
 
 		}
-
 	}
-}
-add_filter('admin_notices', 'announce_from_the_dashboard_show', 99);
+
+	// DataUpdate
+	function update_delete() {
+
+		$Update = $this->get_data();
+		$del = false;
+
+		if( !empty( $_POST["action"] ) or !empty( $_POST["action2"] ) ) {
+			if( $_POST["action"] == 'delete' or $_POST["action2"] == 'delete' ) {
+				if( !empty( $_POST["data"]["delete"] ) ) {
+					foreach( $_POST["data"]["delete"] as $ID ) {
+						$DeleteID = intval( $ID["id"] );
+						unset( $Update[$DeleteID] );
+					}
+					$del = true;
+				}
+			}
+		}
+
+		if( $del ) {
+			update_option( $this->RecordName , $Update );
+			$this->Msg = '<div class="updated"><p><strong>' . __( 'Settings saved.' ) . '</strong></p></div>';
+		}
+	}
 
 
 
-// announce show metaxo
-function announce_from_the_dashboard_show_metabox() {
-	// get data
-	$Data = get_option(ANNOUNCE_FROM_THE_DASHBOARD_RECORD_NAME);
 
-	if(!empty($Data)) {
-		// get type
-		$Displaytype = announce_from_the_dashboard_typeload();
-	
-		// get role
-		$UserRole = announce_from_the_dashboard_roleload();
+
+
+	// FilterStart
+	function FilterStart() {
+		if ( is_admin() ) {
+			// notice
+			add_filter( 'admin_notices' , array( $this , 'admin_notices' ) , 99 );
+			
+			// metabox
+			add_action( 'wp_dashboard_setup' , array( $this , 'wp_dashboard_setup' ) );
+		}
+	}
+
+	// FilterStart
+	function admin_notices() {
 
 		$User = wp_get_current_user();
-		$Userroles = $User->roles[0];
+		$Userrole = $User->roles[0];
+		
+		$Data = $this->get_data( $Userrole );
 
-		foreach($Data as $key => $an) {
-			$type = $an["type"];
-			if( !empty( $type ) && $type == 'metabox' ) {
-				if(!empty($an["role"][$Userroles])) {
-					add_meta_box( 'announce_from_the_dashboard-' . $key , strip_tags($an["title"]) , "nnounce_from_the_dashboard_callback" , 'dashboard' , 'normal' , '' , array( "announce" => $key ) );
+		if( !empty( $Data ) ) {
+
+			wp_enqueue_style( $this->Slug , $this->Url . dirname( plugin_basename( __FILE__ ) ) . '.css' , array() , $this->Ver );
+
+			foreach( $Data as $key => $sett ) {
+				
+				$type = $sett["type"];
+				if( !empty( $type ) && $type == 'updated' or $type == 'error' or $type == 'normal' or $type == 'nonstyle' ) {
+
+					$class = 'announce updated ' . $type;
+					echo sprintf( '<div class="%1$s"><p><strong>%2$s</strong>%3$s</p></div>' , $class , strip_tags( $sett["title"] ) , apply_filters( 'the_content' , stripslashes( $sett["content"] ) ) );
+
 				}
 			}
+
+		}
+		
+	}
+
+	// FilterStart
+	function wp_dashboard_setup() {
+		$User = wp_get_current_user();
+		$Userrole = $User->roles[0];
+		
+		$Data = $this->get_data( $Userrole );
+
+		if( !empty( $Data ) ) {
+
+			foreach( $Data as $key => $sett ) {
+				
+				$type = $sett["type"];
+				if( !empty( $type ) && $type == 'metabox' ) {
+
+					add_meta_box( $this->Slug . '-' . $key , strip_tags( $sett["title"] ) , array( $this , 'dashboard_do_metabox' ) , 'dashboard' , 'normal' , '' , array( "announce" => $key ) );
+
+				}
+			}
+
+		}
+		
+	}
+
+	// FilterStart
+	function dashboard_do_metabox( $post , $metabox ) {
+		
+		if( isset( $metabox["args"]["announce"] ) ) {
+			
+			$User = wp_get_current_user();
+			$Userrole = $User->roles[0];
+			
+			$Data = $this->get_data( $Userrole );
+			if( !empty( $Data[$metabox["args"]["announce"]] ) ) {
+				echo apply_filters( 'the_content' , stripslashes( $Data[$metabox["args"]["announce"]]["content"] ) );
+			}
+			
 		}
 
 	}
 
-}
-function nnounce_from_the_dashboard_callback( $post , $metabox ) {
-	
-	if( isset( $metabox["args"]["announce"] ) ) {
-
-		// get data
-		$Data = get_option(ANNOUNCE_FROM_THE_DASHBOARD_RECORD_NAME);
-
-		if( !empty( $Data[$metabox["args"]["announce"]] ) ) {
-			echo apply_filters('the_content', stripslashes($Data[$metabox["args"]["announce"]]["content"]));
-		}
-
+	// FilterStart
+	function layout_footer( $text ) {
+		$text = '<img src="http://www.gravatar.com/avatar/7e05137c5a859aa987a809190b979ed4?s=18" width="18" /> Plugin developer : <a href="http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=footer&utm_content=' . $this->ltd . '&utm_campaign=' . str_replace( '.' , '_' , $this->Ver ) . '" target="_blank">gqevu6bsiz</a>';
+		return $text;
 	}
+
+	// FilterStart
+	function DisplayDonation() {
+		$donation = get_option( $this->ltd . '_donated' );
+		if( $this->DonateKey != $donation ) {
+			$this->Msg .= '<div class="error"><p><strong>' . __( 'Please consider a donation if you are satisfied with this plugin.' , $this->ltd_p ) . '</strong> <a href="' . self_admin_url( 'admin.php?page=' . $this->Slug ) . '">' . __( 'Please donation.' , $this->ltd_p ) . '</a></p></div>';
+		}
+	}
+
 }
-add_action('wp_dashboard_setup', 'announce_from_the_dashboard_show_metabox');
+
+if( class_exists( 'Afd' ) ) {
+	$Afd = new Afd();
+}
 
 ?>

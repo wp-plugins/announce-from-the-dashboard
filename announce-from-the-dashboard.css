@@ -1,52 +1,100 @@
-form#announce_from_the_dashboard textarea {
-	width: 90%;
+.columns-2#afd #postbox-container-1 {
+	width: 60%;
+}
+.columns-2#afd #postbox-container-2 {
+	width: 38%;
+	margin-left: 2%;
+}
+.columns-2#afd #postbox-container-2.toggle {
+	width: 100px;
 }
 
-form#announce_from_the_dashboard div#update table thead th.title {
+.columns-2#afd.full-width #postbox-container-1 {
+	width: 90%; 	
+}
+.columns-2#afd.full-width #postbox-container-2 {
+	width: 8%; 	
+}
+.columns-2#afd.full-width #postbox-container-2 .stuffbox, .columns-2.full-width #postbox-container-2 .description {
+	display: none;
+}
+
+
+.columns-2#afd .toggle-plugin .icon {
+	background: transparent url(../../../wp-admin/images/arrows.png) no-repeat 0 -107px;
+	padding-left: 16px;
+}
+.columns-2#afd .full-width #postbox-container-2 .toggle-plugin .icon {
+	background-position: 0 -72px;
+}
+
+
+.columns-2#afd #donationbox {
+	background: #87BCE4;
+	border: 3px solid #227499;
+}
+.columns-2#afd #donationbox .inside {
+	padding: 6px 10px 10px 10px;
+}
+.columns-2#afd #donationbox .inside .donation_memo {
+	background: #FFF8D9;
+	padding: 2px 10px;
+}
+
+
+.columns-2#afd #create td label {
+	margin-right: 22px;
+}
+
+
+#afd-lists table thead th, #afd-lists table tfoot th {
+	font-size: 12px;
+}
+#afd-lists table thead th.title {
 	width: 20%;
 }
-form#announce_from_the_dashboard div#update table thead th.role {
+#afd-lists table thead th.role {
+	width: 15%;
+}
+#afd-lists table thead th.operation {
 	width: 10%;
 }
-form#announce_from_the_dashboard div#update table thead th.operation {
-	width: 10%;
-}
-form#announce_from_the_dashboard div#update table tbody tr.normal td.content {
+#afd-lists table tbody tr.normal td.content {
 	background-color: #F6F6F6;
 }
-form#announce_from_the_dashboard div#update table tbody tr.updated td.content {
-	background-color: lightYellow;
-}
-form#announce_from_the_dashboard div#update table tbody tr.error td.content {
+#afd-lists table tbody tr.error td.content {
 	background-color: #FFEBE8;
 }
-form#announce_from_the_dashboard div#update table tbody td.role label {
+#afd-lists table tbody tr.updated td.content {
+	background-color: lightYellow;
+}
+#afd-lists table tbody tr td.role label {
 	display: block;
 	margin: 0 0 8px 0;
 }
-form#announce_from_the_dashboard div#update table tbody td.title span {
-	display: block;
-}
-form#announce_from_the_dashboard div#Confirm {
+#afd-lists table tbody tr td .edit {
 	display: none;
 }
-div#ConfirmSt a#cancelbtn {
-	float: left;
+
+#afd-lists table tbody tr td .menu {
+	display: none;
+	padding: 0;
 }
-div#ConfirmSt a#deletebtn {
-	float: right;
+#afd-lists table tbody tr td .menu li {
+	display: inline;
 }
 
 
 
-
-
-
-div.announce.normal {
+div.updated.announce.normal {
 	background-color: #F6F6F6;
 	border-color: #A6A6A6;
 }
-div.announce.error {
+div.updated.announce.error {
 	background-color: #FFEBE8;
 	border-color: #CC0000;
+}
+div.updated.announce.nonstyle {
+	background: none;
+	border: 0 none;
 }

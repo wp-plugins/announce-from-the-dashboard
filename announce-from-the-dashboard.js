@@ -1,34 +1,62 @@
 jQuery(document).ready(function($) {
 
-	var $Form = $("#announce_from_the_dashboard");
+	var $Form = $("#afd");
 
-	// create submit
-	$("p.submit input:button").click(function() {
-		$Form.submit();
+	$.post(ajaxurl, {
+		'action': 'afd_get_donation_toggle',
+	}, function(response){
+		if( response == "1" ) {
+			donation_toggle_set( true );
+		}
 	});
 
-	// update
-	var $UpdateTr = $Form.children("div#update").children("table").children("tbody").children("tr");
-	$UpdateTr.children("td.title").children("input").hide();
-	$UpdateTr.children("td.title").children("select").hide();
-	$UpdateTr.children("td.content").children(".wp-editor-wrap").hide();
-	$UpdateTr.children("td.role").children("label").hide();
-	$UpdateTr.children("td.operation").children("p.submit").hide();
+	function donation_toggle_set( s ) {
+		if( s ) {
+			$Form.addClass('full-width');
+		} else {
+			$Form.removeClass('full-width');
+		}
+	}
 
-	$UpdateTr.children("td.operation").children("span").children("a.edit").click(function() {
-		var $ParentTr = $(this).parent().parent().parent();
-		$ParentTr.children("td.title").children("span").hide();
-		$ParentTr.children("td.title").children("input").show();
-		$ParentTr.children("td.title").children("select").show();
-		$ParentTr.children("td.content").children("span").hide();
-		$ParentTr.children("td.content").children(".wp-editor-wrap").show();
-		$ParentTr.children("td.content").css("background-color", "white");
-		$ParentTr.children("td.role").children("span").hide();
-		$ParentTr.children("td.role").children("label").show();
-		$(this).parent().hide();
-		$(this).parent().parent().children("p.submit").show();
+
+	$(".toggle-plugin .icon a" , $Form ).click(function() {
+
+		if( $Form.hasClass('full-width') ) {
+			donation_toggle_set( false );
+			$.post(ajaxurl, {
+				'action': 'afd_set_donation_toggle',
+				'f': 0,
+			});
+
+		} else {
+			donation_toggle_set( true );
+			$.post(ajaxurl, {
+				'action': 'afd_set_donation_toggle',
+				'f': 1,
+			});
+		}
 
 		return false;
 	});
+
+
+	var $UpdateForm = $("#afd-lists");
+
+	$("#update table tbody tr").hover(function() {
+		$("td.title .menu" , $(this) ).show();
+	}, function() {
+		$("td.title .menu" ).hide();
+	});
+
+	$(".menu a.menu_edit" , $UpdateForm).click(function() {
+		var Tr = $(this).parent().parent().parent().parent();
+		$("td .toggle" , Tr ).hide();
+		$("td .edit" , Tr ).show();
+		$("td.content" , Tr).css("background" , "none");
+		
+		$(this).parent().parent().remove();
+		return false;
+	});
+
 
 });
