@@ -3,9 +3,9 @@
 Plugin Name: Announce from the Dashboard
 Description: Announcement to the dashboard screen for users.
 Plugin URI: http://wordpress.org/extend/plugins/announce-from-the-dashboard/
-Version: 1.2
+Version: 1.2.1
 Author: gqevu6bsiz
-Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_2
+Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_2_1
 Text Domain: afd
 Domain Path: /languages
 */
@@ -45,7 +45,7 @@ class Afd
 
 
 	function __construct() {
-		$this->Ver = '1.2';
+		$this->Ver = '1.2.1';
 		$this->Name = 'Announce from the Dashboard';
 		$this->Url = WP_PLUGIN_URL . '/' . dirname( plugin_basename( __FILE__ ) ) . '/';
 		$this->ltd = 'afd';
@@ -283,7 +283,7 @@ class Afd
 				unset( $Update["UPFN"] );
 
 				update_option( $this->RecordName , $Update );
-				$Msg = '<div class="updated"><p><strong>' . __( 'Settings saved.' ) . '</strong></p></div>';
+				$this->Msg = '<div class="updated"><p><strong>' . __( 'Settings saved.' ) . '</strong></p></div>';
 
 			}
 
@@ -299,8 +299,8 @@ class Afd
 		if( !empty( $_POST["action"] ) or !empty( $_POST["action2"] ) ) {
 			if( $_POST["action"] == 'delete' or $_POST["action2"] == 'delete' ) {
 				if( !empty( $_POST["data"]["delete"] ) ) {
-					foreach( $_POST["data"]["delete"] as $ID ) {
-						$DeleteID = intval( $ID["id"] );
+					foreach( $_POST["data"]["delete"] as $ID => $v ) {
+						$DeleteID = intval( $ID );
 						unset( $Update[$DeleteID] );
 					}
 					$del = true;
@@ -327,6 +327,14 @@ class Afd
 			
 			// metabox
 			add_action( 'wp_dashboard_setup' , array( $this , 'wp_dashboard_setup' ) );
+			
+			// filter add
+			add_filter( 'afd_apply_content', 'wptexturize'        );
+			add_filter( 'afd_apply_content', 'convert_smilies'    );
+			add_filter( 'afd_apply_content', 'convert_chars'      );
+			add_filter( 'afd_apply_content', 'wpautop'            );
+			add_filter( 'afd_apply_content', 'shortcode_unautop'  );
+			add_filter( 'afd_apply_content', 'prepend_attachment' );
 		}
 	}
 
@@ -348,7 +356,7 @@ class Afd
 				if( !empty( $type ) && $type == 'updated' or $type == 'error' or $type == 'normal' or $type == 'nonstyle' ) {
 
 					$class = 'announce updated ' . $type;
-					echo sprintf( '<div class="%1$s"><p><strong>%2$s</strong>%3$s</p></div>' , $class , strip_tags( $sett["title"] ) , apply_filters( 'the_content' , stripslashes( $sett["content"] ) ) );
+					echo sprintf( '<div class="%1$s"><p><strong>%2$s</strong>%3$s</p></div>' , $class , strip_tags( $sett["title"] ) , $this->afd_apply_content( $sett["content"] ) );
 
 				}
 			}
@@ -390,11 +398,18 @@ class Afd
 			
 			$Data = $this->get_data( $Userrole );
 			if( !empty( $Data[$metabox["args"]["announce"]] ) ) {
-				echo apply_filters( 'the_content' , stripslashes( $Data[$metabox["args"]["announce"]]["content"] ) );
+				echo $this->afd_apply_content( $Data[$metabox["args"]["announce"]]["content"] );
 			}
 			
 		}
 
+	}
+
+	// FilterStart
+	function afd_apply_content( $Content ) {
+		$Content = apply_filters( 'afd_apply_content' , stripslashes( $Content ) );
+		
+		return $Content;
 	}
 
 	// FilterStart
