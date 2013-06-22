@@ -3,9 +3,9 @@
 Plugin Name: Announce from the Dashboard
 Description: Announcement to the dashboard screen for users.
 Plugin URI: http://wordpress.org/extend/plugins/announce-from-the-dashboard/
-Version: 1.2.1
+Version: 1.2.2
 Author: gqevu6bsiz
-Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_2_1
+Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_2_2
 Text Domain: afd
 Domain Path: /languages
 */
@@ -45,7 +45,7 @@ class Afd
 
 
 	function __construct() {
-		$this->Ver = '1.2.1';
+		$this->Ver = '1.2.2';
 		$this->Name = 'Announce from the Dashboard';
 		$this->Url = WP_PLUGIN_URL . '/' . dirname( plugin_basename( __FILE__ ) ) . '/';
 		$this->ltd = 'afd';
@@ -167,6 +167,19 @@ class Afd
 			$UserRole[$role] = translate_user_role( $details['name'] );
 		}
 
+		return $UserRole;
+	}
+
+	// SetList
+	function get_user_role_group() {
+		$UserRole = '';
+		$User = wp_get_current_user();
+		if( !empty( $User->roles ) ) {
+			foreach( $User->roles as $role ) {
+				$UserRole = $role;
+				break;
+			}
+		}
 		return $UserRole;
 	}
 
@@ -341,10 +354,8 @@ class Afd
 	// FilterStart
 	function admin_notices() {
 
-		$User = wp_get_current_user();
-		$Userrole = $User->roles[0];
-		
-		$Data = $this->get_data( $Userrole );
+		$UserRole = $this->get_user_role_group();
+		$Data = $this->get_data( $UserRole );
 
 		if( !empty( $Data ) ) {
 
@@ -367,10 +378,9 @@ class Afd
 
 	// FilterStart
 	function wp_dashboard_setup() {
-		$User = wp_get_current_user();
-		$Userrole = $User->roles[0];
-		
-		$Data = $this->get_data( $Userrole );
+
+		$UserRole = $this->get_user_role_group();
+		$Data = $this->get_data( $UserRole );
 
 		if( !empty( $Data ) ) {
 
