@@ -1,10 +1,10 @@
 === Announce from the Dashboard ===
 Contributors: gqevu6bsiz
-Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/?utm_source=wporg&utm_medium=donate&utm_content=afd&utm_campaign=1_2_2
+Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/?utm_source=wporg&utm_medium=donate&utm_content=afd&utm_campaign=1_2_2_1
 Tags: admin, dashboard, news, announce, role, user
 Requires at least: 3.4.2
 Tested up to: 3.5.2
-Stable tag: 1.2.2
+Stable tag: 1.2.2.1
 License: GPL2
 
 Announcement to the dashboard screen for users.
@@ -35,6 +35,9 @@ You can also be displayed on the rights of another user.
 3. Dashboard screen
 
 == Changelog ==
+
+= 1.2.2.1 =
+* Link mistake.
 
 = 1.2.2 =
 * Fixed bug : Get of user role.
