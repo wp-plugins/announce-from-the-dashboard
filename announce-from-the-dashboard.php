@@ -3,9 +3,9 @@
 Plugin Name: Announce from the Dashboard
 Description: Announcement to the dashboard screen for users.
 Plugin URI: http://wordpress.org/extend/plugins/announce-from-the-dashboard/
-Version: 1.2.2.1
+Version: 1.2.2.2
 Author: gqevu6bsiz
-Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_2_2_1
+Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_2_2_2
 Text Domain: afd
 Domain Path: /languages
 */
@@ -36,22 +36,26 @@ class Afd
 	var $Ver,
 		$Name,
 		$Url,
+		$AuthorUrl,
 		$ltd,
 		$ltd_p,
 		$RecordName,
 		$Slug,
+		$Nonces,
 		$UPFN,
 		$Msg;
 
 
 	function __construct() {
-		$this->Ver = '1.2.2.1';
+		$this->Ver = '1.2.2.2';
 		$this->Name = 'Announce from the Dashboard';
 		$this->Url = WP_PLUGIN_URL . '/' . dirname( plugin_basename( __FILE__ ) ) . '/';
+		$this->AuthorUrl = 'http://gqevu6bsiz.chicappa.jp/';
 		$this->ltd = 'afd';
 		$this->ltd_p = $this->ltd . '_plugin';
 		$this->Slug = 'announce_from_the_dashboard';
 		$this->RecordName = 'announce_from_the_dashboard';
+		$this->Nonces = array( "field" => $this->ltd . '_form_field' , "value" => $this->ltd . '_form_value');
 		$this->UPFN = 'Y';
 		$this->DonateKey = 'd77aec9bc89d445fd54b4c988d090f03';
 		$this->Msg = '';
@@ -96,7 +100,7 @@ class Afd
 
 			$mofile = $this->TransFileCk();
 			if( $mofile == false ) {
-				$translation_link = '<a href="http://gqevu6bsiz.chicappa.jp/please-translation/?utm_source=use_plugin&utm_medium=side&utm_content=' . $this->ltd . '&utm_campaign=' . str_replace( '.' , '_' , $this->Ver ) . '" target="_blank">Please translation</a>'; 
+				$translation_link = '<a href="' . $this->AuthorUrl . 'please-translation/?utm_source=use_plugin&utm_medium=side&utm_content=' . $this->ltd . '&utm_campaign=' . str_replace( '.' , '_' , $this->Ver ) . '" target="_blank">Please translate</a>'; 
 				array_unshift( $links, $translation_link );
 			}
 			$support_link = '<a href="http://wordpress.org/support/plugin/announce-from-the-dashboard" target="_blank">' . __( 'Support Forums' ) . '</a>';
@@ -220,7 +224,7 @@ class Afd
 				$SubmitKey = md5( strip_tags( $_POST["donate_key"] ) );
 				if( $this->DonateKey == $SubmitKey ) {
 					update_option( $this->ltd . '_donated' , $SubmitKey );
-					$this->Msg .= '<div class="updated"><p><strong>' . __( 'Thank you for your donation.' , $this->ltd_p ) . '</strong></p></div>';
+					$this->Msg .= '<div class="updated"><p><strong>' . __( 'Thank you for your donate.' , $this->ltd_p ) . '</strong></p></div>';
 				}
 			}
 		}
@@ -244,7 +248,7 @@ class Afd
 	// DataUpdate
 	function update() {
 		$Update = $this->update_validate();
-		if( !empty( $Update ) ) {
+		if( !empty( $Update ) && check_admin_referer( $this->Nonces["value"] , $this->Nonces["field"] ) ) {
 
 			if( !empty( $_POST["data"]["create"] ) ) {
 				
@@ -309,21 +313,23 @@ class Afd
 		$Update = $this->get_data();
 		$del = false;
 
-		if( !empty( $_POST["action"] ) or !empty( $_POST["action2"] ) ) {
-			if( $_POST["action"] == 'delete' or $_POST["action2"] == 'delete' ) {
-				if( !empty( $_POST["data"]["delete"] ) ) {
-					foreach( $_POST["data"]["delete"] as $ID => $v ) {
-						$DeleteID = intval( $ID );
-						unset( $Update[$DeleteID] );
+		if( check_admin_referer( $this->Nonces["value"] , $this->Nonces["field"] ) ) {
+			if( !empty( $_POST["action"] ) or !empty( $_POST["action2"] ) ) {
+				if( $_POST["action"] == 'delete' or $_POST["action2"] == 'delete' ) {
+					if( !empty( $_POST["data"]["delete"] ) ) {
+						foreach( $_POST["data"]["delete"] as $ID => $v ) {
+							$DeleteID = intval( $ID );
+							unset( $Update[$DeleteID] );
+						}
+						$del = true;
 					}
-					$del = true;
 				}
 			}
-		}
-
-		if( $del ) {
-			update_option( $this->RecordName , $Update );
-			$this->Msg = '<div class="updated"><p><strong>' . __( 'Settings saved.' ) . '</strong></p></div>';
+	
+			if( $del ) {
+				update_option( $this->RecordName , $Update );
+				$this->Msg = '<div class="updated"><p><strong>' . __( 'Settings saved.' ) . '</strong></p></div>';
+			}
 		}
 	}
 
@@ -424,7 +430,7 @@ class Afd
 
 	// FilterStart
 	function layout_footer( $text ) {
-		$text = '<img src="http://www.gravatar.com/avatar/7e05137c5a859aa987a809190b979ed4?s=18" width="18" /> Plugin developer : <a href="http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=footer&utm_content=' . $this->ltd . '&utm_campaign=' . str_replace( '.' , '_' , $this->Ver ) . '" target="_blank">gqevu6bsiz</a>';
+		$text = '<img src="http://www.gravatar.com/avatar/7e05137c5a859aa987a809190b979ed4?s=18" width="18" /> Plugin developer : <a href="' . $this->AuthorUrl . '?utm_source=use_plugin&utm_medium=footer&utm_content=' . $this->ltd . '&utm_campaign=' . str_replace( '.' , '_' , $this->Ver ) . '" target="_blank">gqevu6bsiz</a>';
 		return $text;
 	}
 
@@ -432,7 +438,7 @@ class Afd
 	function DisplayDonation() {
 		$donation = get_option( $this->ltd . '_donated' );
 		if( $this->DonateKey != $donation ) {
-			$this->Msg .= '<div class="error"><p><strong>' . __( 'Please consider a donation if you are satisfied with this plugin.' , $this->ltd_p ) . '</strong> <a href="' . self_admin_url( 'admin.php?page=' . $this->Slug ) . '">' . __( 'Please donation.' , $this->ltd_p ) . '</a></p></div>';
+			$this->Msg .= '<div class="error"><p><strong>' . __( 'Please consider a donate if you are satisfied with this plugin.' , $this->ltd_p ) . '</strong> <a href="' . $this->AuthorUrl . 'please-donation/?utm_source=use_plugin&utm_medium=footer&utm_content=' . $this->ltd . '&utm_campaign=' . str_replace( '.' , '_' , $this->Ver ) . '" target="_blank">' . __( 'Please donate.' , $this->ltd_p ) . '</a></p></div>';
 		}
 	}
 

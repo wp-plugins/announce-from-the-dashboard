@@ -34,7 +34,7 @@ wp_enqueue_style( $this->Slug , $this->Url . dirname( dirname( plugin_basename( 
 
 			<form id="afd_form" method="post" action="">
 				<input type="hidden" name="<?php echo $this->UPFN; ?>" value="Y">
-				<?php wp_nonce_field(); ?>
+				<?php wp_nonce_field( $this->Nonces["value"] , $this->Nonces["field"] ); ?>
 
 				<?php $mode = 'create'; ?>
 				<div id="<?php echo $mode; ?>">
@@ -84,40 +84,40 @@ wp_enqueue_style( $this->Slug , $this->Url . dirname( dirname( plugin_basename( 
 
 		<div id="postbox-container-2" class="postbox-container">
 
+			<div class="stuffbox" style="border-color: #FFC426; border-width: 3px;">
+				<h3 style="background: #FFF2D0; border-color: #FFC426;"><span class="hndle"><?php _e( 'Have you want to customize?' , $this->ltd_p ); ?></span></h3>
+				<div class="inside">
+					<p style="float: right;">
+						<img src="http://www.gravatar.com/avatar/7e05137c5a859aa987a809190b979ed4?s=46" width="46" /><br />
+						<a href="<?php echo $this->AuthorUrl; ?>contact-us/?utm_source=use_plugin&utm_medium=side&utm_content=<?php echo $this->ltd; ?>&utm_campaign=<?php echo str_replace( '.' , '_' , $this->Ver ); ?>" target="_blank">gqevu6bsiz</a>
+					</p>
+					<p><?php _e( 'I am good at Admin Screen Customize.' , $this->ltd_p ); ?></p>
+					<p><?php _e( 'Please consider the request to me if it is good.' , $this->ltd_p ); ?></p>
+					<p>
+						<a href="http://wpadminuicustomize.com/blog/category/example/?utm_source=use_plugin&utm_medium=side&utm_content=<?php echo $this->ltd; ?>&utm_campaign=<?php echo str_replace( '.' , '_' , $this->Ver ); ?>" target="_blank"><?php _e ( 'Example Customize' , $this->ltd_p ); ?></a> :
+						<a href="<?php echo $this->AuthorUrl; ?>contact-us/?utm_source=use_plugin&utm_medium=side&utm_content=<?php echo $this->ltd; ?>&utm_campaign=<?php echo str_replace( '.' , '_' , $this->Ver ); ?>" target="_blank"><?php _e( 'Contact me' , $this->ltd_p ); ?></a></p>
+				</div>
+			</div>
+
 			<?php $donatedKey = get_option( $this->ltd . '_donated' ); ?>
 			<?php if( $donatedKey == $this->DonateKey ) : ?>
-				<span class="description"><?php _e( 'Thank you for your donation.' , $this->ltd_p ); ?></span>
+				<span class="description"><?php _e( 'Thank you for your donate.' , $this->ltd_p ); ?></span>
 			<?php else: ?>
 
 				<div class="stuffbox" id="donationbox">
 					<div class="inside">
-						<p style="color: #FFFFFF; font-size: 20px;"><?php _e( 'Please donation.' , $this->ltd_p ); ?></p>
-						<p style="color: #FFFFFF;"><?php _e( 'You are contented with this plugin?<br />By the laws of Japan, Japan\'s new paypal user can not make a donation button.<br />So i would like you to buy this plugin as the replacement for the donation.' , $this->ltd_p ); ?></p>
+						<p style="color: #FFFFFF; font-size: 20px;"><?php _e( 'Please donate.' , $this->ltd_p ); ?></p>
+						<p style="color: #FFFFFF;"><?php _e( 'You are contented with this plugin?<br />By the laws of Japan, Japan\'s new paypal user can not make a donate button.<br />So i would like you to buy this plugin as the replacement for the donate.' , $this->ltd_p ); ?></p>
 						<p>&nbsp;</p>
 						<p style="text-align: center;">
-							<a href="http://gqevu6bsiz.chicappa.jp/line-break-first-and-end/?utm_source=use_plugin&utm_medium=donate&utm_content=<?php echo $this->ltd; ?>&utm_campaign=<?php echo str_replace( '.' , '_' , $this->Ver ); ?>" class="button-primary" target="_blank">Line Break First and End</a>
+							<a href="<?php echo $this->AuthorUrl; ?>please-donation/?utm_source=use_plugin&utm_medium=donate&utm_content=<?php echo $this->ltd; ?>&utm_campaign=<?php echo str_replace( '.' , '_' , $this->Ver ); ?>" class="button-primary" target="_blank"><?php _e( 'Please donate.' , $this->ltd_p ); ?></a>
 						</p>
-						<p>&nbsp;</p>
-						<div class="donation_memo">
-							<p><strong><?php _e( 'Features' , $this->ltd_p ); ?></strong></p>
-							<p><?php _e( 'Line Break First and End plugin is In the visual editor TinyMCE, It is a plugin that will help when you will not be able to enter a line break.' , $this->ltd_p ); ?></p>
-						</div>
-						<div class="donation_memo">
-							<p><strong><?php _e( 'The primary use of donations' , $this->ltd_p ); ?></strong></p>
-							<ul>
-								<li>- <?php _e( 'Liquidation of time and value' , $this->ltd_p ); ?></li>
-								<li>- <?php _e( 'Additional suggestions feature' , $this->ltd_p ); ?></li>
-								<li>- <?php _e( 'Maintain motivation' , $this->ltd_p ); ?></li>
-								<li>- <?php _e( 'Ensure time as the father of Sunday' , $this->ltd_p ); ?></li>
-							</ul>
-						</div>
-
 						<form id="donation_form" class="afd_form" method="post" action="">
 							<h4 style="color: #FFF;"><?php _e( 'If you have already donated to.' , $this->ltd_p ); ?></h4>
-							<p style="color: #FFF;"><?php _e( 'Please enter the \'Donation delete key\' that have been described in the \'Line Break First and End download page\'.' , $this->ltd_p ); ?></p>
+							<p style="color: #FFF;"><?php _e( 'Please enter the \'Donate delete key\' that have been described in the \'Line Break First and End download page\'.' , $this->ltd_p ); ?></p>
 							<input type="hidden" name="<?php echo $this->UPFN; ?>" value="Y" />
 							<?php wp_nonce_field(); ?>
-							<label for="donate_key"><span style="color: #FFF; "><?php _e( 'Donation delete key' , $this->ltd_p ); ?></span></label>
+							<label for="donate_key"><span style="color: #FFF; "><?php _e( 'Donate delete key' , $this->ltd_p ); ?></span></label>
 							<input type="text" name="donate_key" id="donate_key" value="" class="small-text" />
 							<input type="submit" class="button-secondary" name="update" value="<?php _e( 'Submit' ); ?>" />
 						</form>
@@ -134,10 +134,10 @@ wp_enqueue_style( $this->Slug , $this->Url . dirname( dirname( plugin_basename( 
 			<div class="stuffbox" id="aboutbox">
 				<h3><span class="hndle"><?php _e( 'About plugin' , $this->ltd_p ); ?></span></h3>
 				<div class="inside">
-					<p><?php _e( 'Version check' , $this->ltd_p ); ?> : 3.4.2 - 3.5.1</p>
+					<p><?php _e( 'Version check' , $this->ltd_p ); ?> : 3.4.2 - 3.6 RC1</p>
 					<ul>
 						<li><a href="http://wordpress.org/extend/plugins/announce-from-the-dashboard/" target="_blank"><?php _e( 'Plugin\'s site' , $this->ltd_p ); ?></a></li>
-						<li><a href="http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=side&utm_content=<?php echo $this->ltd; ?>&utm_campaign=<?php echo str_replace( '.' , '_' , $this->Ver ); ?>" target="_blank"><?php _e( 'Developer\'s site' , $this->ltd_p ); ?></a></li>
+						<li><a href="<?php echo $this->AuthorUrl; ?>?utm_source=use_plugin&utm_medium=side&utm_content=<?php echo $this->ltd; ?>&utm_campaign=<?php echo str_replace( '.' , '_' , $this->Ver ); ?>" target="_blank"><?php _e( 'Developer\'s site' , $this->ltd_p ); ?></a></li>
 						<li><a href="http://wordpress.org/support/plugin/announce-from-the-dashboard" target="_blank"><?php _e( 'Support Forums' ); ?></a></li>
 						<li><a href="http://wordpress.org/support/view/plugin-reviews/announce-from-the-dashboard" target="_blank"><?php _e( 'Reviews' , $this->ltd_p ); ?></a></li>
 						<li><a href="https://twitter.com/gqevu6bsiz" target="_blank">twitter</a></li>
@@ -171,7 +171,7 @@ wp_enqueue_style( $this->Slug , $this->Url . dirname( dirname( plugin_basename( 
 
 			<?php if( empty( $Data ) ) : ?>
 	
-				<p><?php _e( 'Not created announce.' , $this->ltd ); ?></p>
+				<p><strong><?php _e( 'Not created announce.' , $this->ltd ); ?></strong></p>
 	
 			<?php else : ?>
 
@@ -180,7 +180,7 @@ wp_enqueue_style( $this->Slug , $this->Url . dirname( dirname( plugin_basename( 
 
 					<form id="afd_form" method="post" action="">
 						<input type="hidden" name="<?php echo $this->UPFN; ?>" value="Y">
-						<?php wp_nonce_field(); ?>
+						<?php wp_nonce_field( $this->Nonces["value"] , $this->Nonces["field"] ); ?>
 						<h3><?php _e( 'List of announce that you created' , $this->ltd ); ?></h3>
 
 						<div class="tablenav top">
@@ -330,6 +330,7 @@ jQuery(document).ready(function($) {
 	$("a#deletebtn").click(function() {
 		var $Form = $('<form action="" method="post"></form>');
 		$Form.append('<input type="hidden" name="action" value="delete" />');
+		$Form.append('<?php wp_nonce_field( $this->Nonces["value"] , $this->Nonces["field"] ); ?>');
 		$Form.append('<input type="hidden" name="data[delete][' + $(this).attr("title") + '][id]" value="1" />');
 		
 		$Form.submit();
