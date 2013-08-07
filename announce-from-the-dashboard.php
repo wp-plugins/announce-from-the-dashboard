@@ -3,9 +3,9 @@
 Plugin Name: Announce from the Dashboard
 Description: Announcement to the dashboard screen for users.
 Plugin URI: http://wordpress.org/extend/plugins/announce-from-the-dashboard/
-Version: 1.2.2.2
+Version: 1.2.3
 Author: gqevu6bsiz
-Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_2_2_2
+Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_2_3
 Text Domain: afd
 Domain Path: /languages
 */
@@ -35,27 +35,33 @@ class Afd
 
 	var $Ver,
 		$Name,
+		$Dir,
 		$Url,
 		$AuthorUrl,
 		$ltd,
 		$ltd_p,
 		$RecordName,
-		$Slug,
+		$PageSlug,
+		$PluginSlug,
 		$Nonces,
+		$Schema,
 		$UPFN,
 		$Msg;
 
 
 	function __construct() {
-		$this->Ver = '1.2.2.2';
+		$this->Ver = '1.2.3';
 		$this->Name = 'Announce from the Dashboard';
-		$this->Url = WP_PLUGIN_URL . '/' . dirname( plugin_basename( __FILE__ ) ) . '/';
+		$this->Dir = plugin_dir_path( __FILE__ );
+		$this->Url = plugin_dir_url( __FILE__ );
 		$this->AuthorUrl = 'http://gqevu6bsiz.chicappa.jp/';
 		$this->ltd = 'afd';
 		$this->ltd_p = $this->ltd . '_plugin';
-		$this->Slug = 'announce_from_the_dashboard';
 		$this->RecordName = 'announce_from_the_dashboard';
+		$this->PageSlug = 'announce_from_the_dashboard';
+		$this->PluginSlug = dirname( plugin_basename( __FILE__ ) );
 		$this->Nonces = array( "field" => $this->ltd . '_form_field' , "value" => $this->ltd . '_form_value');
+		$this->Schema = is_ssl() ? 'https://' : 'http://';
 		$this->UPFN = 'Y';
 		$this->DonateKey = 'd77aec9bc89d445fd54b4c988d090f03';
 		$this->Msg = '';
@@ -67,8 +73,8 @@ class Afd
 	// PluginSetup
 	function PluginSetup() {
 		// load text domain
-		load_plugin_textdomain( $this->ltd , false , basename( dirname( __FILE__ ) ) . '/languages' );
-		load_plugin_textdomain( $this->ltd_p , false , basename( dirname( __FILE__ ) ) . '/languages' );
+		load_plugin_textdomain( $this->ltd , false , $this->PluginSlug . '/languages' );
+		load_plugin_textdomain( $this->ltd_p , false , $this->PluginSlug . '/languages' );
 
 		// plugin links
 		add_filter( 'plugin_action_links' , array( $this , 'plugin_action_links' ) , 10 , 2 );
@@ -81,13 +87,12 @@ class Afd
 
 		// set donation toggle
 		add_action( 'wp_ajax_afd_set_donation_toggle' , array( $this , 'wp_ajax_afd_set_donation_toggle' ) );
-
 	}
 
 	// Translation File Check
 	function TransFileCk() {
 		$file = false;
-		$moFile = WP_PLUGIN_DIR . '/' . dirname( plugin_basename( __FILE__ ) ) . '/languages/' . $this->ltd . '-' . get_locale() . '.mo';
+		$moFile = $this->Dir . 'languages/' . $this->ltd . '-' . get_locale() . '.mo';
 		if( file_exists( $moFile ) ) {
 			$file = true;
 		}
@@ -105,7 +110,7 @@ class Afd
 			}
 			$support_link = '<a href="http://wordpress.org/support/plugin/announce-from-the-dashboard" target="_blank">' . __( 'Support Forums' ) . '</a>';
 			array_unshift( $links, $support_link );
-			array_unshift( $links, '<a href="' . admin_url( 'options-general.php?page=' . $this->Slug ) . '">' . __('Settings') . '</a>' );
+			array_unshift( $links, '<a href="' . admin_url( 'options-general.php?page=' . $this->PageSlug ) . '">' . __('Settings') . '</a>' );
 
 		}
 		return $links;
@@ -113,7 +118,7 @@ class Afd
 
 	// PluginSetup
 	function admin_menu() {
-		add_options_page( $this->Name , __( 'Announcement settings for Dashboard' , $this->ltd ), 'administrator' , $this->Slug , array( $this , 'setting' ) );
+		add_options_page( $this->Name , __( 'Announcement settings for Dashboard' , $this->ltd ), 'administrator' , $this->PageSlug , array( $this , 'setting' ) );
 	}
 
 
@@ -155,12 +160,18 @@ class Afd
 		if($type == 'normal') {
 			$color = __( 'gray' , $this->ltd );
 		} else if($type == 'updated') {
-			$color = __( 'yellow' , $this->ltd );
+			$mp6 = is_plugin_active('mp6/mp6.php');
+			if( $mp6 ) {
+				$color = __( 'yellowish green' , $this->ltd );
+			} else {
+				$color = __( 'yellow' , $this->ltd );
+			}
 		} else if($type == 'error') {
 			$color = __( 'red' , $this->ltd );
 		} else if($type == 'metabox') {
 			$color = __( 'gray' , $this->ltd );
 		}
+
 		return $color;
 	}
 
@@ -365,7 +376,7 @@ class Afd
 
 		if( !empty( $Data ) ) {
 
-			wp_enqueue_style( $this->Slug , $this->Url . dirname( plugin_basename( __FILE__ ) ) . '.css' , array() , $this->Ver );
+			wp_enqueue_style( $this->PageSlug , $this->Url . $this->PluginSlug . '.css' , array() , $this->Ver );
 
 			foreach( $Data as $key => $sett ) {
 				
@@ -395,7 +406,7 @@ class Afd
 				$type = $sett["type"];
 				if( !empty( $type ) && $type == 'metabox' ) {
 
-					add_meta_box( $this->Slug . '-' . $key , strip_tags( $sett["title"] ) , array( $this , 'dashboard_do_metabox' ) , 'dashboard' , 'normal' , '' , array( "announce" => $key ) );
+					add_meta_box( $this->PageSlug . '-' . $key , strip_tags( $sett["title"] ) , array( $this , 'dashboard_do_metabox' ) , 'dashboard' , 'normal' , '' , array( "announce" => $key ) );
 
 				}
 			}
@@ -430,7 +441,7 @@ class Afd
 
 	// FilterStart
 	function layout_footer( $text ) {
-		$text = '<img src="http://www.gravatar.com/avatar/7e05137c5a859aa987a809190b979ed4?s=18" width="18" /> Plugin developer : <a href="' . $this->AuthorUrl . '?utm_source=use_plugin&utm_medium=footer&utm_content=' . $this->ltd . '&utm_campaign=' . str_replace( '.' , '_' , $this->Ver ) . '" target="_blank">gqevu6bsiz</a>';
+		$text = '<img src="' . $this->Schema . 'www.gravatar.com/avatar/7e05137c5a859aa987a809190b979ed4?s=18" width="18" /> Plugin developer : <a href="' . $this->AuthorUrl . '?utm_source=use_plugin&utm_medium=footer&utm_content=' . $this->ltd . '&utm_campaign=' . str_replace( '.' , '_' , $this->Ver ) . '" target="_blank">gqevu6bsiz</a>';
 		return $text;
 	}
 

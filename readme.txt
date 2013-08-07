@@ -1,26 +1,24 @@
 === Announce from the Dashboard ===
 Contributors: gqevu6bsiz
-Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/?utm_source=wporg&utm_medium=donate&utm_content=afd&utm_campaign=1_2_2_2
+Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/?utm_source=wporg&utm_medium=donate&utm_content=afd&utm_campaign=1_2_3
 Tags: admin, dashboard, news, announce, role, user
 Requires at least: 3.4.2
-Tested up to: 3.6 RC1
-Stable tag: 1.2.2.2
+Tested up to: 3.6
+Stable tag: 1.2.3
 License: GPL2
 
-Announcement to the dashboard screen for users.
+Announcement to user on the Dashboard.
 
 == Description ==
 
-It is possible to display announcements.
-You can also be displayed on the rights of another user.
+This plugin to show announce for user basis.
 
 
 == Installation ==
 
-1. Upload the full directory into your wp-content/plugins directory
-2. Activate the plugin at the plugin administration page
-3. Open the plugin configuration page,
-   which is located under Options -> Announcement settings for Dashboard.
+1. Upload the full directory to the `/wp-content/plugins/` directory.
+2. Activate the plugin through the 'Plugins' menu in WordPress.
+3. Go to `WP-Admin -> Settings -> Announcement settings for Dashboard` to configure the plugin.
 
 == Frequently Asked Questions ==
 
@@ -30,11 +28,16 @@ You can also be displayed on the rights of another user.
 
 == Screenshots ==
 
-1. Interface in setting
-2. While setting
-3. Dashboard screen
+1. Settings Interface
+2. Configuration Example
+3. Screen of Dashboard
 
 == Changelog ==
+
+= 1.2.3 =
+* Compatibility Check for 3.6.
+* Support for mp6.
+* Support for SSL.
 
 = 1.2.2.2 =
 * Added a confirmation of Nonce field.
