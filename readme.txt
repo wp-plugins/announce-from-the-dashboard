@@ -1,13 +1,13 @@
 === Announce from the Dashboard ===
 Contributors: gqevu6bsiz
-Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/?utm_source=wporg&utm_medium=donate&utm_content=afd&utm_campaign=1_2_3_1
+Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/?utm_source=wporg&utm_medium=donate&utm_content=afd&utm_campaign=1_2_4
 Tags: admin, dashboard, news, announce, role, user
-Requires at least: 3.4.2
-Tested up to: 3.6
-Stable tag: 1.2.3.1
+Requires at least: 3.6.1
+Tested up to: 3.8-RC1
+Stable tag: 1.2.4
 License: GPL2
 
-Announcement to user on the Dashboard.
+Announcement to users on the Dashboard.
 
 == Description ==
 
@@ -35,6 +35,12 @@ This plugin to show announce for user basis.
 5. With MP6
 
 == Changelog ==
+
+= 1.2.4 =
+* Updated: Compatible to 3.8-RC1.
+* Added: Show confirmation to before bulk delete.
+* Changed: Update save way.
+* Bug fixed: Submit empty data when data is lose.
 
 = 1.2.3.1 =
 * Update to Screenshots.

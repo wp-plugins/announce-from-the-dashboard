@@ -60,16 +60,28 @@
 	width: 10%;
 }
 #afd-lists table tbody tr.normal td.content {
-	border-left: 4px solid #A6A6A6;
+	background-color: #F6F6F6;
 }
 #afd-lists table tbody tr.error td.content {
-	border-left: 4px solid #CC0000;
+	background-color: #FFEBE8;
 }
 #afd-lists table tbody tr.updated td.content {
-	border-left: 4px solid #7ad03a;
+	background-color: lightYellow;
 }
 #afd-lists table tbody tr.metabox td.content {
 	background-color: #f5f5f5;
+}
+body.mp6 #afd-lists table tbody tr.normal td.content {
+	background-color: #fff;
+	border-left: 4px solid #A6A6A6;
+}
+body.mp6 #afd-lists table tbody tr.error td.content {
+	background-color: #fff;
+	border-left: 4px solid #dd3d36;
+}
+body.mp6 #afd-lists table tbody tr.updated td.content {
+	background-color: #fff;
+	border-left: 4px solid #7AD03A;
 }
 #afd-lists table tbody tr td.role label {
 	display: block;
@@ -90,12 +102,22 @@
 
 
 div.updated.announce.normal {
+	background-color: #F6F6F6;
 	border-color: #A6A6A6;
 }
 div.updated.announce.error {
+	background-color: #FFEBE8;
 	border-color: #CC0000;
 }
 div.updated.announce.nonstyle {
 	background: none;
 	border: 0 none;
+}
+body.mp6 div.updated.announce.normal {
+	background-color: #fff;
+	border-color: #A6A6A6;
+}
+body.mp6 div.updated.announce.error {
+	background-color: #fff;
+	border-color: #CC0000;
 }

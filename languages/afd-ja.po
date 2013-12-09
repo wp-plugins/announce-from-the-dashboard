@@ -1,67 +1,186 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: v1.1 Announce from the Dashboard\n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-05-11 22:32+0900\n"
-"Last-Translator: Gqevu6bsiz <gqevu6bsiz@gmail.com>\n"
-"Language-Team: \n"
+"Project-Id-Version: Announce from the Dashboard\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-12-09 22:40+0900\n"
+"PO-Revision-Date: 2013-12-09 22:43+0900\n"
+"Last-Translator: gqevu6bsiz <gqevu6bsiz@gmail.com>\n"
+"Language-Team: gqevu6bsiz <gqevu6bsiz@gmail.com>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: ../\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Language: Japanese\n"
 "X-Poedit-Country: JAPAN\n"
-"X-Poedit-SourceCharset: utf-8\n"
-"Last-Translator: Gqevu6bsiz <gqevu6bsiz@gmail.com>\n"
+"X-Poedit-SearchPath-0: .\n"
 
+#: announce-from-the-dashboard.php:4
 msgid "Announcement to the dashboard screen for users."
 msgstr "ユーザーのダッシュボードにお知らせを表示します。"
 
+#: announce-from-the-dashboard.php:107
+#: inc/setting.php:24
 msgid "Announcement settings for Dashboard"
 msgstr "ダッシュボードへのお知らせ設定"
 
+#: announce-from-the-dashboard.php:142
+#: announce-from-the-dashboard.php:155
+msgid "Gray"
+msgstr "灰色"
+
+#: announce-from-the-dashboard.php:142
+msgid "Normal"
+msgstr "標準"
+
+#: announce-from-the-dashboard.php:143
+msgid "Yellow"
+msgstr "黄色"
+
+#: announce-from-the-dashboard.php:146
+msgid "Green"
+msgstr "緑"
+
+#: announce-from-the-dashboard.php:150
+msgid "Yellowish Green"
+msgstr "黄緑"
+
+#: announce-from-the-dashboard.php:154
+msgid "Red"
+msgstr "赤"
+
+#: announce-from-the-dashboard.php:155
+msgid "Metabox"
+msgstr "メタボックス"
+
+#: announce-from-the-dashboard.php:156
+msgid "Non Styles"
+msgstr "スタイル無し"
+
+#: announce-from-the-dashboard.php:475
+#: inc/setting.php:88
+msgid "Thank you for your donation."
+msgstr "寄付いただきありがとうございます。"
+
+#: announce-from-the-dashboard.php:490
+msgid "Please consider a donate if you are satisfied with this plugin."
+msgstr "宜しければご検討ください。"
+
+#: announce-from-the-dashboard.php:490
+#: inc/setting.php:108
+#: inc/setting.php:110
+msgid "Please donation."
+msgstr "寄付のお願い"
+
+#: inc/setting.php:41
 msgid "Create a new announce to the dashboard."
 msgstr "ダッシュボードへのお知らせを作成します。"
 
+#: inc/setting.php:45
+#: inc/setting.php:196
+#: inc/setting.php:205
+#: inc/setting.php:220
 msgid "Announce title"
 msgstr "お知らせタイトル"
 
+#: inc/setting.php:49
+#: inc/setting.php:197
+#: inc/setting.php:206
 msgid "Announce content"
 msgstr "お知らせ内容"
 
+#: inc/setting.php:53
+#: inc/setting.php:196
+#: inc/setting.php:205
+#: inc/setting.php:230
 msgid "Announce type"
 msgstr "お知らせの種類"
 
+#: inc/setting.php:56
 msgid "Select the type"
 msgstr "表示の種類を選択"
 
-msgid "List of announce that you created"
-msgstr "作成したお知らせ一覧"
+#: inc/setting.php:92
+msgid "Have you want to customize?"
+msgstr "何かカスタマイズしたい事はありますか？"
 
+#: inc/setting.php:98
+msgid "I am good at Admin Screen Customize."
+msgstr "私は管理画面のカスタマイズを得意とします。"
+
+#: inc/setting.php:99
+msgid "Please consider the request to me if it is good."
+msgstr "このプラグインに満足できたら寄付のご検討を宜しくお願いします。"
+
+#: inc/setting.php:101
+msgid "Example Customize"
+msgstr "カスタマイズ例"
+
+#: inc/setting.php:102
+msgid "Contact me"
+msgstr "お問い合わせ"
+
+#: inc/setting.php:113
+msgid "If you have already donated to."
+msgstr "寄付済みの方へ。"
+
+#: inc/setting.php:114
+msgid "Please enter the 'Donate delete key' that have been described in the 'Line Break First and End download page'."
+msgstr "'Line Break First and End ダウンロードページ' に記載されていた'寄付削除キー'を入力して、寄付メッセージを削除できます。"
+
+#: inc/setting.php:118
+msgid "Donate delete key"
+msgstr "寄付メッセージ削除キー"
+
+#: inc/setting.php:133
+msgid "About plugin"
+msgstr "プラグインについて"
+
+#: inc/setting.php:135
+msgid "Version checked"
+msgstr "動作確認済み"
+
+#: inc/setting.php:137
+msgid "Plugin's site"
+msgstr "プラグインのサイト"
+
+#: inc/setting.php:138
+msgid "Developer's site"
+msgstr "開発者のサイト"
+
+#: inc/setting.php:140
+msgid "Reviews"
+msgstr "レビュー"
+
+#: inc/setting.php:148
+msgid "Useful plugins"
+msgstr "便利なプラグイン"
+
+#: inc/setting.php:151
+msgid "Customize a variety of screen management."
+msgstr "管理画面の様々なカスタマイズ"
+
+#: inc/setting.php:153
+msgid "Customize the list of the post and page. custom post type page, too. You can customize the column display items freely."
+msgstr "投稿と固定ページ一覧をカスタマイズします。カスタム投稿タイプも。カラム一覧を自由にカスタマイズできます。"
+
+#: inc/setting.php:155
+msgid "The plugin that allows you to add the value of the options. Option value that you have created, can be used in addition to the template tag, Short code can be used in the body of the article."
+msgstr "オプション値作成プラグインです。作成したオプション値は、ショートコードとして記事に、テンプレートタグとしても使用できます。"
+
+#: inc/setting.php:172
 msgid "Not created announce."
 msgstr "作成したお知らせはありません。"
 
-msgid "normal"
-msgstr "標準"
+#: inc/setting.php:183
+msgid "List of announce that you created"
+msgstr "作成したお知らせ一覧"
 
-msgid "updated"
-msgstr "更新時の表示"
-
-msgid "error"
-msgstr "エラー表示"
-
-msgid "metabox"
-msgstr "メタボックス"
-
-msgid "nonstyle"
-msgstr "スタイル無し"
-
-msgid "gray"
-msgstr "灰色"
-
-msgid "red"
-msgstr "赤"
-
-msgid "yellow"
-msgstr "黄色"
+#: inc/setting.php:351
+msgid "Are you sure you want to bulk action?"
+msgstr "一括変更してもよろしいですか？"
 

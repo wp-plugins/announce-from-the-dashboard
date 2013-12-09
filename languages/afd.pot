@@ -1,66 +1,184 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.0.0\n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-05-11 22:31+0900\n"
+"Project-Id-Version: Announce from the Dashboard\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-12-09 22:40+0900\n"
+"PO-Revision-Date: 2013-12-09 22:40+0900\n"
+"Last-Translator: gqevu6bsiz <gqevu6bsiz@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Poedit-Language: Japanese\n"
-"X-Poedit-Country: JAPAN\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"Last-Translator: Gqevu6bsiz <gqevu6bsiz@gmail.com>\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: ../\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: .\n"
 
+#: announce-from-the-dashboard.php:4
 msgid "Announcement to the dashboard screen for users."
 msgstr ""
 
+#: announce-from-the-dashboard.php:107
+#: inc/setting.php:24
 msgid "Announcement settings for Dashboard"
 msgstr ""
 
+#: announce-from-the-dashboard.php:142
+#: announce-from-the-dashboard.php:155
+msgid "Gray"
+msgstr ""
+
+#: announce-from-the-dashboard.php:142
+msgid "Normal"
+msgstr ""
+
+#: announce-from-the-dashboard.php:143
+msgid "Yellow"
+msgstr ""
+
+#: announce-from-the-dashboard.php:146
+msgid "Green"
+msgstr ""
+
+#: announce-from-the-dashboard.php:150
+msgid "Yellowish Green"
+msgstr ""
+
+#: announce-from-the-dashboard.php:154
+msgid "Red"
+msgstr ""
+
+#: announce-from-the-dashboard.php:155
+msgid "Metabox"
+msgstr ""
+
+#: announce-from-the-dashboard.php:156
+msgid "Non Styles"
+msgstr ""
+
+#: announce-from-the-dashboard.php:475
+#: inc/setting.php:88
+msgid "Thank you for your donation."
+msgstr ""
+
+#: announce-from-the-dashboard.php:490
+msgid "Please consider a donate if you are satisfied with this plugin."
+msgstr ""
+
+#: announce-from-the-dashboard.php:490
+#: inc/setting.php:108
+#: inc/setting.php:110
+msgid "Please donation."
+msgstr ""
+
+#: inc/setting.php:41
 msgid "Create a new announce to the dashboard."
 msgstr ""
 
+#: inc/setting.php:45
+#: inc/setting.php:196
+#: inc/setting.php:205
+#: inc/setting.php:220
 msgid "Announce title"
 msgstr ""
 
+#: inc/setting.php:49
+#: inc/setting.php:197
+#: inc/setting.php:206
 msgid "Announce content"
 msgstr ""
 
+#: inc/setting.php:53
+#: inc/setting.php:196
+#: inc/setting.php:205
+#: inc/setting.php:230
 msgid "Announce type"
 msgstr ""
 
+#: inc/setting.php:56
 msgid "Select the type"
 msgstr ""
 
-msgid "List of announce that you created"
+#: inc/setting.php:92
+msgid "Have you want to customize?"
 msgstr ""
 
+#: inc/setting.php:98
+msgid "I am good at Admin Screen Customize."
+msgstr ""
+
+#: inc/setting.php:99
+msgid "Please consider the request to me if it is good."
+msgstr ""
+
+#: inc/setting.php:101
+msgid "Example Customize"
+msgstr ""
+
+#: inc/setting.php:102
+msgid "Contact me"
+msgstr ""
+
+#: inc/setting.php:113
+msgid "If you have already donated to."
+msgstr ""
+
+#: inc/setting.php:114
+msgid "Please enter the 'Donate delete key' that have been described in the 'Line Break First and End download page'."
+msgstr ""
+
+#: inc/setting.php:118
+msgid "Donate delete key"
+msgstr ""
+
+#: inc/setting.php:133
+msgid "About plugin"
+msgstr ""
+
+#: inc/setting.php:135
+msgid "Version checked"
+msgstr ""
+
+#: inc/setting.php:137
+msgid "Plugin's site"
+msgstr ""
+
+#: inc/setting.php:138
+msgid "Developer's site"
+msgstr ""
+
+#: inc/setting.php:140
+msgid "Reviews"
+msgstr ""
+
+#: inc/setting.php:148
+msgid "Useful plugins"
+msgstr ""
+
+#: inc/setting.php:151
+msgid "Customize a variety of screen management."
+msgstr ""
+
+#: inc/setting.php:153
+msgid "Customize the list of the post and page. custom post type page, too. You can customize the column display items freely."
+msgstr ""
+
+#: inc/setting.php:155
+msgid "The plugin that allows you to add the value of the options. Option value that you have created, can be used in addition to the template tag, Short code can be used in the body of the article."
+msgstr ""
+
+#: inc/setting.php:172
 msgid "Not created announce."
 msgstr ""
 
-msgid "normal"
+#: inc/setting.php:183
+msgid "List of announce that you created"
 msgstr ""
 
-msgid "updated"
-msgstr ""
-
-msgid "error"
-msgstr ""
-
-msgid "metabox"
-msgstr ""
-
-msgid "nonstyle"
-msgstr ""
-
-msgid "gray"
-msgstr ""
-
-msgid "red"
-msgstr ""
-
-msgid "yellow"
+#: inc/setting.php:351
+msgid "Are you sure you want to bulk action?"
 msgstr ""
 
