@@ -3,9 +3,9 @@
 Plugin Name: Announce from the Dashboard
 Description: Announcement to the dashboard screen for users.
 Plugin URI: http://wordpress.org/extend/plugins/announce-from-the-dashboard/
-Version: 1.2.4
+Version: 1.2.4.1
 Author: gqevu6bsiz
-Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_2_4
+Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_2_4_1
 Text Domain: afd
 Domain Path: /languages
 */
@@ -50,7 +50,7 @@ class Afd
 
 
 	function __construct() {
-		$this->Ver = '1.2.4';
+		$this->Ver = '1.2.4.1';
 		$this->Name = 'Announce from the Dashboard';
 		$this->Dir = plugin_dir_path( __FILE__ );
 		$this->Url = plugin_dir_url( __FILE__ );
