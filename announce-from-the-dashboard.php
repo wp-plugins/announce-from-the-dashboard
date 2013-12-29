@@ -3,9 +3,9 @@
 Plugin Name: Announce from the Dashboard
 Description: Announcement to the dashboard screen for users.
 Plugin URI: http://wordpress.org/extend/plugins/announce-from-the-dashboard/
-Version: 1.2.4.1
+Version: 1.2.4.2
 Author: gqevu6bsiz
-Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_2_4_1
+Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_2_4_2
 Text Domain: afd
 Domain Path: /languages
 */
@@ -50,7 +50,7 @@ class Afd
 
 
 	function __construct() {
-		$this->Ver = '1.2.4.1';
+		$this->Ver = '1.2.4.2';
 		$this->Name = 'Announce from the Dashboard';
 		$this->Dir = plugin_dir_path( __FILE__ );
 		$this->Url = plugin_dir_url( __FILE__ );
@@ -214,34 +214,36 @@ class Afd
 
 		$RecordField = false;
 		
-		if( !empty( $_POST["record_field"] ) ) {
-			$RecordField = strip_tags( $_POST["record_field"] );
-		}
-		
-		if( !empty( $RecordField ) && $RecordField == $this->RecordName ) {
-
-			if( !empty( $_POST["data"]["create"] ) ) {
-				$this->update();
-			}
-
-			if( !empty( $_POST["data"]["update"] ) && empty( $_POST["action"] ) && empty( $_POST["action2"] ) ) {
-				$this->update();
-			}
-
-			$del = "";
-			if( !empty( $_POST["action"] ) ) {
-				$del = strip_tags( $_POST["action"] );
-			} elseif( !empty( $_POST["action2"] ) ) {
-				$del = strip_tags( $_POST["action2"] );
-			}
-			if( $del == 'delete' ) {
-				$this->update_delete();
-			}
-
-			if( !empty( $_POST["donate_key"] ) ) {
-				$this->DonatingCheck();
+		if( !empty( $_POST[$this->Nonces["field"]] ) ) {
+			if( !empty( $_POST["record_field"] ) ) {
+				$RecordField = strip_tags( $_POST["record_field"] );
 			}
 			
+			if( !empty( $RecordField ) && $RecordField == $this->RecordName ) {
+
+				if( !empty( $_POST["data"]["create"] ) ) {
+					$this->update();
+				}
+
+				if( !empty( $_POST["data"]["update"] ) && empty( $_POST["action"] ) && empty( $_POST["action2"] ) ) {
+					$this->update();
+				}
+
+				$del = "";
+				if( !empty( $_POST["action"] ) ) {
+					$del = strip_tags( $_POST["action"] );
+				} elseif( !empty( $_POST["action2"] ) ) {
+					$del = strip_tags( $_POST["action2"] );
+				}
+				if( $del == 'delete' ) {
+					$this->update_delete();
+				}
+
+				if( !empty( $_POST["donate_key"] ) ) {
+					$this->DonatingCheck();
+				}
+				
+			}
 		}
 
 	}
