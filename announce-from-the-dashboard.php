@@ -3,9 +3,9 @@
 Plugin Name: Announce from the Dashboard
 Description: Announcement to the dashboard screen for users.
 Plugin URI: http://wordpress.org/extend/plugins/announce-from-the-dashboard/
-Version: 1.2.4.2
+Version: 1.3 beta
 Author: gqevu6bsiz
-Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_2_4_2
+Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_3_beta
 Text Domain: afd
 Domain Path: /languages
 */
@@ -50,7 +50,7 @@ class Afd
 
 
 	function __construct() {
-		$this->Ver = '1.2.4.2';
+		$this->Ver = '1.3 beta';
 		$this->Name = 'Announce from the Dashboard';
 		$this->Dir = plugin_dir_path( __FILE__ );
 		$this->Url = plugin_dir_url( __FILE__ );
@@ -125,7 +125,6 @@ class Afd
 	function wp_ajax_afd_get_donation_toggle() {
 		echo get_option( $this->ltd . '_donate_width' );
 		die();
-
 	}
 
 	// SetList
@@ -179,6 +178,132 @@ class Afd
 			}
 		}
 		return $UserRole;
+	}
+
+	// SetList
+	function get_date_period() {
+		$Period = array( 'start' => __( 'Start' , $this->ltd ) , 'end' => __( 'End' , $this->ltd ) );
+		
+		return $Period;
+	}
+
+	// SetList
+	function fields_setting( $mode = 'create' , $field = false , $val = '' , $key = false ) {
+		
+		global $wp_locale;
+
+		$AllTypes = $this->AllTypes();
+		$UserRoles = $this->get_user_role();
+		$Period = $this->get_date_period();
+
+		if( !empty( $mode ) && !empty( $field ) ) {
+
+			if( $mode == 'create' ) {
+				$f_name = 'data[' . $mode . ']';
+			} elseif( $mode == 'update' ) {
+				$f_name = 'data[' . $mode . '][' . $key . ']';
+			}
+			$f_id = $mode . '_' . $key . '_';
+
+			if( $field == 'title' ) {
+
+				echo '<input type="text" class="regular-text" id="' . $f_id . 'title" name="' . $f_name . '[title]" value="' . $val . '" />';
+
+			} elseif( $field == 'content' ) {
+
+				echo wp_editor( $val , $f_id . 'content', array( 'textarea_name' => $f_name . '[content]' , 'media_buttons' => false ) );
+
+			} elseif( $field == 'type' ) {
+				
+				echo '<select name="' . $f_name . '[type]" id="' . $f_id . 'type">';
+				foreach( $AllTypes as $type_id => $type_set ) {
+					echo '<option value="' . $type_id . '" ' . selected( $type_id , $val , false ) . '>' . $type_set["label"] . ' (' . $type_set["color"] . ' )</option>';
+				}
+				echo '</select>';
+				
+			} elseif( $field == 'userrole' ) {
+				
+				foreach( $UserRoles as $role => $rolename ) {
+					echo '<label>';
+					if( $val == '' ) {
+						$val = array();
+					}
+					echo '<input type="checkbox" name="' . $f_name . '[role][' . $role . ']" value="1" ' . checked( array_key_exists( $role , $val ) , 1 , false ) . ' /> ' . $rolename["label"];
+					echo '</label><br />';
+				}
+				
+			} elseif( $field == 'date' ) {
+				
+				foreach( $Period as $name => $label ) {
+
+					echo '<div class="date_range">';
+
+					echo '<p>';
+					echo '<span class="description">' . $label . ': </span>';
+					$range = 0;
+					if( !empty(  $val["range"][$name] ) ) $range = intval( $val["range"][$name] );
+					echo '<label><input type="checkbox" name="' . $f_name . '[range][' . $name . ']" id="' . $f_id . 'range_' . $name . '" value="1" ' . checked( $range , 1 , false ) . ' />' . __( 'Specify' , $this->ltd ) . '</label>';
+					echo '</p>';
+
+					echo '<div class="date_range_setting ' . $name . '">';
+					
+					if( !empty( $val["range"][$name] ) && $val["date"][$name] ) {
+						$date[$name] = $val["date"][$name];
+					} else {
+						$date[$name] = current_time( 'mysql' );
+					}
+					
+					$f_month = '<select name="' . $f_name . '[' . $name . '][date][mm]">';
+					$mm = mysql2date( 'm', $date[$name], false );
+					for ( $i = 1; $i < 13; $i = $i +1 ) {
+						$monthnum = zeroise($i, 2);
+						$f_month .= '<option value="' . $monthnum . '" ' . selected( $mm , $monthnum , false ) . '>';
+						$f_month .= sprintf( __( '%1$s-%2$s' ), $monthnum, $wp_locale->get_month_abbrev( $wp_locale->get_month( $i ) ) ) . "</option>\n";
+					}
+					$f_month .= '</select>';
+
+					$f_year = '<input type="text" name="' . $f_name . '[' . $name . '][date][aa]" value="' . mysql2date( 'Y', $date[$name], false ) . '" size="4" maxlength="4" autocomplete="off" />';
+					$f_day = '<input type="text" name="' . $f_name . '[' . $name . '][date][jj]" value="' . mysql2date( 'd', $date[$name], false ) . '" size="2" maxlength="2" autocomplete="off" />';
+					$f_hour = '<input type="text" name="' . $f_name . '[' . $name . '][date][hh]" value="' . mysql2date( 'H', $date[$name], false ) . '" size="2" maxlength="2" autocomplete="off" />';
+					$f_minute = '<input type="text" name="' . $f_name . '[' . $name . '][date][mn]" value="' . mysql2date( 'i', $date[$name], false ) . '" size="2" maxlength="2" autocomplete="off" />';
+
+					echo '<p>';
+					printf( __( '%1$s %2$s, %3$s @ %4$s : %5$s' ), $f_month, $f_day, $f_year, $f_hour, $f_minute );
+					echo '</p>';
+					
+					echo '<p class="description">';
+					echo __( 'Now' , $this->ltd ) . ': ' . mysql2date( get_option( 'date_format' ) . get_option( 'time_format' ) , current_time( 'timestamp' ) );
+					echo '</p>';
+
+					echo '</div>';
+					
+					echo '</div>';
+					
+				}
+
+			}
+
+		}
+		
+	}
+
+	// SetList
+	function specify_date_check( $range_type , $data ) {
+		$available = false;
+		
+		if( $range_type == 'start' && $data["date"]["start"] ) {
+			if( current_time( 'timestamp' ) > strtotime( $data["date"]["start"] ) ) {
+				$available = true;
+			}
+		}
+
+		if( $range_type == 'end' && $data["date"]["end"] ) {
+			if( current_time( 'timestamp' ) < strtotime( $data["date"]["end"] ) ) {
+				$available = true;
+			}
+		}
+		
+		return $available;
 	}
 
 
@@ -301,9 +426,23 @@ class Afd
 							$Roles[strip_tags( $name )] = intval( $val );
 						}
 					}
+					$Specify = array();
+					if( !empty( $Create["range"] ) ) {
+						foreach( $Create["range"] as $name => $val ) {
+							$Specify[strip_tags( $name )] = intval( $val );
+						}
+					}
+					if( !empty( $Specify ) ) {
+						foreach( $Specify as $sp => $val ) {
+							if( !empty( $Create[$sp]["date"] ) ) {
+								$sp_date[$sp] = $Create[$sp]["date"]["aa"] . '-' . zeroise( $Create[$sp]["date"]["mm"], 2 ) . '-' . zeroise( $Create[$sp]["date"]["jj"], 2 );
+								$sp_date[$sp] .= ' ' . zeroise( $Create[$sp]["date"]["hh"], 2 ) . ':' . zeroise( $Create[$sp]["date"]["mn"], 2 ) . ':00';
+							}
+						}
+					}
 					$Update = $this->get_data();
 					
-					$Update[] = array( "title" => $title , "content" => $Content , "type" => $Type , "role" => $Roles );
+					$Update[] = array( "title" => $title , "content" => $Content , "type" => $Type , "role" => $Roles , "range" => $Specify , "date" => $sp_date );
 					
 				}
 				
@@ -324,11 +463,27 @@ class Afd
 							$Roles[strip_tags( $name )] = intval( $val );
 						}
 					}
-					$Update[$key] = array( "title" => $title , "content" => $Content , "type" => $Type , "role" => $Roles );
+					$Specify = array();
+					if( !empty( $Announce["range"] ) ) {
+						foreach( $Announce["range"] as $name => $val ) {
+							$Specify[strip_tags( $name )] = intval( $val );
+						}
+					}
+					$sp_date = "";
+					if( !empty( $Specify ) ) {
+						foreach( $Specify as $sp => $val ) {
+							if( !empty( $Announce[$sp]["date"] ) ) {
+								$sp_date[$sp] = $Announce[$sp]["date"]["aa"] . '-' . zeroise( $Announce[$sp]["date"]["mm"], 2 ) . '-' . zeroise( $Announce[$sp]["date"]["jj"], 2 );
+								$sp_date[$sp] .= ' ' . zeroise( $Announce[$sp]["date"]["hh"], 2 ) . ':' . zeroise( $Announce[$sp]["date"]["mn"], 2 ) . ':00';
+							}
+						}
+					}
+
+					$Update[$key] = array( "title" => $title , "content" => $Content , "type" => $Type , "role" => $Roles , "range" => $Specify , "date" => $sp_date );
 
 				}
 			}
-			
+
 			if( !empty( $Update ) ) {
 				unset( $Update["UPFN"] );
 
@@ -404,6 +559,25 @@ class Afd
 				wp_enqueue_style( $this->PageSlug , $this->Url . $this->PluginSlug . '-3.7.css', array() , $this->Ver );
 			}
 
+			// dare range check
+			foreach( $Data as $key => $sett ) {
+				
+				$start = true;
+				if( !empty( $sett["range"]["start"] ) ) {
+					$start = $this->specify_date_check( 'start' , $sett );
+				}
+				
+				$end = true;
+				if( !empty( $sett["range"]["end"] ) ) {
+					$end = $this->specify_date_check( 'end' , $sett );
+				}
+				
+				if( !$start or !$end ) {
+					unset( $Data[$key] );
+				}
+
+			}
+
 			foreach( $Data as $key => $sett ) {
 				
 				$type = $sett["type"];
@@ -426,6 +600,25 @@ class Afd
 		$Data = $this->get_data( $UserRole );
 
 		if( !empty( $Data ) ) {
+
+			// dare range check
+			foreach( $Data as $key => $sett ) {
+				
+				$start = true;
+				if( !empty( $sett["range"]["start"] ) ) {
+					$start = $this->specify_date_check( 'start' , $sett );
+				}
+				
+				$end = true;
+				if( !empty( $sett["range"]["end"] ) ) {
+					$end = $this->specify_date_check( 'end' , $sett );
+				}
+				
+				if( !$start or !$end ) {
+					unset( $Data[$key] );
+				}
+
+			}
 
 			foreach( $Data as $key => $sett ) {
 				

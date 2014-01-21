@@ -5,6 +5,7 @@ global $wp_version;
 $Data = $this->get_data();
 $AllTypes = $this->AllTypes();
 $UserRoles = $this->get_user_role();
+$Period = $this->get_date_period();
 
 // include js css
 $ReadedJs = array( 'jquery' , 'thickbox' );
@@ -43,29 +44,28 @@ if( version_compare( $wp_version , "3.7.2" , '>' ) ) {
 						<tbody>
 							<tr>
 								<th><label for="<?php echo $mode; ?>_title"><?php _e( 'Announce title' , $this->ltd ); ?></label> *</th>
-								<td><input type="text" class="regular-text" id="<?php echo $mode; ?>_title" name="data[<?php echo $mode; ?>][title]"></td>
+								<td><?php $this->fields_setting( $mode , 'title' ); ?></td>
 							</tr>
 							<tr>
 								<th><label for="<?php echo $mode; ?>_content"><?php _e( 'Announce content' , $this->ltd ); ?></label> *</th>
-								<td><?php wp_editor( "" , $mode . "_content" , array( 'textarea_name' => 'data[' . $mode . '][content]' , 'media_buttons' => false ) ); ?></td>
+								<td><?php $this->fields_setting( $mode , 'content' ); ?></td>
+							</tr>
+							<tr>
+								<th><label for="<?php echo $mode; ?>_date_specifi"><?php _e( 'Date Range' , $this->ltd ); ?></label></th>
+								<td>
+									<?php $this->fields_setting( $mode , 'date' ); ?>
+								</td>
 							</tr>
 							<tr>
 								<th><label for="<?php echo $mode; ?>_type"><?php _e( 'Announce type' , $this->ltd ); ?></label></th>
 								<td>
-									<select name="data[<?php echo $mode; ?>][type]" id="<?php echo $mode; ?>_type">
-										<option value="" selected="selected">- <?php _e( 'Select the type' , $this->ltd ); ?> -</option>
-										<?php foreach( $AllTypes as $type => $type_set ) : ?>
-											<option value="<?php echo $type; ?>"><?php echo $type_set["label"]; ?> (<?php echo $type_set["color"]; ?> )</option>
-										<?php endforeach; ?>
-									</select>
+									<?php $this->fields_setting( $mode , 'type' ); ?>
 								</td>
 							</tr>
 							<tr>
 								<th><label for="<?php echo $mode; ?>_role"><?php _e( 'User Roles' ); ?></label></th>
-								<td>
-									<?php foreach( $UserRoles as $role => $rolename ) : ?>
-										<label><input type="checkbox" name="data[<?php echo $mode; ?>][role][<?php echo $role; ?>]" value="1" /> <?php echo $rolename["label"]; ?></label>
-									<?php endforeach; ?>
+								<td class="user_groups">
+									<?php $this->fields_setting( $mode , 'userrole' ); ?>
 								</td>
 							</tr>
 						</tbody>
@@ -215,11 +215,10 @@ if( version_compare( $wp_version , "3.7.2" , '>' ) ) {
 									<tr id="tr_<?php echo $key; ?>" class="<?php echo $type; ?>">
 										<th class="check-column"><input type="checkbox" name="data[delete][<?php echo $key; ?>][id]" value="<?php echo $key; ?>" /></th>
 										<td class="title">
-
+											<?php $title = strip_tags( $announce["title"] ); ?>
 											<div class="edit">
 												<?php _e( 'Announce title' , $this->ltd ); ?>:
-												<?php $title = strip_tags( $announce["title"] ); ?>
-												<input type="text" value="<?php echo $title; ?>" name="data[<?php echo $mode; ?>][<?php echo $key; ?>][title]" />
+												<?php $this->fields_setting( $mode , 'title' , $title , $key ); ?>
 												<p>&nbsp;</p>
 											</div>
 											<div class="toggle">
@@ -228,21 +227,31 @@ if( version_compare( $wp_version , "3.7.2" , '>' ) ) {
 											
 											<div class="edit">
 												<?php _e( 'Announce type' , $this->ltd ); ?>:
-												<select name="data[<?php echo $mode; ?>][<?php echo $key; ?>][type]">
-
-													<?php foreach($AllTypes as $Types => $type_set) : ?>
-														<?php $Selected = ''; ?>
-														<?php if($Types == $type) : ?>
-															<?php $Selected = 'selected="selected"'; ?>
-														<?php endif; ?>
-														<option value="<?php echo $Types; ?>" <?php echo $Selected; ?>><?php echo $type_set["label"]; ?>(<?php echo $type_set["color"]; ?>)</option>
-													<?php endforeach; ?>
-												</select>
+												<?php $this->fields_setting( $mode , 'type' , $type , $key ); ?>
+												<p>&nbsp;</p>
 											</div>
-	
 											<div class="toggle">
 												<?php echo $AllTypes[$type]["label"]; ?>
 												(<?php echo $AllTypes[$type]["color"]; ?> )
+											</div>
+											
+											<div class="edit">
+												<?php _e( 'Date Range' , $this->ltd ); ?>:
+												<?php $range = array(); ?>
+												<?php if( !empty( $announce["range"] ) ) $range = $announce["range"]; ?>
+												<?php $sp_date = array(); ?>
+												<?php if( !empty( $announce["date"] ) ) $sp_date = $announce["date"]; ?>
+												<?php $this->fields_setting( $mode , 'date' , array( "range" => $range , "date" => $sp_date ) , $key ); ?>
+											</div>
+											<div class="toggle">
+												<?php foreach( $Period as $name => $label ) : ?>
+													<p>
+														<strong><?php echo $label; ?>:</strong>
+														<?php if( !empty( $announce["date"][$name] ) ) : ?>
+															<code><?php echo mysql2date( get_option( 'date_format' ) . get_option( 'time_format' ) , $announce["date"][$name] ); ?></code>
+														<?php endif; ?>
+													</p>
+												<?php endforeach; ?>
 											</div>
 
 											<ul class="toggle menu">
@@ -252,22 +261,16 @@ if( version_compare( $wp_version , "3.7.2" , '>' ) ) {
 
 										</td>
 										<td class="content">
+											<?php $content = stripslashes( $announce["content"] ); ?>
 											<div class="edit">
-												<?php $content = stripslashes( $announce["content"] ); ?>
-												<?php wp_editor( $content , $mode.'_'.$key.'_content', array( 'textarea_name' => 'data[' . $mode . ']['.$key.'][content]' , 'media_buttons' => false ) ); ?>
+												<?php $this->fields_setting( $mode , 'content' , $content , $key ); ?>
 											</div>
 											<div class="toggle"><?php echo $content; ?></div>
 										</td>
 										<td class="role">
+											<?php $roles = $announce["role"]; ?>
 											<div class="edit">
-												<?php $roles = $announce["role"]; ?>
-												<?php foreach( $UserRoles as $role => $rolename ) : ?>
-													<?php $Checked = ''; ?>
-													<?php if( array_key_exists( $role , $roles ) ) : ?>
-														<?php $Checked = 'checked="checked"'; ?>
-													<?php endif; ?>
-													<label><input type="checkbox" name="data[<?php echo $mode; ?>][<?php echo $key; ?>][role][<?php echo $role; ?>]" value="<?php echo $role; ?>" <?php echo $Checked; ?> /> <?php echo $rolename["label"]; ?></label>
-												<?php endforeach; ?>
+												<?php $this->fields_setting( $mode , 'userrole' , $roles , $key ); ?>
 											</div>
 											<div class="toggle">
 												<?php if( !empty( $roles ) ) : ?>

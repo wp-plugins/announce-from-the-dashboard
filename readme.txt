@@ -1,6 +1,6 @@
 === Announce from the Dashboard ===
 Contributors: gqevu6bsiz
-Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/?utm_source=wporg&utm_medium=donate&utm_content=afd&utm_campaign=1_2_4_2
+Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/?utm_source=wporg&utm_medium=donate&utm_content=afd&utm_campaign=1_3
 Tags: admin, dashboard, news, announce, role, user
 Requires at least: 3.6.1
 Tested up to: 3.8
@@ -34,6 +34,9 @@ This plugin to show announce for user basis.
 4. Metabox for Example
 
 == Changelog ==
+
+= 1.3 beta =
+* Added: Data range feature.
 
 = 1.2.4.2 =
 * Fixed: Data update way.
