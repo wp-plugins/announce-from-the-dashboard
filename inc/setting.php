@@ -132,7 +132,7 @@ if( version_compare( $wp_version , "3.7.2" , '>' ) ) {
 			<div class="stuffbox" id="aboutbox">
 				<h3><span class="hndle"><?php _e( 'About plugin' , $this->ltd ); ?></span></h3>
 				<div class="inside">
-					<p><?php _e( 'Version checked' , $this->ltd ); ?> : 3.6.1 - 3.8</p>
+					<p><?php _e( 'Version checked' , $this->ltd ); ?> : 3.6.1 - 3.8.1</p>
 					<ul>
 						<li><a href="http://wordpress.org/extend/plugins/announce-from-the-dashboard/" target="_blank"><?php _e( 'Plugin\'s site' , $this->ltd ); ?></a></li>
 						<li><a href="<?php echo $this->AuthorUrl; ?>?utm_source=use_plugin&utm_medium=side&utm_content=<?php echo $this->ltd; ?>&utm_campaign=<?php echo str_replace( '.' , '_' , $this->Ver ); ?>" target="_blank"><?php _e( 'Developer\'s site' , $this->ltd ); ?></a></li>
@@ -154,6 +154,7 @@ if( version_compare( $wp_version , "3.7.2" , '>' ) ) {
 					<p><strong><a href="http://wordpress.org/extend/plugins/custom-options-plus-post-in/" target="_blank">Custom Options Plus Post in</a></strong></p>
 					<p class="description"><?php _e( 'The plugin that allows you to add the value of the options. Option value that you have created, can be used in addition to the template tag, Short code can be used in the body of the article.' , $this->ltd ); ?></p>
 					<p>&nbsp;</p>
+					<p><a href="http://profiles.wordpress.org/gqevu6bsiz" target="_blank"><?php _e( 'All Plugins' ); ?></a></p>
 				</div>
 			</div>
 		
@@ -307,8 +308,8 @@ if( version_compare( $wp_version , "3.7.2" , '>' ) ) {
 				<div id="Confirm" style="display: none;">
 					<div id="ConfirmSt">
 						<p>&nbsp;</p>
-						<a class="button-secondary" id="cancelbtn" href="javascript:void(0);"><?php _e('Cancel'); ?></a>
-						<a class="button-secondary" id="deletebtn" href="javascript:void(0);" title=""><?php _e('Continue'); ?></a>
+						<a class="button-secondary" id="cancelbtn" href="javascript:void(0);"><?php _e( 'Cancel' ); ?></a>
+						<a class="button-secondary" id="deletebtn" href="javascript:void(0);" title=""><?php _e( 'Continue' ); ?></a>
 					</div>
 				</div>
 
@@ -322,10 +323,10 @@ jQuery(document).ready(function($) {
 		var $ConfDlg = $("#Confirm #ConfirmSt");
 
 		$ConfDlg.children("a#deletebtn").attr( "title" , DeleteID );
-		$ConfDlg.children("p").html('<?php echo sprintf( __( 'You are about to delete <strong>%s</strong>.' ), '' ); ?>');
+		$ConfDlg.children("p").html('<?php echo sprintf( __( 'You are about to delete <strong>%s</strong>.' ) , '' ); ?>');
 		$ConfDlg.children("p").children("strong").text($DelName);
 		
-		tb_show('<?php _e('Confirm Deletion'); ?>', '#TB_inline?height=200&width=300&inlineId=Confirm', '');
+		tb_show('<?php _e( 'Confirm Deletion' ); ?>', '#TB_inline?height=200&width=300&inlineId=Confirm', '');
 		return false;
 	});
 	
@@ -360,7 +361,48 @@ jQuery(document).ready(function($) {
 			return false;
 		}
 	});
+	
+	// Date range check
+	$(document).on('keyup blur change', '.date_range_setting input[type=text], .date_range_setting select', function( ev ) {
+		
+		var $DateRange = $(ev.target).parent().parent().parent().parent();
+		
+		var CheckStart = $DateRange.find('input.date_range_check').eq(0).prop('checked');
+		var CheckEnd = $DateRange.find('input.date_range_check').eq(1).prop('checked');
+		
+		if( CheckStart && CheckEnd ) {
 
+			var StartDate = {};
+			var EndDate = {};
+
+			StartDate.aa = $DateRange.find('.start input.date_aa').val();
+			StartDate.mm = $DateRange.find('.start select.date_mm option:selected').val();
+			StartDate.jj = $DateRange.find('.start input.date_jj').val();
+			StartDate.hh = $DateRange.find('.start input.date_hh').val();
+			StartDate.mn = $DateRange.find('.start input.date_mn').val();
+			StartDate.date = new Date( StartDate.aa, StartDate.mm, StartDate.jj, StartDate.hh, StartDate.mn );
+			StartDate.mic = StartDate.date.getTime();
+
+			EndDate.aa = $DateRange.find('.end input.date_aa').val();
+			EndDate.mm = $DateRange.find('.end select.date_mm option:selected').val();
+			EndDate.jj = $DateRange.find('.end input.date_jj').val();
+			EndDate.hh = $DateRange.find('.end input.date_hh').val();
+			EndDate.mn = $DateRange.find('.end input.date_mn').val();
+			EndDate.date = new Date( EndDate.aa, EndDate.mm, EndDate.jj, EndDate.hh, EndDate.mn );
+			EndDate.mic = EndDate.date.getTime();
+
+			if( StartDate.mic >= EndDate.mic ) {
+				$DateRange.find('.date_range_error').fadeIn();
+			} else {
+				$DateRange.find('.date_range_error').hide();
+			}
+
+		} else {
+			$DateRange.find('.date_range_error').hide();
+		}
+		
+	});
+	
 });
 </script>
 

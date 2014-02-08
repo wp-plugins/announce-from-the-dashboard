@@ -58,12 +58,12 @@ jQuery(document).ready(function($) {
 		return false;
 	});
 
-	$('.date_range input[type=checkbox]').on('click', function() {
+	$('.date_range input.date_range_check').on('click', function() {
 		var $DataRange = $(this).parent().parent().parent();
 		$DataRange.children('.date_range_setting').slideToggle()
 	});
 	
-	$('.date_range input[type=checkbox]').each(function( key, el ) {
+	$('.date_range input.date_range_check').each(function( key, el ) {
 		if( $(this).prop('checked') ) {
 			var $DataRange = $(el).parent().parent().parent();
 			$DataRange.children('.date_range_setting').show();

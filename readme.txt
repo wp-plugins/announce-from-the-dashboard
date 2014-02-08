@@ -3,8 +3,8 @@ Contributors: gqevu6bsiz
 Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/?utm_source=wporg&utm_medium=donate&utm_content=afd&utm_campaign=1_3
 Tags: admin, dashboard, news, announce, role, user
 Requires at least: 3.6.1
-Tested up to: 3.8
-Stable tag: 1.2.4.2
+Tested up to: 3.8.1
+Stable tag: 1.3
 License: GPL2
 
 Announcement to users on the Dashboard.
@@ -35,7 +35,7 @@ This plugin to show announce for user basis.
 
 == Changelog ==
 
-= 1.3 beta =
+= 1.3 =
 * Added: Data range feature.
 
 = 1.2.4.2 =

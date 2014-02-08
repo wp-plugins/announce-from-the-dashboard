@@ -3,9 +3,9 @@
 Plugin Name: Announce from the Dashboard
 Description: Announcement to the dashboard screen for users.
 Plugin URI: http://wordpress.org/extend/plugins/announce-from-the-dashboard/
-Version: 1.3 beta
+Version: 1.3
 Author: gqevu6bsiz
-Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_3_beta
+Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_3
 Text Domain: afd
 Domain Path: /languages
 */
@@ -50,7 +50,7 @@ class Afd
 
 
 	function __construct() {
-		$this->Ver = '1.3 beta';
+		$this->Ver = '1.3';
 		$this->Name = 'Announce from the Dashboard';
 		$this->Dir = plugin_dir_path( __FILE__ );
 		$this->Url = plugin_dir_url( __FILE__ );
@@ -234,26 +234,30 @@ class Afd
 				
 			} elseif( $field == 'date' ) {
 				
+				echo '<p class="date_range_error">' . __( 'Please <strong>End</strong> date is later than the <strong>Start</strong> date.' , $this->ltd ) . '</p>';
+
 				foreach( $Period as $name => $label ) {
 
 					echo '<div class="date_range">';
-
+					
 					echo '<p>';
 					echo '<span class="description">' . $label . ': </span>';
 					$range = 0;
-					if( !empty(  $val["range"][$name] ) ) $range = intval( $val["range"][$name] );
-					echo '<label><input type="checkbox" name="' . $f_name . '[range][' . $name . ']" id="' . $f_id . 'range_' . $name . '" value="1" ' . checked( $range , 1 , false ) . ' />' . __( 'Specify' , $this->ltd ) . '</label>';
+					if( is_array( $val ) && !empty( $val["range"][$name] ) ) {
+						$range = intval( $val["range"][$name] );
+					}
+					echo '<label><input type="checkbox" name="' . $f_name . '[range][' . $name . ']" id="' . $f_id . 'range_' . $name . '" value="1" class="date_range_check" ' . checked( $range , 1 , false ) . ' />' . __( 'Specify' , $this->ltd ) . '</label>';
 					echo '</p>';
 
 					echo '<div class="date_range_setting ' . $name . '">';
 					
-					if( !empty( $val["range"][$name] ) && $val["date"][$name] ) {
+					if( is_array( $val ) && !empty( $val["range"][$name] ) && $val["date"][$name] ) {
 						$date[$name] = $val["date"][$name];
 					} else {
 						$date[$name] = current_time( 'mysql' );
 					}
 					
-					$f_month = '<select name="' . $f_name . '[' . $name . '][date][mm]">';
+					$f_month = '<select name="' . $f_name . '[' . $name . '][date][mm]" class="date_mm">';
 					$mm = mysql2date( 'm', $date[$name], false );
 					for ( $i = 1; $i < 13; $i = $i +1 ) {
 						$monthnum = zeroise($i, 2);
@@ -262,10 +266,10 @@ class Afd
 					}
 					$f_month .= '</select>';
 
-					$f_year = '<input type="text" name="' . $f_name . '[' . $name . '][date][aa]" value="' . mysql2date( 'Y', $date[$name], false ) . '" size="4" maxlength="4" autocomplete="off" />';
-					$f_day = '<input type="text" name="' . $f_name . '[' . $name . '][date][jj]" value="' . mysql2date( 'd', $date[$name], false ) . '" size="2" maxlength="2" autocomplete="off" />';
-					$f_hour = '<input type="text" name="' . $f_name . '[' . $name . '][date][hh]" value="' . mysql2date( 'H', $date[$name], false ) . '" size="2" maxlength="2" autocomplete="off" />';
-					$f_minute = '<input type="text" name="' . $f_name . '[' . $name . '][date][mn]" value="' . mysql2date( 'i', $date[$name], false ) . '" size="2" maxlength="2" autocomplete="off" />';
+					$f_year = '<input type="text" name="' . $f_name . '[' . $name . '][date][aa]" value="' . mysql2date( 'Y', $date[$name], false ) . '" size="4" maxlength="4" autocomplete="off" class="date_aa" />';
+					$f_day = '<input type="text" name="' . $f_name . '[' . $name . '][date][jj]" value="' . mysql2date( 'd', $date[$name], false ) . '" size="2" maxlength="2" autocomplete="off" class="date_jj" />';
+					$f_hour = '<input type="text" name="' . $f_name . '[' . $name . '][date][hh]" value="' . mysql2date( 'H', $date[$name], false ) . '" size="2" maxlength="2" autocomplete="off" class="date_hh" />';
+					$f_minute = '<input type="text" name="' . $f_name . '[' . $name . '][date][mn]" value="' . mysql2date( 'i', $date[$name], false ) . '" size="2" maxlength="2" autocomplete="off" class="date_mn" />';
 
 					echo '<p>';
 					printf( __( '%1$s %2$s, %3$s @ %4$s : %5$s' ), $f_month, $f_day, $f_year, $f_hour, $f_minute );
@@ -432,6 +436,7 @@ class Afd
 							$Specify[strip_tags( $name )] = intval( $val );
 						}
 					}
+					$sp_date = array();
 					if( !empty( $Specify ) ) {
 						foreach( $Specify as $sp => $val ) {
 							if( !empty( $Create[$sp]["date"] ) ) {

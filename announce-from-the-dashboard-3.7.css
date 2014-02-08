@@ -42,9 +42,6 @@
 }
 
 
-.columns-2#afd #create td label {
-	margin-right: 22px;
-}
 
 
 #afd-lists table thead th, #afd-lists table tfoot th {
@@ -84,7 +81,7 @@ body.mp6 #afd-lists table tbody tr.updated td.content {
 	border-left: 4px solid #7AD03A;
 }
 #afd-lists table tbody tr td.role label {
-	display: block;
+	display: inline-block;
 	margin: 0 0 8px 0;
 }
 #afd-lists table tbody tr td .edit {
@@ -99,7 +96,14 @@ body.mp6 #afd-lists table tbody tr.updated td.content {
 	display: inline;
 }
 
+
 .date_range .date_range_setting {
+	display: none;
+}
+p.date_range_error {
+	background: #f00;
+	color: #fff;
+	padding: 5px;
 	display: none;
 }
 

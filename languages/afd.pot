@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Announce from the Dashboard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-21 17:21+0900\n"
-"PO-Revision-Date: 2014-01-21 17:21+0900\n"
+"POT-Creation-Date: 2014-02-08 22:03+0900\n"
+"PO-Revision-Date: 2014-02-08 22:03+0900\n"
 "Last-Translator: gqevu6bsiz <gqevu6bsiz@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -67,24 +67,28 @@ msgstr ""
 msgid "End"
 msgstr ""
 
-#: announce-from-the-dashboard.php:245
+#: announce-from-the-dashboard.php:237
+msgid "Please <strong>End</strong> date is later than the <strong>Start</strong> date."
+msgstr ""
+
+#: announce-from-the-dashboard.php:249
 msgid "Specify"
 msgstr ""
 
-#: announce-from-the-dashboard.php:275
+#: announce-from-the-dashboard.php:279
 msgid "Now"
 msgstr ""
 
-#: announce-from-the-dashboard.php:670
+#: announce-from-the-dashboard.php:675
 #: inc/setting.php:88
 msgid "Thank you for your donation."
 msgstr ""
 
-#: announce-from-the-dashboard.php:685
+#: announce-from-the-dashboard.php:690
 msgid "Please consider a donate if you are satisfied with this plugin."
 msgstr ""
 
-#: announce-from-the-dashboard.php:685
+#: announce-from-the-dashboard.php:690
 #: inc/setting.php:108
 #: inc/setting.php:110
 msgid "Please donation."

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Announce from the Dashboard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-21 17:21+0900\n"
-"PO-Revision-Date: 2014-01-21 17:28+0900\n"
+"POT-Creation-Date: 2014-02-08 22:03+0900\n"
+"PO-Revision-Date: 2014-02-08 22:17+0900\n"
 "Last-Translator: gqevu6bsiz <gqevu6bsiz@gmail.com>\n"
 "Language-Team: gqevu6bsiz <gqevu6bsiz@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -69,24 +69,28 @@ msgstr "開始"
 msgid "End"
 msgstr "終了"
 
-#: announce-from-the-dashboard.php:245
+#: announce-from-the-dashboard.php:237
+msgid "Please <strong>End</strong> date is later than the <strong>Start</strong> date."
+msgstr "<strong>終了時間</strong>は<strong>開始時間</strong>よりも後にしてください。"
+
+#: announce-from-the-dashboard.php:249
 msgid "Specify"
 msgstr "指定する"
 
-#: announce-from-the-dashboard.php:275
+#: announce-from-the-dashboard.php:279
 msgid "Now"
 msgstr "現在"
 
-#: announce-from-the-dashboard.php:670
+#: announce-from-the-dashboard.php:675
 #: inc/setting.php:88
 msgid "Thank you for your donation."
 msgstr "寄付いただきありがとうございます。"
 
-#: announce-from-the-dashboard.php:685
+#: announce-from-the-dashboard.php:690
 msgid "Please consider a donate if you are satisfied with this plugin."
 msgstr "宜しければご検討ください。"
 
-#: announce-from-the-dashboard.php:685
+#: announce-from-the-dashboard.php:690
 #: inc/setting.php:108
 #: inc/setting.php:110
 msgid "Please donation."
@@ -200,3 +204,4 @@ msgstr "作成したお知らせ一覧"
 #: inc/setting.php:354
 msgid "Are you sure you want to bulk action?"
 msgstr "一括変更してもよろしいですか？"
+
