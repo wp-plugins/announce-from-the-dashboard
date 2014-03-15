@@ -3,9 +3,9 @@
 Plugin Name: Announce from the Dashboard
 Description: Announcement to the dashboard screen for users.
 Plugin URI: http://wordpress.org/extend/plugins/announce-from-the-dashboard/
-Version: 1.3
+Version: 1.3.1
 Author: gqevu6bsiz
-Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_3
+Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_3_1
 Text Domain: afd
 Domain Path: /languages
 */
@@ -50,7 +50,7 @@ class Afd
 
 
 	function __construct() {
-		$this->Ver = '1.3';
+		$this->Ver = '1.3.1';
 		$this->Name = 'Announce from the Dashboard';
 		$this->Dir = plugin_dir_path( __FILE__ );
 		$this->Url = plugin_dir_url( __FILE__ );
@@ -83,6 +83,9 @@ class Afd
 
 		// data update
 		add_action( 'admin_init' , array( $this , 'dataUpdate') );
+
+		// data sort update
+		add_action( 'wp_ajax_afd_sort_settings' , array( $this , 'wp_ajax_afd_sort_settings' ) );
 
 		// get donation toggle
 		add_action( 'wp_ajax_afd_get_donation_toggle' , array( $this , 'wp_ajax_afd_get_donation_toggle' ) );
@@ -367,7 +370,7 @@ class Afd
 				if( $del == 'delete' ) {
 					$this->update_delete();
 				}
-
+				
 				if( !empty( $_POST["donate_key"] ) ) {
 					$this->DonatingCheck();
 				}
@@ -484,7 +487,7 @@ class Afd
 						}
 					}
 
-					$Update[$key] = array( "title" => $title , "content" => $Content , "type" => $Type , "role" => $Roles , "range" => $Specify , "date" => $sp_date );
+					$Update[] = array( "title" => $title , "content" => $Content , "type" => $Type , "role" => $Roles , "range" => $Specify , "date" => $sp_date );
 
 				}
 			}
@@ -523,6 +526,24 @@ class Afd
 				exit;
 			}
 		}
+	}
+
+	// DataUpdate
+	function wp_ajax_afd_sort_settings() {
+		$Data = $this->get_data();
+		$NewData = array();
+		
+		if( !empty( $_POST["sort"] ) && is_array( $_POST["sort"] ) ) {
+			foreach( $_POST["sort"] as $id ) {
+				$NewData[$id] = $Data[$id];
+			}
+		}
+
+		if( $Data !== $NewData ) {
+			update_option( $this->RecordName , $NewData );
+			wp_send_json_success( array( 'msg' => __( 'Saved' ) ) );
+		}
+		die();
 	}
 
 

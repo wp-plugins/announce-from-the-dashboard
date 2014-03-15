@@ -8,9 +8,13 @@ $UserRoles = $this->get_user_role();
 $Period = $this->get_date_period();
 
 // include js css
-$ReadedJs = array( 'jquery' , 'thickbox' );
+$ReadedJs = array( 'jquery' , 'jquery-ui-draggable' , 'jquery-ui-droppable' , 'jquery-ui-sortable' , 'thickbox' );
 wp_enqueue_script( $this->PageSlug ,  $this->Url . $this->PluginSlug . '.js', $ReadedJs , $this->Ver );
 wp_enqueue_style('thickbox');
+
+// localize
+$translation = array( 'msg' => array( 'delete_confirm' => __( 'Confirm Deletion' ) , 'bulk_delete_confirm' => __( 'Are you sure you want to bulk action?' , $this->ltd ) ) );
+wp_localize_script( $this->PageSlug , $this->ltd , $translation );
 
 if( version_compare( $wp_version , "3.7.2" , '>' ) ) {
 	wp_enqueue_style( $this->PageSlug , $this->Url . $this->PluginSlug . '.css', array() , $this->Ver );
@@ -184,7 +188,7 @@ if( version_compare( $wp_version , "3.7.2" , '>' ) ) {
 						<h3><?php _e( 'List of announce that you created' , $this->ltd ); ?></h3>
 
 						<div class="tablenav top">
-							<select name="action">
+							<select name="action" class="action_sel">
 								<option value=""><?php _e( 'Bulk Actions' ); ?></option>
 								<option value="delete"><?php _e( 'Delete' ); ?></option>
 							</select>
@@ -214,7 +218,10 @@ if( version_compare( $wp_version , "3.7.2" , '>' ) ) {
 
 									<?php $type = strip_tags( $announce["type"] ); ?>
 									<tr id="tr_<?php echo $key; ?>" class="<?php echo $type; ?>">
-										<th class="check-column"><input type="checkbox" name="data[delete][<?php echo $key; ?>][id]" value="<?php echo $key; ?>" /></th>
+										<th class="check-column">
+											<input type="checkbox" name="data[delete][<?php echo $key; ?>][id]" value="<?php echo $key; ?>" />
+											<span class="spinner"></span>
+										</th>
 										<td class="title">
 											<?php $title = strip_tags( $announce["title"] ); ?>
 											<div class="edit">
@@ -222,7 +229,7 @@ if( version_compare( $wp_version , "3.7.2" , '>' ) ) {
 												<?php $this->fields_setting( $mode , 'title' , $title , $key ); ?>
 												<p>&nbsp;</p>
 											</div>
-											<div class="toggle">
+											<div class="toggle announce_title">
 												<strong><?php echo $title; ?></strong>
 											</div>
 											
@@ -296,7 +303,7 @@ if( version_compare( $wp_version , "3.7.2" , '>' ) ) {
 							</tbody>
 						</table>
 						<div class="tablenav top">
-							<select name="action2">
+							<select name="action2" class="action_sel">
 								<option value=""><?php _e( 'Bulk Actions' ); ?></option>
 								<option value="delete"><?php _e( 'Delete' ); ?></option>
 							</select>
@@ -307,104 +314,20 @@ if( version_compare( $wp_version , "3.7.2" , '>' ) ) {
 
 				<div id="Confirm" style="display: none;">
 					<div id="ConfirmSt">
-						<p>&nbsp;</p>
+						<p><?php echo sprintf( __( 'You are about to delete <strong>%s</strong>.' ) , '' ); ?></p>
 						<a class="button-secondary" id="cancelbtn" href="javascript:void(0);"><?php _e( 'Cancel' ); ?></a>
 						<a class="button-secondary" id="deletebtn" href="javascript:void(0);" title=""><?php _e( 'Continue' ); ?></a>
 					</div>
 				</div>
-
-<script type="text/javascript">
-jQuery(document).ready(function($) {
-	// delete
-	$("a.delete").click(function() {
-		var $DelName = $(".toggle strong", $(this).parent().parent().parent()).text();
-		var DeleteID = $(this).attr("id").replace( 'delete_' , '' );
-		
-		var $ConfDlg = $("#Confirm #ConfirmSt");
-
-		$ConfDlg.children("a#deletebtn").attr( "title" , DeleteID );
-		$ConfDlg.children("p").html('<?php echo sprintf( __( 'You are about to delete <strong>%s</strong>.' ) , '' ); ?>');
-		$ConfDlg.children("p").children("strong").text($DelName);
-		
-		tb_show('<?php _e( 'Confirm Deletion' ); ?>', '#TB_inline?height=200&width=300&inlineId=Confirm', '');
-		return false;
-	});
-	
-	$("a#cancelbtn").click(function() {
-		tb_remove();
-	});
-
-	$("a#deletebtn").click(function() {
-		var $Form = $('<form action="<?php echo remove_query_arg( array( $this->MsgQ ) ); ?>" method="post"></form>');
-		$Form.append('<input type="hidden" name="action" value="delete" />');
-		$Form.append('<?php wp_nonce_field( $this->Nonces["value"] , $this->Nonces["field"] ); ?>');
-		$Form.append('<input type="hidden" name="data[delete][' + $(this).attr("title") + '][id]" value="1" />');
-		$Form.append('<input type="hidden" name="record_field" value="<?php echo $this->RecordName; ?>" />' );
-		
-		$Form.submit();
-		return false;
-	});
-
-	// Bulk
-	$("input[type=submit].bulk").click(function() {
-		$Form = $(this).parent().parent();
-		$Action = $Form.find("select[name=action] option:selected").val();
-		$Action2 = $Form.find("select[name=action2] option:selected").val();
-		
-		if( $Action != "" || $Action2 != "" ) {
-			if( confirm( '<?php _e( 'Are you sure you want to bulk action?' , $this->ltd ); ?>' )){
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	});
-	
-	// Date range check
-	$(document).on('keyup blur change', '.date_range_setting input[type=text], .date_range_setting select', function( ev ) {
-		
-		var $DateRange = $(ev.target).parent().parent().parent().parent();
-		
-		var CheckStart = $DateRange.find('input.date_range_check').eq(0).prop('checked');
-		var CheckEnd = $DateRange.find('input.date_range_check').eq(1).prop('checked');
-		
-		if( CheckStart && CheckEnd ) {
-
-			var StartDate = {};
-			var EndDate = {};
-
-			StartDate.aa = $DateRange.find('.start input.date_aa').val();
-			StartDate.mm = $DateRange.find('.start select.date_mm option:selected').val();
-			StartDate.jj = $DateRange.find('.start input.date_jj').val();
-			StartDate.hh = $DateRange.find('.start input.date_hh').val();
-			StartDate.mn = $DateRange.find('.start input.date_mn').val();
-			StartDate.date = new Date( StartDate.aa, StartDate.mm, StartDate.jj, StartDate.hh, StartDate.mn );
-			StartDate.mic = StartDate.date.getTime();
-
-			EndDate.aa = $DateRange.find('.end input.date_aa').val();
-			EndDate.mm = $DateRange.find('.end select.date_mm option:selected').val();
-			EndDate.jj = $DateRange.find('.end input.date_jj').val();
-			EndDate.hh = $DateRange.find('.end input.date_hh').val();
-			EndDate.mn = $DateRange.find('.end input.date_mn').val();
-			EndDate.date = new Date( EndDate.aa, EndDate.mm, EndDate.jj, EndDate.hh, EndDate.mn );
-			EndDate.mic = EndDate.date.getTime();
-
-			if( StartDate.mic >= EndDate.mic ) {
-				$DateRange.find('.date_range_error').fadeIn();
-			} else {
-				$DateRange.find('.date_range_error').hide();
-			}
-
-		} else {
-			$DateRange.find('.date_range_error').hide();
-		}
-		
-	});
-	
-});
-</script>
+				
+				<div id="DeleteForm" style="display: none;">
+					<form id="afd_delete_form" class="afd_form" method="post" action="<?php echo remove_query_arg( array( $this->MsgQ ) ); ?>">
+						<input type="hidden" name="<?php echo $this->UPFN; ?>" value="Y">
+						<?php wp_nonce_field( $this->Nonces["value"] , $this->Nonces["field"] ); ?>
+						<input type="hidden" name="record_field" value="<?php echo $this->RecordName; ?>" />
+						<input type="hidden" name="action" value="delete" />
+					</form>
+				</div>
 
 			<?php endif; ?>
 

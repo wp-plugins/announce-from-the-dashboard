@@ -56,6 +56,23 @@
 #afd-lists table thead th.operation {
 	width: 10%;
 }
+#afd-lists table tbody tr:hover {
+	outline: 1px solid #999;
+}
+#afd-lists table tbody tr.sorted {
+	outline: 2px solid #fc3;
+}
+#afd-lists table tbody tr.widget-placeholder {
+	outline: 1px dashed #bbb;
+	height: 100px;
+	margin: 0 auto 20px auto;
+	width: 100%;
+	box-sizing: border-box;
+	background: #efefef;
+}
+#afd-lists table tbody tr.ui-sortable-helper {
+	background: rgba(255, 255, 200, 0.8);
+}
 #afd-lists table tbody tr.normal td.content {
 	background-color: #F6F6F6;
 }
