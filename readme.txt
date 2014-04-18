@@ -3,7 +3,7 @@ Contributors: gqevu6bsiz
 Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/?utm_source=wporg&utm_medium=donate&utm_content=afd&utm_campaign=1_3_1
 Tags: admin, dashboard, news, announce, role, user
 Requires at least: 3.6.1
-Tested up to: 3.8.1
+Tested up to: 3.9
 Stable tag: 1.3.1
 License: GPL2
 
