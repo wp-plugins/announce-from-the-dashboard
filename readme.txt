@@ -1,10 +1,10 @@
 === Announce from the Dashboard ===
 Contributors: gqevu6bsiz
-Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/?utm_source=wporg&utm_medium=donate&utm_content=afd&utm_campaign=1_3_1
+Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/?utm_source=wporg&utm_medium=donate&utm_content=afd&utm_campaign=1_4
 Tags: admin, dashboard, news, announce, role, user
 Requires at least: 3.6.1
-Tested up to: 3.9
-Stable tag: 1.3.1
+Tested up to: 3.9.1
+Stable tag: 1.4
 License: GPL2
 
 Announcement to users on the Dashboard.
@@ -34,6 +34,12 @@ This plugin to show announce for user basis.
 4. Metabox for Example
 
 == Changelog ==
+
+= 1.4 =
+* Updated: Clear the style with Non style.
+* Updated: Improve useful to settings interface.
+* Added: Support to site per announce on Multisite.
+* Added: Change user role of this plugin working.
 
 = 1.3.1 =
 * Added: Change the announce order.

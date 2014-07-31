@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Announce from the Dashboard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-08 22:03+0900\n"
-"PO-Revision-Date: 2014-02-08 22:03+0900\n"
+"POT-Creation-Date: 2014-07-31 19:19+0900\n"
+"PO-Revision-Date: 2014-07-31 19:19+0900\n"
 "Last-Translator: gqevu6bsiz <gqevu6bsiz@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,185 +21,237 @@ msgstr ""
 msgid "Announcement to the dashboard screen for users."
 msgstr ""
 
-#: announce-from-the-dashboard.php:107
-#: inc/setting.php:25
-msgid "Announcement settings for Dashboard"
+#: announce-from-the-dashboard.php:135
+#: announce-from-the-dashboard.php:242
+msgid "Hold the CTRL key and click the items in a list to choose them."
 msgstr ""
 
-#: announce-from-the-dashboard.php:141
-#: announce-from-the-dashboard.php:154
-msgid "Gray"
-msgstr ""
-
-#: announce-from-the-dashboard.php:141
-msgid "Normal"
-msgstr ""
-
-#: announce-from-the-dashboard.php:142
-msgid "Yellow"
-msgstr ""
-
-#: announce-from-the-dashboard.php:145
-msgid "Green"
-msgstr ""
-
-#: announce-from-the-dashboard.php:149
-msgid "Yellowish Green"
-msgstr ""
-
-#: announce-from-the-dashboard.php:153
-msgid "Red"
-msgstr ""
-
-#: announce-from-the-dashboard.php:154
-msgid "Metabox"
-msgstr ""
-
-#: announce-from-the-dashboard.php:155
-msgid "Non Styles"
-msgstr ""
-
-#: announce-from-the-dashboard.php:185
-msgid "Start"
-msgstr ""
-
-#: announce-from-the-dashboard.php:185
-msgid "End"
-msgstr ""
-
-#: announce-from-the-dashboard.php:237
+#: announce-from-the-dashboard.php:139
 msgid "Please <strong>End</strong> date is later than the <strong>Start</strong> date."
 msgstr ""
 
-#: announce-from-the-dashboard.php:249
+#: announce-from-the-dashboard.php:156
 msgid "Specify"
 msgstr ""
 
-#: announce-from-the-dashboard.php:279
+#: announce-from-the-dashboard.php:194
 msgid "Now"
 msgstr ""
 
-#: announce-from-the-dashboard.php:675
-#: inc/setting.php:88
+#: announce-from-the-dashboard.php:222
+msgid "Choose the site if you want to <strong>hide announce</strong>."
+msgstr ""
+
+#: announce-from-the-dashboard.php:223
+msgid "Choose the site if you want to <strong>show announce</strong>."
+msgstr ""
+
+#: inc/class-config.php:108
+#: inc/class-config.php:124
+msgid "Gray"
+msgstr ""
+
+#: inc/class-config.php:108
+msgid "Normal"
+msgstr ""
+
+#: inc/class-config.php:109
+msgid "Green"
+msgstr ""
+
+#: inc/class-config.php:113
+msgid "Yellow"
+msgstr ""
+
+#: inc/class-config.php:117
+msgid "Yellowish Green"
+msgstr ""
+
+#: inc/class-config.php:123
+msgid "Red"
+msgstr ""
+
+#: inc/class-config.php:123
+msgid "Error"
+msgstr ""
+
+#: inc/class-config.php:124
+msgid "Metabox"
+msgstr ""
+
+#: inc/class-config.php:125
+msgid "Non Styles"
+msgstr ""
+
+#: inc/class-config.php:160
+msgid "Start"
+msgstr ""
+
+#: inc/class-config.php:160
+msgid "End"
+msgstr ""
+
+#: inc/class-config.php:171
+msgid "Default show to all child-sites"
+msgstr ""
+
+#: inc/class-config.php:172
+msgid "Default show to not all child-sites"
+msgstr ""
+
+#: inc/class-manager.php:100
+#: inc/class-manager.php:104
+#: inc/setting.php:14
+msgid "Announcement settings for Dashboard"
+msgstr ""
+
+#: inc/class-manager.php:203
+#: inc/information.php:3
 msgid "Thank you for your donation."
 msgstr ""
 
-#: announce-from-the-dashboard.php:690
-msgid "Please consider a donate if you are satisfied with this plugin."
+#: inc/class-manager.php:224
+msgid "Announce settings"
 msgstr ""
 
-#: announce-from-the-dashboard.php:690
-#: inc/setting.php:108
-#: inc/setting.php:110
-msgid "Please donation."
+#: inc/class-manager.php:225
+#: inc/other.php:32
+msgid "Other Settings"
 msgstr ""
 
-#: inc/setting.php:42
-msgid "Create a new announce to the dashboard."
+#: inc/class-plugin-info.php:173
+#: inc/information.php:14
+msgid "Please consider making a donation."
 msgstr ""
 
-#: inc/setting.php:46
-#: inc/setting.php:196
-#: inc/setting.php:205
-#: inc/setting.php:220
-msgid "Announce title"
+#: inc/information.php:16
+msgid "Thank you very much for your support."
 msgstr ""
 
-#: inc/setting.php:50
-#: inc/setting.php:197
-#: inc/setting.php:206
-msgid "Announce content"
+#: inc/information.php:17
+msgid "Donate"
 msgstr ""
 
-#: inc/setting.php:54
-#: inc/setting.php:239
-msgid "Date Range"
+#: inc/information.php:18
+msgid "Please enter the 'Donation delete key' that have been described in the 'Line Break First and End download page'."
 msgstr ""
 
-#: inc/setting.php:60
-#: inc/setting.php:196
-#: inc/setting.php:205
-#: inc/setting.php:229
-msgid "Announce type"
+#: inc/information.php:23
+msgid "Donation delete key"
 msgstr ""
 
-#: inc/setting.php:92
+#: inc/information.php:33
 msgid "Have you want to customize?"
 msgstr ""
 
-#: inc/setting.php:98
+#: inc/information.php:40
 msgid "I am good at Admin Screen Customize."
 msgstr ""
 
-#: inc/setting.php:99
+#: inc/information.php:41
 msgid "Please consider the request to me if it is good."
 msgstr ""
 
-#: inc/setting.php:101
+#: inc/information.php:43
+msgid "Contact"
+msgstr ""
+
+#: inc/information.php:45
 msgid "Example Customize"
 msgstr ""
 
-#: inc/setting.php:102
-msgid "Contact me"
-msgstr ""
-
-#: inc/setting.php:113
-msgid "If you have already donated to."
-msgstr ""
-
-#: inc/setting.php:114
-msgid "Please enter the 'Donate delete key' that have been described in the 'Line Break First and End download page'."
-msgstr ""
-
-#: inc/setting.php:118
-msgid "Donate delete key"
-msgstr ""
-
-#: inc/setting.php:133
+#: inc/information.php:50
 msgid "About plugin"
 msgstr ""
 
-#: inc/setting.php:135
+#: inc/information.php:52
 msgid "Version checked"
 msgstr ""
 
-#: inc/setting.php:137
-msgid "Plugin's site"
-msgstr ""
-
-#: inc/setting.php:138
+#: inc/information.php:54
 msgid "Developer's site"
 msgstr ""
 
-#: inc/setting.php:140
+#: inc/information.php:56
 msgid "Reviews"
 msgstr ""
 
-#: inc/setting.php:148
+#: inc/information.php:64
 msgid "Useful plugins"
 msgstr ""
 
-#: inc/setting.php:151
+#: inc/information.php:67
 msgid "Customize a variety of screen management."
 msgstr ""
 
-#: inc/setting.php:153
+#: inc/information.php:69
 msgid "Customize the list of the post and page. custom post type page, too. You can customize the column display items freely."
 msgstr ""
 
-#: inc/setting.php:155
+#: inc/information.php:71
 msgid "The plugin that allows you to add the value of the options. Option value that you have created, can be used in addition to the template tag, Short code can be used in the body of the article."
 msgstr ""
 
-#: inc/setting.php:172
+#: inc/other.php:13
+msgid "Announcement other settings"
+msgstr ""
+
+#: inc/other.php:41
+#, php-format
+msgid "Please choose the minimum role that can modify %s settings."
+msgstr ""
+
+#: inc/setting.php:36
+msgid "Create a new announce to the dashboard."
+msgstr ""
+
+#: inc/setting.php:42
+msgid "Create Announcement"
+msgstr ""
+
+#: inc/setting.php:53
+#: inc/setting.php:140
+#: inc/setting.php:168
+msgid "Announce title"
+msgstr ""
+
+#: inc/setting.php:57
+#: inc/setting.php:144
+msgid "Announce content"
+msgstr ""
+
+#: inc/setting.php:61
+#: inc/setting.php:189
+msgid "Date Range"
+msgstr ""
+
+#: inc/setting.php:67
+#: inc/setting.php:141
+#: inc/setting.php:177
+msgid "Announce type"
+msgstr ""
+
+#: inc/setting.php:80
+msgid "Default show for announce of Child-sites."
+msgstr ""
+
+#: inc/setting.php:107
 msgid "Not created announce."
 msgstr ""
 
-#: inc/setting.php:183
+#: inc/setting.php:121
 msgid "List of announce that you created"
 msgstr ""
 
-#: inc/setting.php:354
-msgid "Are you sure you want to bulk action?"
+#: inc/setting.php:122
+msgid "It is will show in order from the top."
 msgstr ""
 
+#: inc/setting.php:149
+msgid "Child-sites"
+msgstr ""
+
+#: inc/setting.php:274
+#, php-format
+msgid "You are about to delete. <strong>%s</strong>"
+msgstr ""

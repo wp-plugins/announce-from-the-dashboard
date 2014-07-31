@@ -2,71 +2,93 @@ jQuery(document).ready(function($) {
 
 	var Form = '#afd';
 	var UpdateForm = '#afd-lists';
+	var $Confirm = $('#afd_confirm');
+	var $DelForm = $('#afd_delete_form');
 
-	// Toggle menu
-	$(document).on('mouseenter', UpdateForm + ' table tbody tr', function( ev ) {
-		$(this).find('td.title .menu').show();
-	}).on('mouseleave', UpdateForm + ' table tbody tr', function( ev ) {
-		$(this).find('td.title .menu').hide();
+	$('#afd_create_form .announce_add_btn').on('click', function( ev ) {
+		$(ev.target).parent().parent().find('#add').removeClass('hide_add');
+		$(ev.target).remove();
 	});
 
 	// Toggle editable display
-	$(document).on('click', UpdateForm + ' td.title .menu a.menu_edit', function( ev ) {
-		var TR = $(this).parent().parent().parent().parent();
-		TR.find('.toggle').remove();
-		TR.find('.edit').show();
-		TR.find('td.content').css('background', 'none');
+	$(document).on('click', UpdateForm + ' td.operation .menu a.menu_edit', function( ev ) {
+		var TR = $(ev.target).parent().parent().parent().parent();
+		TR.addClass('collapse');
 		
 		return false;
 	});
 	
-	// Delete confirm
-	$(document).on('click', UpdateForm + ' table tbody tr td.title .menu a.delete', function( ev ) {
-		var Title = $(this).parent().parent().parent().find('.announce_title strong').text();
-		var ID = $(this).prop('id').replace('delete_', '');
-
-		var $Dialog = $('#Confirm');
-		$Dialog.find('a#deletebtn').prop('title', ID);
-		$Dialog.find('p strong').text( Title );
-
-		tb_show(afd.msg.delete_confirm, '#TB_inline?height=200&width=300&inlineId=Confirm', '');
-		return false;
-	});
-
-	// Delete cancel
-	$(document).on('click', '#ConfirmSt a#cancelbtn', function( ev ) {
-		var $Dialog = $('#ConfirmSt');
-		$Dialog.find('a#deletebtn').prop('title', '');
-		$Dialog.find('p strong').text('');
-
-		tb_remove();
-	});
-
-	// Delete
-	$(document).on('click', '#ConfirmSt a#deletebtn', function( ev ) {
-		var $Form = $('form#afd_delete_form');
-		$Form.append('<input type="hidden" name="data[delete][' + $(this).prop('title') + '][id]" value="1" />');
-
-		$Form.submit();
+	// Single Delete confirm
+	$(document).on('click', UpdateForm + ' table tbody tr td.operation .menu a.delete', function( ev ) {
+		var TR = $(ev.target).parent().parent().parent().parent();
+		var Title = TR.find('.announce_title strong').text();
+		var ID = $(ev.target).prop('id').replace('delete_', '');
+		var delete_list = {}
+		delete_list['tr_' + ID] = ID;
+		
+		delete_confirm_show( Title , delete_list );
 		return false;
 	});
 
 	// Bulk Delete
-	$(document).on('click', UpdateForm + ' input[type=submit].bulk', function( ev ) {
-		var Action = $(this).parent().find('select.action_sel option:selected').val();
+	$(document).on('click', UpdateForm + ' input[type=button].bulk', function( ev ) {
+		var Action = $(ev.target).parent().find('select.action_sel option:selected').val();
 
 		if( Action != "" ) {
+			
+			var del_check = false;
+			var del_list = {};
 
-			$Form = $(document).find('form#afd_update_form');
-			if( confirm( afd.msg.bulk_delete_confirm ) ){
-				return true;
-			} else {
+			$(document).find('#update table tbody tr.afd_list_tr').each( function( key , el ) {
+
+				var TR = $(el);
+				var $Checkbox = TR.find('th.check-column input[type=checkbox]');
+				var checked = $Checkbox.prop('checked');
+				if( checked ) {
+					del_list[TR.prop('id')] = $Checkbox.val();
+					del_check = true;
+				}
+
+			});
+			
+			if( del_check ) {
+				var Html = '<ul>';
+				for(var id in del_list) {
+					Html += '<li>' + $(document).find('#update table tbody tr#' + id + ' .announce_title strong').text() + '</li>';
+				}
+				Html += '</ul>';
+
+				delete_confirm_show( Html , del_list );
 				return false;
 			}
 
-		} else {
-			return false;
 		}
+	});
+
+	function delete_confirm_show( html , list ) {
+		$DelForm.find('.delete_id').remove();
+		$Confirm.find('p strong').html( html );
+		for(var key in list) {
+			$DelForm.append('<input type="hidden" name="data[delete][' + list[key] + ']" class="delete_id" value="1" />');
+		}
+		tb_show( afd.msg.delete_confirm , '#TB_inline?height=200&width=300&inlineId=afd_confirm', '' );
+		return false;
+	}
+
+	// Delete cancel
+	$(document).on('click', '#ConfirmSt a#cancelbtn', function( ev ) {
+		$DelForm.find('.delete_id').remove();
+		$(ev.target).parent().find('strong').find('p strong').html('');
+		$Confirm.find('p strong').html('');
+
+		tb_remove();
+		return false;
+	});
+
+	// Delete
+	$(document).on('click', '#ConfirmSt a#deletebtn', function( ev ) {
+		$DelForm.submit();
+		return false;
 	});
 
 	// Toggle date field
@@ -77,7 +99,7 @@ jQuery(document).ready(function($) {
 	
 	// Show date field
 	$('.date_range input.date_range_check').each(function( key, el ) {
-		if( $(this).prop('checked') ) {
+		if( $(el).prop('checked') ) {
 			var $DataRange = $(el).parent().parent().parent();
 			$DataRange.find('.date_range_setting').show();
 		}
@@ -127,6 +149,7 @@ jQuery(document).ready(function($) {
 	// Edit order
 	$(UpdateForm + ' table tbody').sortable({
 		placeholder: "widget-placeholder",
+		handle: ".check-column",
 		cursor: 'move',
 		distance: 2,
 		stop: function(e,ui) {
@@ -141,7 +164,7 @@ jQuery(document).ready(function($) {
 
 			$.post(ajaxurl, {
 				'action': 'afd_sort_settings',
-				'sort': sorted,
+				'afd_sort': sorted,
 			}, function(res){
 				/*
 				if( res.success && res.data.msg !== undefined ) {
@@ -154,41 +177,35 @@ jQuery(document).ready(function($) {
 		},
 	});
 
-	// donation toggle
-	$.post(ajaxurl, {
-		'action': 'afd_get_donation_toggle',
-	}, function(response){
-		if( response == "1" ) {
-			donation_toggle_set( true );
-		}
+	// Show child-sites description
+	$('.select_default_subsites select.default_show').each(function( key, el ) {
+		var default_show = $(el).find(':selected').val();
+		$(el).parent().children('.' + default_show).show();
+	}).on('change', function( ev ) {
+		var default_show = $(ev.target).find(':selected').val();
+		$(ev.target).parent().children('.show_subsite_description').hide();
+		$(ev.target).parent().children('.' + default_show).show();
 	});
 
-	function donation_toggle_set( s ) {
-		if( s ) {
-			$(Form).addClass('full-width');
-		} else {
-			$(Form).removeClass('full-width');
-		}
-	}
+	$('.afd #postbox-container-1 .toggle-width').on('click', function( ev ) {
+		
+		var Action = 'afd_donation_toggle';
+		$('.afd').toggleClass('full-width');
 
-	$('.toggle-plugin .icon a').on('click', function( ev ) {
-
-		if( $(Form).hasClass('full-width') ) {
-			donation_toggle_set( false );
+		if( $('.afd').hasClass('full-width') ) {
 			$.post(ajaxurl, {
-				'action': 'afd_set_donation_toggle',
-				'f': 0,
-			});
-
-		} else {
-			donation_toggle_set( true );
-			$.post(ajaxurl, {
-				'action': 'afd_set_donation_toggle',
+				'action': Action,
 				'f': 1,
 			});
+		} else {
+			$.post(ajaxurl, {
+				'action': Action,
+				'f': 0,
+			});
 		}
-
+		
 		return false;
+
 	});
 
 });
