@@ -63,6 +63,33 @@ class Afd_Data
 		return $Data;
 
 	}
+	
+	function get_data_all_child() {
+		
+		global $Afd;
+		
+		$Data = array();
+		
+		$all_sites = wp_get_sites();
+
+		foreach( $all_sites as $blog ) {
+			
+			$blog_details = get_blog_details( $blog['blog_id'] );
+			$Data[$blog['blog_id']] = array( 'blog_id' => $blog['blog_id'] , 'name' => $blog_details->blogname , 'settings' => array() );
+
+			switch_to_blog( $blog['blog_id'] );
+			
+			$child_data = get_option( $Afd->Plugin['record']['announce'] );
+			if( !empty( $child_data ) )
+				$Data[$blog['blog_id']]['settings'] = $child_data;
+			
+			restore_current_blog();
+			
+		}
+
+		return $Data;
+
+	}
 
 	function get_user_data( $user_role = false ) {
 
@@ -175,37 +202,49 @@ class Afd_Data
 		
 		$RecordField = false;
 		
-		if( !empty( $_POST ) && !empty( $_POST[$Afd->Plugin['ltd'] . '_settings'] ) && $_POST[$Afd->Plugin['ltd'] . '_settings'] == $Afd->Plugin['UPFN'] && !empty( $_POST[$Afd->Plugin['nonces']['field']] ) && !empty( $_POST['record_field'] ) ) {
+		if( !empty( $_POST ) && !empty( $_POST[$Afd->Plugin['ltd'] . '_settings'] ) && $_POST[$Afd->Plugin['ltd'] . '_settings'] == $Afd->Plugin['UPFN'] ) {
 
-			$RecordField = strip_tags( $_POST['record_field'] );
 			$can_capability = $Afd->ClassManager->get_manager_user_role();
-			
-			if( check_admin_referer( $Afd->Plugin['nonces']['value'] , $Afd->Plugin['nonces']['field'] ) && current_user_can( $can_capability ) ) {
-				
-				if( $RecordField == $Afd->Plugin['record']['announce'] ) {
+			if( current_user_can( $can_capability ) ) {
+
+				if( !empty( $_POST['record_field'] ) ) {
+	
+					$RecordField = strip_tags( $_POST['record_field'] );
 					
-					if( !empty( $_POST['data']['delete'] ) ) {
-
-						$this->update_delete();
-
-					} elseif( !empty( $_POST['data']['add'] ) ) {
+					if( !empty( $_POST[$Afd->Plugin['nonces']['field']] ) && check_admin_referer( $Afd->Plugin['nonces']['value'] , $Afd->Plugin['nonces']['field'] ) ) {
 						
-						$this->update_add();
-
-					} elseif( !empty( $_POST['data']['update'] ) ) {
+						if( $RecordField == $Afd->Plugin['record']['announce'] ) {
+							
+							if( !empty( $_POST['data']['delete'] ) ) {
+		
+								$this->update_delete();
+		
+							} elseif( !empty( $_POST['data']['add'] ) ) {
+								
+								$this->update_add();
+		
+							} elseif( !empty( $_POST['data']['update'] ) ) {
+								
+								$this->update_list();
+		
+							}
+							
+						} elseif( $RecordField == $Afd->Plugin['record']['other'] ) {
+								
+							$this->update_other();
+		
+						} elseif( $RecordField == 'donate' ) {
+								
+							$this->update_donate();
+		
+						}
 						
-						$this->update_list();
-
 					}
 					
-				} elseif( $RecordField == $Afd->Plugin['record']['other'] ) {
-						
-					$this->update_other();
-
-				} elseif( $RecordField == 'donate' ) {
-						
-					$this->update_donate();
-
+				} elseif( $Afd->Current['multisite'] && !empty( $_POST[$Afd->Plugin['ltd'] . '_field_import_child'] ) && check_admin_referer( $Afd->Plugin['nonces']['value'] . '_import_child' , $Afd->Plugin['nonces']['field'] . '_import_child' ) ) {
+					
+					$this->import_child_data();
+					
 				}
 				
 			}
@@ -339,6 +378,45 @@ class Afd_Data
 		}
 
 		wp_redirect( add_query_arg( $Afd->Plugin['msg_notice'] , 'update' ) );
+		exit;
+
+	}
+	
+	function import_child_data() {
+		
+		global $Afd;
+		
+		$PostData = $_POST['data'];
+
+		if( empty( $PostData['import_child'] ) )
+			return false;
+
+		$blog_id = intval( $PostData['import_child'] );
+
+		switch_to_blog( $blog_id );
+			
+		$child_datas = get_option( $Afd->Plugin['record']['announce'] );
+		if( empty( $child_datas ) )
+			return false;
+
+		restore_current_blog();
+		
+		$Data = $this->get_data_announces();
+
+		foreach( $child_datas as $key => $child_data ) {
+			
+			$child_data['standard'] = 'not';
+			$child_data['subsites'] = array( $blog_id => 1 );
+
+			array_push( $Data , $child_data );
+
+		}
+
+		$url = add_query_arg( $Afd->Plugin['msg_notice'] , 'update' );
+		$url = remove_query_arg( array( 'tab' ) , $url );
+
+		update_site_option( $Afd->Plugin['record']['announce'] , $Data );
+		wp_redirect( $url );
 		exit;
 
 	}

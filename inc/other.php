@@ -6,6 +6,8 @@ $Data = $Afd->ClassData->get_data_others();
 $all_user_roles = $Afd->ClassConfig->get_all_user_roles();
 $capabilities = $all_user_roles['administrator']['capabilities'];
 ksort( $capabilities );
+
+$ChildData = $Afd->ClassData->get_data_all_child();
 ?>
 
 <div class="wrap">
@@ -54,6 +56,41 @@ ksort( $capabilities );
 				<?php submit_button( __( 'Save' ) ); ?>
 	
 			</form>
+			
+			<p>&nbsp;</p>
+
+			<?php if( $Afd->Current['multisite'] ) : ?>
+
+				<form id="<?php echo $Afd->Plugin['ltd']; ?>_import_child_form" class="<?php echo $Afd->Plugin['ltd']; ?>_form" method="post" action="<?php echo $this->get_action_link(); ?>">
+					<input type="hidden" name="<?php echo $Afd->Plugin['ltd']; ?>_settings" value="Y">
+					<?php wp_nonce_field( $Afd->Plugin['nonces']['value'] . '_import_child' , $Afd->Plugin['nonces']['field'] . '_import_child' ); ?>
+	
+					<table class="form-table">
+						<tbody>
+							<tr>
+								<th>
+									<label for="import_child"><?php _e( 'Settings data import of Child blog' , $Afd->Plugin['ltd'] ); ?></label>
+								</th>
+								<td>
+									<p><?php _e( 'Please if you want to import, choose the settings data of the child blog.' , $Afd->Plugin['ltd'] ); ?></p>
+									<select name="data[import_child]" id="import_child">
+										<option value=""></option>
+										<?php foreach( $ChildData as $Child ): ?>
+											<?php $disabled = false; ?>
+											<?php if( empty( $Child['settings'] ) ) $disabled = true; ?>
+											<option value="<?php echo $Child['blog_id']; ?>" <?php disabled( $disabled , 1 ); ?>><?php echo $Child['name']; ?> (<?php echo count( $Child['settings'] ); ?>)</option>
+										<?php endforeach; ?>
+									</select>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+	
+					<?php submit_button( __( 'Import' ) ); ?>
+		
+				</form>
+				
+			<?php endif; ?>
 
 		</div>
 

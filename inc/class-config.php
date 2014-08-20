@@ -19,7 +19,7 @@ class Afd_Config
 		
 		global $Afd;
 		
-		$Afd->Plugin['ver']          = '1.4';
+		$Afd->Plugin['ver']          = '1.4.1 alpha';
 		$Afd->Plugin['plugin_slug']  = 'announce-from-the-dashboard';
 		$Afd->Plugin['dir']          = trailingslashit( dirname( dirname( __FILE__ ) ) );
 		$Afd->Plugin['name']         = 'Announce from the Dashboard';
