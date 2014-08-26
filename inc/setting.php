@@ -50,7 +50,7 @@ $show_standards = $Afd->ClassConfig->get_multisite_show_standard();
 					<table class="form-table">
 						<tbody>
 							<tr>
-								<th><label for="<?php echo $mode; ?>_title"><?php _e( 'Announce title' , $Afd->Plugin['ltd'] ); ?></label> *</th>
+								<th><label for="<?php echo $mode; ?>_title"><?php _e( 'Announce title' , $Afd->Plugin['ltd'] ); ?></label></th>
 								<td><?php $Afd->fields_setting( $mode , 'title' ); ?></td>
 							</tr>
 							<tr>

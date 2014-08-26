@@ -49,24 +49,22 @@ class Afd_Manager
 	function init() {
 		
 		global $Afd;
-
-		if( is_admin() && $this->is_manager && !$Afd->Current['ajax'] ) {
+		
+		if( $Afd->Current['admin'] && $this->is_manager && !$Afd->Current['ajax'] ) {
 			
 			$base_plugin = trailingslashit( $Afd->Plugin['plugin_slug'] ) . $Afd->Plugin['plugin_slug'] . '.php';
 			
-			if( is_multisite() ) {
+			if( $Afd->Current['multisite'] ) {
 
 				add_filter( 'network_admin_plugin_action_links_' . $base_plugin , array( $this , 'plugin_action_links' ) );
 				add_action( 'network_admin_menu' , array( $this , 'admin_menu' ) );
 				add_action( 'network_admin_notices' , array( $this , 'update_notice' ) );
-				add_action( 'network_admin_notices' , array( $this , 'donate_notice' ) );
 
 			} else {
 
 				add_filter( 'plugin_action_links_' . $base_plugin , array( $this , 'plugin_action_links' ) );
 				add_action( 'admin_menu' , array( $this , 'admin_menu' ) );
 				add_action( 'admin_notices' , array( $this , 'update_notice' ) );
-				add_action( 'admin_notices' , array( $this , 'donate_notice' ) );
 
 			}
 			
@@ -80,8 +78,8 @@ class Afd_Manager
 
 		global $Afd;
 		
-		$link_setting = sprintf( '<a href="%1$s">%2$s</a>' , $Afd->ClassInfo->links['setting'] , __( 'Settings' ) );
-		$link_support = sprintf( '<a href="%1$s" target="_blank">%2$s</a>' , $Afd->ClassInfo->links['forum'] , __( 'Support Forums' ) );
+		$link_setting = sprintf( '<a href="%1$s">%2$s</a>' , $Afd->Plugin['links']['setting'] , __( 'Settings' ) );
+		$link_support = sprintf( '<a href="%1$s" target="_blank">%2$s</a>' , $Afd->Plugin['links']['forum'] , __( 'Support Forums' ) );
 
 		array_unshift( $links , $link_setting, $link_support );
 
@@ -168,7 +166,7 @@ class Afd_Manager
 				
 			}
 			
-			add_filter( 'admin_footer_text' , array( $this , 'admin_footer_text' ) );
+			add_filter( 'admin_footer_text' , array( $Afd->ClassInfo , 'admin_footer_text' ) );
 			
 		}
 		
@@ -198,10 +196,6 @@ class Afd_Manager
 
 					printf( '<div class="updated"><p><strong>%s</strong></p></div>' , __( 'Settings saved.' ) );
 
-				} elseif( $update_nag == 'donated' ) {
-					
-					printf( '<div class="updated"><p><strong>%s</strong></p></div>' , __( 'Thank you for your donation.' , $Afd->Plugin['ltd'] ) );
-					
 				}
 				
 			}
@@ -219,7 +213,7 @@ class Afd_Manager
 		if( !empty( $_GET ) && !empty( $_GET['tab'] ) && $_GET['tab'] == 'other' )
 			$current = 'other';
 		
-		$url_base = $Afd->ClassInfo->links['setting'];
+		$url_base = $Afd->Plugin['links']['setting'];
 		$tabs = array(
 			'default' => array( 'url' => $url_base , 'label' => __( 'Announce settings' , $Afd->Plugin['ltd'] ) ),
 			'other' => array( 'url' => add_query_arg( array( 'tab' => 'other' ) , $url_base ) , 'label' => __( 'Other Settings' , $Afd->Plugin['ltd'] ) ),
@@ -234,28 +228,6 @@ class Afd_Manager
 		}
 		
 		echo '</h3>';
-		
-	}
-	
-	function donate_notice() {
-		
-		global $Afd;
-
-		if( $this->is_settings_page() ) {
-			
-			$Afd->ClassInfo->donate_notice();
-
-		}
-		
-	}
-
-	function admin_footer_text( $text ) {
-		
-		global $Afd;
-		
-		$text = $Afd->ClassInfo->admin_footer_text();
-		
-		return $text;
 		
 	}
 	

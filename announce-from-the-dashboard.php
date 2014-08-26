@@ -3,7 +3,7 @@
 Plugin Name: Announce from the Dashboard
 Description: Announcement to the dashboard screen for users.
 Plugin URI: http://wordpress.org/extend/plugins/announce-from-the-dashboard/
-Version: 1.4.1 alpha
+Version: 1.4.1
 Author: gqevu6bsiz
 Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_4_1
 Text Domain: afd
@@ -68,8 +68,6 @@ class Afd
 
 		add_action( 'wp_ajax_afd_sort_settings' , array( $this , 'wp_ajax_afd_sort_settings' ) );
 
-		add_action( 'wp_ajax_afd_donation_toggle' , array( $this , 'wp_ajax_afd_donation_toggle' ) );
-		
 		add_action( 'load-index.php' , array( $this , 'FilterStart' ) );
 
 	}
@@ -250,72 +248,6 @@ class Afd
 		
 	}
 
-	// SetList
-	function update_data_format( $list ) {
-		
-		global $Afd;
-
-		$announce = array();
-
-		$announce['title'] = '';
-		if( !empty( $list['title'] ) )
-			$announce['title'] = strip_tags( $list['title'] );
-
-		$announce['content'] = '';
-		if( !empty( $list['content'] ) )
-			$announce['content'] = $list['content'];
-
-		$announce['type'] = 'normal';
-		if( !empty( $list['type'] ) )
-			$announce['type'] = strip_tags( $list['type'] );
-
-		$announce['role'] = array();
-		if( !empty( $list['role'] ) ) {
-			foreach( $list['role'] as $role_name ) {
-				$role_name = strip_tags( $role_name );
-				$announce['role'][$role_name] = 1;
-			}
-		}
-
-		$announce['range'] = array();
-		$announce['date'] = array();
-		if( !empty( $list['range'] ) ) {
-			foreach( $list['range'] as $range_type => $v ) {
-				$range_type = strip_tags( $range_type );
-				$announce['range'][$range_type] = 1;
-				if( !empty( $list[$range_type]['date'] ) ) {
-					$date = '';
-					$date = $list[$range_type]['date']['aa'];
-					$date .= '-' . zeroise( $list[$range_type]['date']['mm'], 2 );
-					$date .= '-' . zeroise( $list[$range_type]['date']['jj'], 2 );
-					$date .= ' ' . zeroise( $list[$range_type]['date']['hh'], 2 );
-					$date .= ':' . zeroise( $list[$range_type]['date']['mn'], 2 );
-					$date .= ':00';
-					$announce['date'][$range_type] = $date;
-				}
-			}
-		}
-		
-		if( $Afd->Current['multisite'] ) {
-
-			$announce['standard'] = 'all';
-			if( !empty( $list['standard'] ) )
-				$announce['standard'] = strip_tags( $list['standard'] );
-				
-			$announce['subsites'] = array();
-			if( !empty( $list['subsites'] ) ) {
-				foreach( $list['subsites'] as $blog_id ) {
-					$blog_id = intval( $blog_id );
-					$announce['subsites'][$blog_id] = 1;
-				}
-			}
-
-		}
-
-		return $announce;
-
-	}
-
 	// Ajax
 	function wp_ajax_afd_sort_settings() {
 
@@ -341,19 +273,6 @@ class Afd
 
 	}
 
-	// Ajax
-	function wp_ajax_afd_donation_toggle() {
-		
-		if( isset( $_POST['f'] ) ) {
-
-			$val = intval( $_POST['f'] );
-			$this->ClassData->update_donate_toggle( $val );
-
-		}
-		
-		die();
-		
-	}
 
 
 
@@ -414,9 +333,9 @@ class Afd
 		global $wp_version;
 		global $Afd;
 		
-		wp_enqueue_style( $Afd->Plugin['ltd'] , $Afd->Plugin['url'] . 'admin/assets/dashboard.css', array() , $Afd->Plugin['ver'] );
+		wp_enqueue_style( $Afd->Plugin['ltd'] , $Afd->Plugin['dir_admin_assets'] . 'dashboard.css', array() , $Afd->Plugin['ver'] );
 		if( version_compare( $wp_version , '3.8' , '<' ) )
-			wp_enqueue_style( $Afd->Plugin['ltd'] . '-37' , $Afd->Plugin['url'] . 'admin/assets/dashboard-3.7.css', array() , $Afd->Plugin['ver'] );
+			wp_enqueue_style( $Afd->Plugin['ltd'] . '-37' , $Afd->Plugin['dir_admin_assets'] . 'dashboard-3.7.css', array() , $Afd->Plugin['ver'] );
 		
 	}
 
@@ -432,6 +351,7 @@ class Afd
 			foreach( $Data as $key => $announce ) {
 				
 				$type = strip_tags( $announce['type'] );
+
 				if( !empty( $type ) && $type == 'updated' or $type == 'error' or $type == 'normal' or $type == 'nonstyle' ) {
 	
 					$class = 'announce updated ' . $type;
@@ -456,6 +376,7 @@ class Afd
 			foreach( $Data as $key => $announce ) {
 				
 				$type = strip_tags( $announce['type'] );
+
 				if( !empty( $type ) && $type == 'metabox' ) {
 
 					add_meta_box( $Afd->Plugin['page_slug'] . '-' . $key , strip_tags( $announce['title'] ) , array( $this , 'dashboard_do_metabox' ) , 'dashboard' , 'normal' , '' , array( 'announce' => $key ) );
@@ -475,8 +396,11 @@ class Afd
 		if( isset( $metabox['args']['announce'] ) ) {
 			
 			$Data = $Afd->ClassData->get_user_data( $Afd->Current['user_role'] );
+
 			if( !empty( $Data[$metabox['args']['announce']] ) ) {
+
 				echo $this->afd_apply_content( $Data[$metabox['args']['announce']]['content'] );
+
 			}
 			
 		}

@@ -12,29 +12,7 @@ class Afd_Plugin_Info
 
 	function __construct() {
 		
-		add_action( 'plugins_loaded' , array( $this , 'set_links' ) , 20 );
 		add_action( 'plugins_loaded' , array( $this , 'setup' ) , 20 );
-		
-	}
-
-	function set_links() {
-		
-		global $Afd;
-
-		$this->links['author'] = 'http://gqevu6bsiz.chicappa.jp/';
-		$this->links['forum'] = 'http://wordpress.org/support/plugin/' . $Afd->Plugin['plugin_slug'];
-		$this->links['review'] = 'http://wordpress.org/support/view/plugin-reviews/' . $Afd->Plugin['plugin_slug'];
-		$this->links['profile'] = 'http://profiles.wordpress.org/gqevu6bsiz';
-		
-		if( is_multisite() ) {
-
-			$this->links['setting'] = network_admin_url( 'admin.php?page=' . $Afd->Plugin['page_slug'] );
-
-		} else {
-
-			$this->links['setting'] = admin_url( 'options-general.php?page=' . $Afd->Plugin['page_slug'] );
-
-		}
 		
 	}
 
@@ -44,9 +22,86 @@ class Afd_Plugin_Info
 		
 		$this->DonateRecord = $Afd->Plugin['ltd'] . '_donated';
 		$this->DonateOptionRecord = $Afd->Plugin['ltd'] . '_donate_width';
+
+		if( $Afd->Current['admin'] && $Afd->ClassManager->is_manager ) {
+
+			if( !$Afd->Current['ajax'] ) {
+
+				if( $Afd->Current['multisite'] ) {
+
+					add_action( 'network_admin_notices' , array( $this , 'donate_notice' ) );
+
+				} else {
+
+					add_action( 'admin_notices' , array( $this , 'donate_notice' ) );
+
+				}
+
+				add_action( 'admin_init' , array( $this , 'dataUpdate' ) );
+
+			} else {
+
+				add_action( 'wp_ajax_afd_donation_toggle' , array( $this , 'wp_ajax_donation_toggle' ) );
+
+			}
+
+		}
+
+	}
+
+	function wp_ajax_donation_toggle() {
+		
+		if( isset( $_POST['f'] ) ) {
+
+			$val = intval( $_POST['f'] );
+			$this->update_donate_toggle( $val );
+
+		}
+		
+		die();
 		
 	}
 
+	function is_donated() {
+		
+		global $Afd;
+
+		$donated = false;
+		$donateKey = $this->get_donate_key( $this->DonateRecord );
+
+		if( !empty( $donateKey ) && $donateKey == $this->DonateKey ) {
+			$donated = true;
+		}
+
+		return $donated;
+
+	}
+
+	function donate_notice() {
+		
+		global $Afd;
+		
+		$setting_page = $Afd->ClassManager->is_settings_page();
+		
+		if( !empty( $setting_page ) ) {
+		
+			if( !empty( $_GET ) && !empty( $_GET[$Afd->Plugin['msg_notice']] ) && $_GET[$Afd->Plugin['msg_notice']] == 'donated' ) {
+
+				printf( '<div class="updated"><p><strong>%s</strong></p></div>' , __( 'Thank you for your donation.' , $Afd->Plugin['ltd'] ) );
+
+			} else {
+
+				$is_donated = $this->is_donated();
+	
+				if( empty( $is_donated ) )
+					printf( '<div class="updated"><p><strong><a href="%1$s" target="_blank">%2$s</a></strong></p></div>' , $this->author_url( array( 'donate' => 1 , 'tp' => 'use_plugin' , 'lc' => 'footer' ) ) , __( 'Please consider making a donation.' , $Afd->Plugin['ltd'] ) );
+					
+			}
+				
+		}
+
+	}
+	
 	function version_checked() {
 
 		global $Afd;
@@ -101,7 +156,7 @@ class Afd_Plugin_Info
 
 	}
 
-	function is_donate_key_check( $key ) {
+	private function is_donate_key_check( $key ) {
 		
 		$check = false;
 		$key = md5( strip_tags( $key ) );
@@ -112,21 +167,6 @@ class Afd_Plugin_Info
 
 	}
 
-	function is_donated() {
-		
-		global $Afd;
-
-		$donated = false;
-		$donateKey = $Afd->ClassData->get_donate_key( $this->DonateRecord );
-
-		if( !empty( $donateKey ) && $donateKey == $this->DonateKey ) {
-			$donated = true;
-		}
-
-		return $donated;
-
-	}
-
 	function get_width_class() {
 		
 		global $Afd;
@@ -134,10 +174,12 @@ class Afd_Plugin_Info
 		$class = $Afd->Plugin['ltd'];
 		
 		if( $this->is_donated() ) {
-			$width_option = $Afd->ClassData->get_donate_width();
-			if( !empty( $width_option ) ) {
+
+			$width_option = $this->get_donate_width();
+
+			if( !empty( $width_option ) )
 				$class .= ' full-width';
-			}
+
 		}
 		
 		return $class;
@@ -164,16 +206,113 @@ class Afd_Plugin_Info
 		
 	}
 
-	function donate_notice() {
+	private function get_donate_key( $record ) {
+		
+		global $Afd;
+
+		if( $Afd->Current['multisite'] ) {
+			$donateKey = get_site_option( $record );
+		} else {
+			$donateKey = get_option( $record );
+		}
+		
+		return $donateKey;
+
+	}
+
+	private function get_donate_width() {
 		
 		global $Afd;
 		
-		$is_donated = $this->is_donated();
-		if( empty( $is_donated ) )
-			printf( '<div class="updated"><p><strong><a href="%1$s" target="_blank">%2$s</a></strong></p></div>' , $this->author_url( array( 'donate' => 1 , 'tp' => 'use_plugin' , 'lc' => 'footer' ) ) , __( 'Please consider making a donation.' , $Afd->Plugin['ltd'] ) );
+		$width = false;
+		if( $Afd->Current['multisite'] ) {
+			$GetData = get_site_option( $this->DonateOptionRecord );
+		} else {
+			$GetData = get_option( $this->DonateOptionRecord );
+		}
+
+		if( !empty( $GetData ) ) {
+			$width = true;
+		}
+
+		return $width;
 
 	}
 	
+	function dataUpdate() {
+		
+		global $Afd;
+		
+		$RecordField = false;
+		
+		if( !empty( $_POST ) && !empty( $_POST[$Afd->Plugin['ltd'] . '_settings'] ) && $_POST[$Afd->Plugin['ltd'] . '_settings'] == $Afd->Plugin['UPFN'] ) {
+
+			$can_capability = $Afd->ClassManager->get_manager_user_role();
+			if( current_user_can( $can_capability ) ) {
+
+				if( !empty( $_POST[$Afd->Plugin['nonces']['field'] . '_donate'] ) && check_admin_referer( $Afd->Plugin['nonces']['value'] . '_donate' , $Afd->Plugin['nonces']['field'] . '_donate' ) ) {
+					
+					$this->update_donate();
+					
+				}
+				
+			}
+
+		}
+
+	}
+	
+	private function update_donate() {
+		
+		global $Afd;
+
+		$is_donate_check = false;
+		$submit_key = false;
+
+		if( !empty( $_POST['donate_key'] ) ) {
+
+			$is_donate_check = $this->is_donate_key_check( $_POST['donate_key'] );
+
+			if( !empty( $is_donate_check ) ) {
+
+				if( !empty( $Afd->Current['multisite'] ) ) {
+							
+					update_site_option( $this->DonateRecord , $is_donate_check );
+							
+				} else {
+				
+					update_option( $this->DonateRecord , $is_donate_check );
+		
+				}
+
+				wp_redirect( add_query_arg( $Afd->Plugin['msg_notice'] , 'donated' ) );
+
+			}
+
+		}
+
+	}
+
+	private function update_donate_toggle( $Data ) {
+		
+		global $Afd;
+
+		if( $Afd->ClassManager->is_manager ) {
+
+			if( $Afd->Current['multisite'] ) {
+						
+				update_site_option( $this->DonateOptionRecord , $Data );
+						
+			} else {
+			
+				update_option( $this->DonateOptionRecord , $Data );
+
+			}
+			
+		}
+
+	}
+
 }
 
 endif;

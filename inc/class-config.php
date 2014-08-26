@@ -12,6 +12,7 @@ class Afd_Config
 		add_action( 'plugins_loaded' , array( $this , 'setup_site_env' ) );
 		add_action( 'plugins_loaded' , array( $this , 'setup_current_env' ) );
 		add_action( 'plugins_loaded' , array( $this , 'setup_third_party' ) );
+		add_action( 'plugins_loaded' , array( $this , 'setup_links' ) );
 		
 	}
 
@@ -19,7 +20,7 @@ class Afd_Config
 		
 		global $Afd;
 		
-		$Afd->Plugin['ver']          = '1.4.1 alpha';
+		$Afd->Plugin['ver']          = '1.4.1';
 		$Afd->Plugin['plugin_slug']  = 'announce-from-the-dashboard';
 		$Afd->Plugin['dir']          = trailingslashit( dirname( dirname( __FILE__ ) ) );
 		$Afd->Plugin['name']         = 'Announce from the Dashboard';
@@ -31,6 +32,8 @@ class Afd_Config
 		$Afd->Plugin['msg_notice']   = $Afd->Plugin['ltd'] . '_msg';
 		$Afd->Plugin['default_role'] = array( 'child' => 'manage_options' , 'network' => 'manage_network' );
 
+		$Afd->Plugin['dir_admin_assets'] = $Afd->Plugin['url'] . trailingslashit( 'admin' ) . trailingslashit( 'assets' );
+		
 	}
 
 	function setup_record() {
@@ -65,7 +68,10 @@ class Afd_Config
 		$Afd->Current['user_role']     = false;
 		$Afd->Current['user_login']    = is_user_logged_in();
 		$Afd->Current['network_admin'] = is_network_admin();
-		$Afd->Current['superadmin']    = is_super_admin();
+		$Afd->Current['superadmin']    = false;
+
+		if( $Afd->Current['multisite'] )
+			$Afd->Current['superadmin'] = is_super_admin();
 
 		$User = wp_get_current_user();
 		if( !empty( $User->roles ) ) {
@@ -96,6 +102,27 @@ class Afd_Config
 				$Afd->ThirdParty[$name] = true;
 		}
 		
+	}
+
+	function setup_links() {
+		
+		global $Afd;
+		
+		$Afd->Plugin['links']['author'] = 'http://gqevu6bsiz.chicappa.jp/';
+		$Afd->Plugin['links']['forum'] = 'http://wordpress.org/support/plugin/' . $Afd->Plugin['plugin_slug'];
+		$Afd->Plugin['links']['review'] = 'http://wordpress.org/support/view/plugin-reviews/' . $Afd->Plugin['plugin_slug'];
+		$Afd->Plugin['links']['profile'] = 'http://profiles.wordpress.org/gqevu6bsiz';
+		
+		if( $Afd->Current['multisite'] ) {
+
+			$Afd->Plugin['links']['setting'] = network_admin_url( 'admin.php?page=' . $Afd->Plugin['page_slug'] );
+
+		} else {
+
+			$Afd->Plugin['links']['setting'] = admin_url( 'options-general.php?page=' . $Afd->Plugin['page_slug'] );
+
+		}
+
 	}
 
 	function get_show_all_types() {
