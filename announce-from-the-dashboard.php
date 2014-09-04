@@ -3,9 +3,9 @@
 Plugin Name: Announce from the Dashboard
 Description: Announcement to the dashboard screen for users.
 Plugin URI: http://wordpress.org/extend/plugins/announce-from-the-dashboard/
-Version: 1.4.1
+Version: 1.4.2-beta
 Author: gqevu6bsiz
-Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_4_1
+Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_4_2
 Text Domain: afd
 Domain Path: /languages
 */

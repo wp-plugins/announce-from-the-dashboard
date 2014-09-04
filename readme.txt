@@ -35,6 +35,9 @@ This plugin to show announce for user basis.
 
 == Changelog ==
 
+= 1.4.2 beta =
+* Fixed: Hook action priority.
+
 = 1.4.1 =
 * Added: Settings data import of Child blog in that case of Multisite.
 

@@ -11,6 +11,7 @@ class Afd_Config
 		add_action( 'plugins_loaded' , array( $this , 'setup_record' ) );
 		add_action( 'plugins_loaded' , array( $this , 'setup_site_env' ) );
 		add_action( 'plugins_loaded' , array( $this , 'setup_current_env' ) );
+		add_action( 'init'           , array( $this , 'setup_current_user' ) );
 		add_action( 'plugins_loaded' , array( $this , 'setup_third_party' ) );
 		add_action( 'plugins_loaded' , array( $this , 'setup_links' ) );
 		
@@ -20,7 +21,7 @@ class Afd_Config
 		
 		global $Afd;
 		
-		$Afd->Plugin['ver']          = '1.4.1';
+		$Afd->Plugin['ver']          = '1.4.2-beta';
 		$Afd->Plugin['plugin_slug']  = 'announce-from-the-dashboard';
 		$Afd->Plugin['dir']          = trailingslashit( dirname( dirname( __FILE__ ) ) );
 		$Afd->Plugin['name']         = 'Announce from the Dashboard';
@@ -64,14 +65,24 @@ class Afd_Config
 		global $Afd;
 		
 		$Afd->Current['admin']         = is_admin();
-		$Afd->Current['ajax']          = false;
-		$Afd->Current['user_role']     = false;
-		$Afd->Current['user_login']    = is_user_logged_in();
 		$Afd->Current['network_admin'] = is_network_admin();
-		$Afd->Current['superadmin']    = false;
 
-		if( $Afd->Current['multisite'] )
-			$Afd->Current['superadmin'] = is_super_admin();
+		$Afd->Current['ajax']          = false;
+
+		if( defined( 'DOING_AJAX' ) )
+			$Afd->Current['ajax'] = true;
+			
+		$Afd->Current['schema'] = is_ssl() ? 'https://' : 'http://';
+
+	}
+	
+	function setup_current_user() {
+		
+		global $Afd;
+		
+		$Afd->Current['user_login']    = is_user_logged_in();
+
+		$Afd->Current['user_role']     = false;
 
 		$User = wp_get_current_user();
 		if( !empty( $User->roles ) ) {
@@ -81,10 +92,11 @@ class Afd_Config
 			}
 		}
 
-		if( defined( 'DOING_AJAX' ) )
-			$Afd->Current['ajax'] = true;
-			
-		$Afd->Current['schema'] = is_ssl() ? 'https://' : 'http://';
+		$Afd->Current['superadmin']    = false;
+
+		if( $Afd->Current['multisite'] )
+			$Afd->Current['superadmin'] = is_super_admin();
+
 
 	}
 	

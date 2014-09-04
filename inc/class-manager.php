@@ -10,7 +10,7 @@ class Afd_Manager
 	function __construct() {
 		
 		if( is_admin() )
-			add_action( 'plugins_loaded' , array( $this , 'set_manager' ) , 20 );
+			add_action( 'init' , array( $this , 'set_manager' ) , 20 );
 		
 	}
 
