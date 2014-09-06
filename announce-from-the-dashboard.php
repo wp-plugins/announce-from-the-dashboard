@@ -64,7 +64,7 @@ class Afd
 		
 		load_plugin_textdomain( $this->Plugin['ltd'] , false , $this->Plugin['plugin_slug'] . '/languages' );
 
-		$this->ClassManager->init();
+		add_action( 'init' , array( $this->ClassManager , 'init' ) , 100 );
 
 		add_action( 'wp_ajax_afd_sort_settings' , array( $this , 'wp_ajax_afd_sort_settings' ) );
 
