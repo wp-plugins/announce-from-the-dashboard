@@ -9,11 +9,11 @@ class Afd_Config
 		
 		add_action( 'plugins_loaded' , array( $this , 'setup_config' ) );
 		add_action( 'plugins_loaded' , array( $this , 'setup_record' ) );
-		add_action( 'plugins_loaded' , array( $this , 'setup_site_env' ) );
-		add_action( 'plugins_loaded' , array( $this , 'setup_current_env' ) );
-		add_action( 'init'           , array( $this , 'setup_current_user' ) );
-		add_action( 'plugins_loaded' , array( $this , 'setup_third_party' ) );
-		add_action( 'plugins_loaded' , array( $this , 'setup_links' ) );
+		add_action( 'init' , array( $this , 'setup_site_env' ) );
+		add_action( 'init' , array( $this , 'setup_current_env' ) );
+		add_action( 'init' , array( $this , 'setup_current_user' ) );
+		add_action( 'init' , array( $this , 'setup_links' ) );
+		add_action( 'init' , array( $this , 'setup_third_party' ) );
 		
 	}
 
@@ -21,7 +21,6 @@ class Afd_Config
 		
 		global $Afd;
 		
-		$Afd->Plugin['ver']          = '1.4.2-beta';
 		$Afd->Plugin['plugin_slug']  = 'announce-from-the-dashboard';
 		$Afd->Plugin['dir']          = trailingslashit( dirname( dirname( __FILE__ ) ) );
 		$Afd->Plugin['name']         = 'Announce from the Dashboard';
@@ -32,6 +31,7 @@ class Afd_Config
 		$Afd->Plugin['UPFN']         = 'Y';
 		$Afd->Plugin['msg_notice']   = $Afd->Plugin['ltd'] . '_msg';
 		$Afd->Plugin['default_role'] = array( 'child' => 'manage_options' , 'network' => 'manage_network' );
+		$Afd->Plugin['form'] = array( 'field' => $Afd->Plugin['ltd'] . '_settings' );
 
 		$Afd->Plugin['dir_admin_assets'] = $Afd->Plugin['url'] . trailingslashit( 'admin' ) . trailingslashit( 'assets' );
 		
@@ -100,22 +100,6 @@ class Afd_Config
 
 	}
 	
-	function setup_third_party() {
-		
-		global $Afd;
-
-		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-		
-		$check_plugins = array();
-		$check_plugins['mp6'] = 'mp6/mp6.php';
-		
-		foreach( $check_plugins as $name => $base_name ) {
-			if( is_plugin_active( $base_name ) )
-				$Afd->ThirdParty[$name] = true;
-		}
-		
-	}
-
 	function setup_links() {
 		
 		global $Afd;
@@ -135,6 +119,22 @@ class Afd_Config
 
 		}
 
+	}
+
+	function setup_third_party() {
+		
+		global $Afd;
+
+		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		
+		$check_plugins = array();
+		$check_plugins['mp6'] = 'mp6/mp6.php';
+		
+		foreach( $check_plugins as $name => $base_name ) {
+			if( is_plugin_active( $base_name ) )
+				$Afd->ThirdParty[$name] = true;
+		}
+		
 	}
 
 	function get_show_all_types() {

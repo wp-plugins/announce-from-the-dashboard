@@ -3,7 +3,7 @@
 Plugin Name: Announce from the Dashboard
 Description: Announcement to the dashboard screen for users.
 Plugin URI: http://wordpress.org/extend/plugins/announce-from-the-dashboard/
-Version: 1.4.2-beta
+Version: 1.4.2
 Author: gqevu6bsiz
 Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_4_2
 Text Domain: afd
@@ -32,6 +32,8 @@ if ( !class_exists( 'Afd' ) ) :
 
 class Afd
 {
+
+	var	$Ver = '1.4.2';
 
 	var $Plugin = array();
 	var $Current = array();
@@ -64,8 +66,6 @@ class Afd
 		
 		load_plugin_textdomain( $this->Plugin['ltd'] , false , $this->Plugin['plugin_slug'] . '/languages' );
 
-		add_action( 'init' , array( $this->ClassManager , 'init' ) , 100 );
-
 		add_action( 'wp_ajax_afd_sort_settings' , array( $this , 'wp_ajax_afd_sort_settings' ) );
 
 		add_action( 'load-index.php' , array( $this , 'FilterStart' ) );
@@ -76,7 +76,6 @@ class Afd
 	function fields_setting( $mode = 'add' , $field = false , $val = '' , $key = false ) {
 		
 		global $wp_locale;
-		global $Afd;
 
 		if( !empty( $mode ) && !empty( $field ) ) {
 
@@ -130,11 +129,11 @@ class Afd
 
 				echo '</select>';
 				
-				printf( '<p class="description">%s</p>' , __( 'Hold the CTRL key and click the items in a list to choose them.' , $Afd->Plugin['ltd'] ) );
+				printf( '<p class="description">%s</p>' , __( 'Hold the CTRL key and click the items in a list to choose them.' , $this->Plugin['ltd'] ) );
 
 			} elseif( $field == 'date' ) {
 				
-				printf( '<p class="date_range_error">%s</p>' , __( 'Please <strong>End</strong> date is later than the <strong>Start</strong> date.' , $Afd->Plugin['ltd'] ) );
+				printf( '<p class="date_range_error">%s</p>' , __( 'Please <strong>End</strong> date is later than the <strong>Start</strong> date.' , $this->Plugin['ltd'] ) );
 
 				$date_periods = $this->ClassConfig->get_date_periods();
 				foreach( $date_periods as $name => $label ) {
@@ -151,7 +150,7 @@ class Afd
 
 					$range_check_name = $f_name . '[range][' . $name . ']';
 					$range_check_id = $f_id . 'range_' . $name;
-					printf( '<label><input type="checkbox" name="%1$s" id="%2$s" value="1" class="date_range_check"%3$s />%4$s</label>' , $range_check_name , $range_check_id , checked( $range , 1 , false , false ) , __( 'Specify' , $Afd->Plugin['ltd'] ) );
+					printf( '<label><input type="checkbox" name="%1$s" id="%2$s" value="1" class="date_range_check"%3$s />%4$s</label>' , $range_check_name , $range_check_id , checked( $range , 1 , false , false ) , __( 'Specify' , $this->Plugin['ltd'] ) );
 					echo '</p>';
 
 					printf( '<div class="date_range_setting %s">' , $name );
@@ -189,7 +188,7 @@ class Afd
 					printf( __( '%1$s %2$s, %3$s @ %4$s : %5$s' ), $f_month, $f_day, $f_year, $f_hour, $f_minute );
 					echo '</p>';
 					
-					printf( '<p class="description">%1$s: %2$s</p>' , __( 'Now' , $Afd->Plugin['ltd'] ) , mysql2date( get_option( 'date_format' ) . get_option( 'time_format' ) , current_time( 'timestamp' ) ) );
+					printf( '<p class="description">%1$s: %2$s</p>' , __( 'Now' , $this->Plugin['ltd'] ) , mysql2date( get_option( 'date_format' ) . get_option( 'time_format' ) , current_time( 'timestamp' ) ) );
 
 					echo '</div>';
 					
@@ -217,8 +216,8 @@ class Afd
 				}
 				echo '</select>';
 				
-				printf( '<p class="show_subsite_description all">%s</p>' , __( 'Choose the site if you want to <strong>hide announce</strong>.' , $Afd->Plugin['ltd'] ) );
-				printf( '<p class="show_subsite_description not">%s</p>' , __( 'Choose the site if you want to <strong>show announce</strong>.' , $Afd->Plugin['ltd'] ) );
+				printf( '<p class="show_subsite_description all">%s</p>' , __( 'Choose the site if you want to <strong>hide announce</strong>.' , $this->Plugin['ltd'] ) );
+				printf( '<p class="show_subsite_description not">%s</p>' , __( 'Choose the site if you want to <strong>show announce</strong>.' , $this->Plugin['ltd'] ) );
 				
 				$susbiste_name = $f_name . '[subsites][]';
 				$susbiste_id = $f_id . 'subsites';
@@ -237,7 +236,7 @@ class Afd
 				}
 				echo '</select>';
 
-				printf( '<p class="description">%s</p>' , __( 'Hold the CTRL key and click the items in a list to choose them.' , $Afd->Plugin['ltd'] ) );
+				printf( '<p class="description">%s</p>' , __( 'Hold the CTRL key and click the items in a list to choose them.' , $this->Plugin['ltd'] ) );
 
 				echo '</div>';
 
@@ -302,11 +301,9 @@ class Afd
 	// FilterStart
 	function FilterStart() {
 
-		global $Afd;
-		
-		if( !$Afd->Current['network_admin'] && $Afd->Current['admin'] && !$Afd->Current['ajax'] ) {
+		if( !$this->Current['network_admin'] && $this->Current['admin'] && !$this->Current['ajax'] ) {
 			
-			$Data = $Afd->ClassData->get_user_data( $Afd->Current['user_role'] );
+			$Data = $this->ClassData->get_user_data( $this->Current['user_role'] );
 			if( !empty( $Data ) ) {
 
 				add_action( 'admin_print_scripts' , array( $this , 'admin_print_scripts' ) );
@@ -331,20 +328,17 @@ class Afd
 	function admin_print_scripts() {
 		
 		global $wp_version;
-		global $Afd;
 		
-		wp_enqueue_style( $Afd->Plugin['ltd'] , $Afd->Plugin['dir_admin_assets'] . 'dashboard.css', array() , $Afd->Plugin['ver'] );
+		wp_enqueue_style( $this->Plugin['ltd'] , $this->Plugin['dir_admin_assets'] . 'dashboard.css', array() , $this->Ver );
 		if( version_compare( $wp_version , '3.8' , '<' ) )
-			wp_enqueue_style( $Afd->Plugin['ltd'] . '-37' , $Afd->Plugin['dir_admin_assets'] . 'dashboard-3.7.css', array() , $Afd->Plugin['ver'] );
+			wp_enqueue_style( $this->Plugin['ltd'] . '-37' , $this->Plugin['dir_admin_assets'] . 'dashboard-3.7.css', array() , $this->Ver );
 		
 	}
 
 	// FilterStart
 	function admin_notices() {
 
-		global $Afd;
-
-		$Data = $Afd->ClassData->get_user_data( $Afd->Current['user_role'] );
+		$Data = $this->ClassData->get_user_data( $this->Current['user_role'] );
 		
 		if( !empty( $Data ) ) {
 			
@@ -367,9 +361,7 @@ class Afd
 	// FilterStart
 	function wp_dashboard_setup() {
 
-		global $Afd;
-
-		$Data = $Afd->ClassData->get_user_data( $Afd->Current['user_role'] );
+		$Data = $this->ClassData->get_user_data( $this->Current['user_role'] );
 		
 		if( !empty( $Data ) ) {
 
@@ -379,7 +371,7 @@ class Afd
 
 				if( !empty( $type ) && $type == 'metabox' ) {
 
-					add_meta_box( $Afd->Plugin['page_slug'] . '-' . $key , strip_tags( $announce['title'] ) , array( $this , 'dashboard_do_metabox' ) , 'dashboard' , 'normal' , '' , array( 'announce' => $key ) );
+					add_meta_box( $this->Plugin['page_slug'] . '-' . $key , strip_tags( $announce['title'] ) , array( $this , 'dashboard_do_metabox' ) , 'dashboard' , 'normal' , 'high' , array( 'announce' => $key ) );
 
 				}
 			}
@@ -391,11 +383,9 @@ class Afd
 	// FilterStart
 	function dashboard_do_metabox( $post , $metabox ) {
 		
-		global $Afd;
-
 		if( isset( $metabox['args']['announce'] ) ) {
 			
-			$Data = $Afd->ClassData->get_user_data( $Afd->Current['user_role'] );
+			$Data = $this->ClassData->get_user_data( $this->Current['user_role'] );
 
 			if( !empty( $Data[$metabox['args']['announce']] ) ) {
 

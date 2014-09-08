@@ -11,6 +11,7 @@ class Afd_Manager
 		
 		if( is_admin() )
 			add_action( 'init' , array( $this , 'set_manager' ) , 20 );
+			add_action( 'init' , array( $this , 'init' ) , 20 );
 		
 	}
 
@@ -129,12 +130,12 @@ class Afd_Manager
 		if( $this->is_settings_page() ) {
 			
 			$ReadedJs = array( 'jquery' , 'jquery-ui-draggable' , 'jquery-ui-droppable' , 'jquery-ui-sortable' , 'thickbox' );
-			wp_enqueue_script( $Afd->Plugin['page_slug'] ,  $Afd->Plugin['url'] . $Afd->Plugin['ltd'] . '.js', $ReadedJs , $Afd->Plugin['ver'] );
+			wp_enqueue_script( $Afd->Plugin['page_slug'] ,  $Afd->Plugin['url'] . $Afd->Plugin['ltd'] . '.js', $ReadedJs , $Afd->Ver );
 			add_thickbox();
 			
-			wp_enqueue_style( $Afd->Plugin['page_slug'] , $Afd->Plugin['url'] . $Afd->Plugin['ltd'] . '.css', array() , $Afd->Plugin['ver'] );
+			wp_enqueue_style( $Afd->Plugin['page_slug'] , $Afd->Plugin['url'] . $Afd->Plugin['ltd'] . '.css', array() , $Afd->Ver );
 			if( version_compare( $wp_version , '3.8' , '<' ) )
-				wp_enqueue_style( $Afd->Plugin['page_slug'] . '-37' , $Afd->Plugin['url'] . $Afd->Plugin['ltd'] . '-3.7.css', array() , $Afd->Plugin['ver'] );
+				wp_enqueue_style( $Afd->Plugin['page_slug'] . '-37' , $Afd->Plugin['url'] . $Afd->Plugin['ltd'] . '-3.7.css', array() , $Afd->Ver );
 
 			$translation = array( 'msg' => array( 'delete_confirm' => __( 'Confirm Deletion' ) ) );
 			wp_localize_script( $Afd->Plugin['page_slug'] , $Afd->Plugin['ltd'] , $translation );

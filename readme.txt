@@ -1,10 +1,10 @@
 === Announce from the Dashboard ===
 Contributors: gqevu6bsiz
-Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/?utm_source=wporg&utm_medium=donate&utm_content=afd&utm_campaign=1_4_1
+Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/?utm_source=wporg&utm_medium=donate&utm_content=afd&utm_campaign=1_4_2
 Tags: admin, dashboard, news, announce, role, user
 Requires at least: 3.7.4
-Tested up to: 3.9.2
-Stable tag: 1.4.1
+Tested up to: 4.0
+Stable tag: 1.4.2
 License: GPL2
 
 Announcement to users on the Dashboard.
@@ -35,8 +35,9 @@ This plugin to show announce for user basis.
 
 == Changelog ==
 
-= 1.4.2 beta =
-* Fixed: Hook action priority.
+= 1.4.2 =
+* Fixed: Changed the action priority.
+* Updated: Change the priority of the metabox.
 
 = 1.4.1 =
 * Added: Settings data import of Child blog in that case of Multisite.

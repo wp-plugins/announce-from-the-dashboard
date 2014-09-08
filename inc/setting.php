@@ -26,7 +26,7 @@ $show_standards = $Afd->ClassConfig->get_multisite_show_standard();
 		<div id="postbox-container-2" class="postbox-container">
 
 			<form id="<?php echo $Afd->Plugin['ltd']; ?>_create_form" class="<?php echo $Afd->Plugin['ltd']; ?>_form" method="post" action="<?php echo $this->get_action_link(); ?>">
-				<input type="hidden" name="<?php echo $Afd->Plugin['ltd']; ?>_settings" value="Y">
+				<input type="hidden" name="<?php echo $Afd->Plugin['form']['field']; ?>" value="Y">
 				<?php wp_nonce_field( $Afd->Plugin['nonces']['value'] , $Afd->Plugin['nonces']['field'] ); ?>
 				<input type="hidden" name="record_field" value="<?php echo $Afd->Plugin['record']['announce']; ?>" />
 
@@ -113,7 +113,7 @@ $show_standards = $Afd->ClassConfig->get_multisite_show_standard();
 
 					<form id="<?php echo $Afd->Plugin['ltd']; ?>_update_form" class="<?php echo $Afd->Plugin['ltd']; ?>_form" method="post" action="<?php echo $this->get_action_link(); ?>">
 
-						<input type="hidden" name="<?php echo $Afd->Plugin['ltd']; ?>_settings" value="Y">
+						<input type="hidden" name="<?php echo $Afd->Plugin['form']['field']; ?>" value="Y">
 						<?php wp_nonce_field( $Afd->Plugin['nonces']['value'] , $Afd->Plugin['nonces']['field'] ); ?>
 						<input type="hidden" name="record_field" value="<?php echo $Afd->Plugin['record']['announce']; ?>" />
 						<input type="hidden" name="mode" value="<?php echo $mode; ?>">
@@ -279,7 +279,7 @@ $show_standards = $Afd->ClassConfig->get_multisite_show_standard();
 				
 				<div id="<?php echo $Afd->Plugin['ltd']; ?>_delete">
 					<form id="<?php echo $Afd->Plugin['ltd']; ?>_delete_form" class="<?php echo $Afd->Plugin['ltd']; ?>_form" method="post" action="<?php echo $this->get_action_link(); ?>">
-						<input type="hidden" name="<?php echo $Afd->Plugin['ltd']; ?>_settings" value="Y">
+						<input type="hidden" name="<?php echo $Afd->Plugin['form']['field']; ?>" value="Y">
 						<?php wp_nonce_field( $Afd->Plugin['nonces']['value'] , $Afd->Plugin['nonces']['field'] ); ?>
 						<input type="hidden" name="record_field" value="<?php echo $Afd->Plugin['record']['announce']; ?>" />
 						<input type="hidden" name="action" value="delete" />

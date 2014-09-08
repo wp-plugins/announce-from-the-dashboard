@@ -27,7 +27,7 @@ $ChildData = $Afd->ClassData->get_data_all_child();
 		<div id="postbox-container-2" class="postbox-container">
 
 			<form id="<?php echo $Afd->Plugin['ltd']; ?>_other_form" class="<?php echo $Afd->Plugin['ltd']; ?>_form" method="post" action="<?php echo $this->get_action_link(); ?>">
-				<input type="hidden" name="<?php echo $Afd->Plugin['ltd']; ?>_settings" value="Y">
+				<input type="hidden" name="<?php echo $Afd->Plugin['form']['field']; ?>" value="Y">
 				<?php wp_nonce_field( $Afd->Plugin['nonces']['value'] , $Afd->Plugin['nonces']['field'] ); ?>
 				<input type="hidden" name="record_field" value="<?php echo $Afd->Plugin['record']['other']; ?>" />
 
@@ -62,7 +62,7 @@ $ChildData = $Afd->ClassData->get_data_all_child();
 			<?php if( $Afd->Current['multisite'] ) : ?>
 
 				<form id="<?php echo $Afd->Plugin['ltd']; ?>_import_child_form" class="<?php echo $Afd->Plugin['ltd']; ?>_form" method="post" action="<?php echo $this->get_action_link(); ?>">
-					<input type="hidden" name="<?php echo $Afd->Plugin['ltd']; ?>_settings" value="Y">
+					<input type="hidden" name="<?php echo $Afd->Plugin['form']['field']; ?>" value="Y">
 					<?php wp_nonce_field( $Afd->Plugin['nonces']['value'] . '_import_child' , $Afd->Plugin['nonces']['field'] . '_import_child' ); ?>
 	
 					<table class="form-table">

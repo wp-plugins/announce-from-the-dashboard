@@ -18,7 +18,7 @@
 			<p><?php _e( 'Please enter the \'Donation delete key\' that have been described in the \'Line Break First and End download page\'.' , $Afd->Plugin['ltd'] ); ?></p>
 			<form id="<?php echo $Afd->Plugin['ltd']; ?>_donation_form" class="<?php echo $Afd->Plugin['ltd']; ?>_form" method="post" action="<?php echo $this->get_action_link(); ?>">
 				<input type="hidden" name="<?php echo $Afd->Plugin['ltd']; ?>_settings" value="Y">
-				<?php wp_nonce_field( $Afd->Plugin['nonces']['value'] . '_donate' , $Afd->Plugin['nonces']['field'] . '_donate' ); ?>
+				<?php wp_nonce_field( $Afd->ClassInfo->nonces['value'] , $Afd->ClassInfo->nonces['field'] ); ?>
 				<label for="donate_key"><?php _e( 'Donation delete key' , $Afd->Plugin['ltd'] ); ?></label>
 				<input type="text" name="donate_key" id="donate_key" value="" class="large-text" />
 				<?php submit_button( __( 'Submit' ) , 'secondary' ); ?>

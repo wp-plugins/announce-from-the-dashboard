@@ -8,7 +8,7 @@ class Afd_Data
 	function __construct() {
 		
 		if( is_admin() )
-			add_action( 'plugins_loaded' , array( $this , 'init' ) , 20 );
+			add_action( 'wp_loaded' , array( $this , 'init' ) , 20 );
 
 	}
 
@@ -22,7 +22,7 @@ class Afd_Data
 
 	}
 
-	function get_record( $record ) {
+	private function get_record( $record ) {
 		
 		global $Afd;
 		
@@ -173,9 +173,8 @@ class Afd_Data
 		global $Afd;
 		
 		$RecordField = false;
-		$can_capability = $Afd->ClassManager->get_manager_user_role();
-		
-		if( !empty( $_POST ) && !empty( $_POST[$Afd->Plugin['ltd'] . '_settings'] ) && $_POST[$Afd->Plugin['ltd'] . '_settings'] == $Afd->Plugin['UPFN'] && current_user_can( $can_capability ) ) {
+
+		if( !empty( $_POST ) && !empty( $Afd->ClassManager ) && !empty( $_POST[$Afd->Plugin['form']['field']] ) && $_POST[$Afd->Plugin['form']['field']] == $Afd->Plugin['UPFN']  ) {
 
 			if( !empty( $_POST['record_field'] ) ) {
 	
@@ -449,7 +448,7 @@ class Afd_Data
 
 	}
 	
-	function import_child_data() {
+	private function import_child_data() {
 		
 		global $Afd;
 		

@@ -5,14 +5,15 @@ if ( !class_exists( 'Afd_Plugin_Info' ) ) :
 class Afd_Plugin_Info
 {
 
-	var $links = array();
-	var $DonateKey = 'd77aec9bc89d445fd54b4c988d090f03';
-	var $DonateRecord = '';
-	var $DonateOptionRecord = '';
+	var $nonces = array();
+
+	private $DonateKey = 'd77aec9bc89d445fd54b4c988d090f03';
+	private $DonateRecord = '';
+	private $DonateOptionRecord = '';
 
 	function __construct() {
 		
-		add_action( 'plugins_loaded' , array( $this , 'setup' ) , 20 );
+		add_action( 'wp_loaded' , array( $this , 'setup' ) , 20 );
 		
 	}
 
@@ -22,6 +23,7 @@ class Afd_Plugin_Info
 		
 		$this->DonateRecord = $Afd->Plugin['ltd'] . '_donated';
 		$this->DonateOptionRecord = $Afd->Plugin['ltd'] . '_donate_width';
+		$this->nonces = array( 'field' => $Afd->Plugin['nonces']['field'] . '_donate' , 'value' => $Afd->Plugin['nonces']['value'] . '_donate' );
 
 		if( $Afd->Current['admin'] && $Afd->ClassManager->is_manager ) {
 
@@ -150,7 +152,7 @@ class Afd_Plugin_Info
 		$url = '?utm_source=' . $args['tp'];
 		$url .= '&utm_medium=' . $args['lc'];
 		$url .= '&utm_content=' . $Afd->Plugin['ltd'];
-		$url .= '&utm_campaign=' . str_replace( '.' , '_' , $Afd->Plugin['ver'] );
+		$url .= '&utm_campaign=' . str_replace( '.' , '_' , $Afd->Ver );
 
 		return $url;
 
@@ -245,17 +247,12 @@ class Afd_Plugin_Info
 		
 		$RecordField = false;
 		
-		if( !empty( $_POST ) && !empty( $_POST[$Afd->Plugin['ltd'] . '_settings'] ) && $_POST[$Afd->Plugin['ltd'] . '_settings'] == $Afd->Plugin['UPFN'] ) {
+		if( !empty( $_POST ) && !empty( $Afd->ClassManager ) && !empty( $_POST[$Afd->Plugin['form']['field']] ) && $_POST[$Afd->Plugin['form']['field']] == $Afd->Plugin['UPFN'] ) {
 
-			$can_capability = $Afd->ClassManager->get_manager_user_role();
-			if( current_user_can( $can_capability ) ) {
-
-				if( !empty( $_POST[$Afd->Plugin['nonces']['field'] . '_donate'] ) && check_admin_referer( $Afd->Plugin['nonces']['value'] . '_donate' , $Afd->Plugin['nonces']['field'] . '_donate' ) ) {
+			if( !empty( $_POST[$this->nonces['field']] ) && check_admin_referer( $this->nonces['value'] , $this->nonces['field'] ) ) {
 					
-					$this->update_donate();
+				$this->update_donate();
 					
-				}
-				
 			}
 
 		}
