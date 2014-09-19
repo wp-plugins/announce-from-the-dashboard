@@ -165,6 +165,7 @@ jQuery(document).ready(function($) {
 			$.post(ajaxurl, {
 				'action': 'afd_sort_settings',
 				'afd_sort': sorted,
+				'afd_field': afd.afd_field
 			}, function(res){
 				/*
 				if( res.success && res.data.msg !== undefined ) {
@@ -195,11 +196,13 @@ jQuery(document).ready(function($) {
 		if( $('.afd').hasClass('full-width') ) {
 			$.post(ajaxurl, {
 				'action': Action,
+				'afd_field_donate': afd_donate.afd_field_donate,
 				'f': 1,
 			});
 		} else {
 			$.post(ajaxurl, {
 				'action': Action,
+				'afd_field_donate': afd_donate.afd_field_donate,
 				'f': 0,
 			});
 		}

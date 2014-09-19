@@ -271,7 +271,7 @@ $show_standards = $Afd->ClassConfig->get_multisite_show_standard();
 
 				<div id="<?php echo $Afd->Plugin['ltd']; ?>_confirm">
 					<div id="ConfirmSt">
-						<p><?php echo sprintf( __( 'You are about to delete. <strong>%s</strong>' ) , '' ); ?></p>
+						<p><?php echo sprintf( __( 'You are about to delete <strong>%s</strong>.' ) , '' ); ?></p>
 						<a class="button-secondary" id="cancelbtn" href="javascript:void(0);"><?php _e( 'Cancel' ); ?></a>
 						<a class="button-secondary" id="deletebtn" href="javascript:void(0);" title=""><?php _e( 'Continue' ); ?></a>
 					</div>

@@ -9,9 +9,12 @@ class Afd_Manager
 	
 	function __construct() {
 		
-		if( is_admin() )
+		if( is_admin() ) {
+
 			add_action( 'init' , array( $this , 'set_manager' ) , 20 );
 			add_action( 'init' , array( $this , 'init' ) , 20 );
+			
+		}
 		
 	}
 
@@ -32,6 +35,7 @@ class Afd_Manager
 		}
 		
 		$other_data = $Afd->ClassData->get_data_others();
+
 		if( !empty( $other_data['capability'] ) )
 			$cap = strip_tags( $other_data['capability'] );
 		
@@ -51,28 +55,36 @@ class Afd_Manager
 		
 		global $Afd;
 		
-		if( $Afd->Current['admin'] && $this->is_manager && !$Afd->Current['ajax'] ) {
+		if( $Afd->Current['admin'] && $this->is_manager ) {
 			
-			$base_plugin = trailingslashit( $Afd->Plugin['plugin_slug'] ) . $Afd->Plugin['plugin_slug'] . '.php';
-			
-			if( $Afd->Current['multisite'] ) {
+			if( !$Afd->Current['ajax'] ) {
 
-				add_filter( 'network_admin_plugin_action_links_' . $base_plugin , array( $this , 'plugin_action_links' ) );
-				add_action( 'network_admin_menu' , array( $this , 'admin_menu' ) );
-				add_action( 'network_admin_notices' , array( $this , 'update_notice' ) );
+				$base_plugin = trailingslashit( $Afd->Plugin['plugin_slug'] ) . $Afd->Plugin['plugin_slug'] . '.php';
+				
+				if( $Afd->Current['multisite'] ) {
 
+					add_filter( 'network_admin_plugin_action_links_' . $base_plugin , array( $this , 'plugin_action_links' ) );
+					add_action( 'network_admin_menu' , array( $this , 'admin_menu' ) );
+					add_action( 'network_admin_notices' , array( $this , 'update_notice' ) );
+
+				} else {
+
+					add_filter( 'plugin_action_links_' . $base_plugin , array( $this , 'plugin_action_links' ) );
+					add_action( 'admin_menu' , array( $this , 'admin_menu' ) );
+					add_action( 'admin_notices' , array( $this , 'update_notice' ) );
+
+				}
+				
+				add_action( 'admin_print_scripts' , array( $this , 'admin_print_scripts' ) );
+				
 			} else {
-
-				add_filter( 'plugin_action_links_' . $base_plugin , array( $this , 'plugin_action_links' ) );
-				add_action( 'admin_menu' , array( $this , 'admin_menu' ) );
-				add_action( 'admin_notices' , array( $this , 'update_notice' ) );
+				
+				add_action( 'wp_ajax_' . $Afd->Plugin['ltd'] . '_sort_settings' , array( $this , 'ajax_sort_settings' ) );
 
 			}
-			
-			add_action( 'admin_print_scripts' , array( $this , 'admin_print_scripts' ) );
 
 		}
-		
+
 	}
 
 	function plugin_action_links( $links ) {
@@ -123,13 +135,12 @@ class Afd_Manager
 
 	function admin_print_scripts() {
 		
-		global $plugin_page;
 		global $wp_version;
 		global $Afd;
 		
 		if( $this->is_settings_page() ) {
 			
-			$ReadedJs = array( 'jquery' , 'jquery-ui-draggable' , 'jquery-ui-droppable' , 'jquery-ui-sortable' , 'thickbox' );
+			$ReadedJs = array( 'jquery' , 'jquery-ui-sortable' , 'thickbox' );
 			wp_enqueue_script( $Afd->Plugin['page_slug'] ,  $Afd->Plugin['url'] . $Afd->Plugin['ltd'] . '.js', $ReadedJs , $Afd->Ver );
 			add_thickbox();
 			
@@ -137,7 +148,7 @@ class Afd_Manager
 			if( version_compare( $wp_version , '3.8' , '<' ) )
 				wp_enqueue_style( $Afd->Plugin['page_slug'] . '-37' , $Afd->Plugin['url'] . $Afd->Plugin['ltd'] . '-3.7.css', array() , $Afd->Ver );
 
-			$translation = array( 'msg' => array( 'delete_confirm' => __( 'Confirm Deletion' ) ) );
+			$translation = array( 'msg' => array( 'delete_confirm' => __( 'Confirm Deletion' ) ) , $Afd->Plugin['nonces']['field'] => wp_create_nonce( $Afd->Plugin['nonces']['value'] ) );
 			wp_localize_script( $Afd->Plugin['page_slug'] , $Afd->Plugin['ltd'] , $translation );
 
 		}
@@ -230,6 +241,34 @@ class Afd_Manager
 		
 		echo '</h3>';
 		
+	}
+
+	function ajax_sort_settings() {
+
+		global $Afd;
+		
+		if( !empty( $_POST['afd_sort'] ) && is_array( $_POST['afd_sort'] ) ) {
+			
+			$Data = $Afd->ClassData->get_data_announces();
+			$NewData = array();
+			
+			foreach( $_POST['afd_sort'] as $key => $id ) {
+
+				$NewData[$id] = $Data[$id];
+
+			}
+			
+			if( $Data !== $NewData ) {
+				
+				$Afd->ClassData->update_sort( $NewData );
+				wp_send_json_success( array( 'msg' => __( 'Saved' ) ) );
+
+			}
+
+		}
+		
+		die();
+
 	}
 	
 }

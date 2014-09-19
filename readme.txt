@@ -1,10 +1,10 @@
 === Announce from the Dashboard ===
 Contributors: gqevu6bsiz
-Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/?utm_source=wporg&utm_medium=donate&utm_content=afd&utm_campaign=1_4_2
+Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/?utm_source=wporg&utm_medium=donate&utm_content=afd&utm_campaign=1_4_3
 Tags: admin, dashboard, news, announce, role, user
 Requires at least: 3.7.4
 Tested up to: 4.0
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 License: GPL2
 
 Announcement to users on the Dashboard.
@@ -34,6 +34,10 @@ This plugin to show announce for user basis.
 4. Metabox for Example
 
 == Changelog ==
+
+= 1.4.3 =
+* Fixed: Referrer check of Ajax.
+* Fixed: Small bug fixes.
 
 = 1.4.2 =
 * Fixed: Changed the action priority.

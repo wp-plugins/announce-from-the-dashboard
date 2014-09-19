@@ -174,7 +174,7 @@ class Afd_Data
 		
 		$RecordField = false;
 
-		if( !empty( $_POST ) && !empty( $Afd->ClassManager ) && !empty( $_POST[$Afd->Plugin['form']['field']] ) && $_POST[$Afd->Plugin['form']['field']] == $Afd->Plugin['UPFN']  ) {
+		if( !empty( $_POST ) && !empty( $Afd->ClassManager->is_manager ) && !empty( $_POST[$Afd->Plugin['form']['field']] ) && $_POST[$Afd->Plugin['form']['field']] == $Afd->Plugin['UPFN']  ) {
 
 			if( !empty( $_POST['record_field'] ) ) {
 	
@@ -395,7 +395,7 @@ class Afd_Data
 		
 		global $Afd;
 
-		if( $Afd->ClassManager->is_manager ) {
+		if( $Afd->ClassManager->is_manager && check_ajax_referer( $Afd->Plugin['nonces']['value'] , $Afd->Plugin['nonces']['field'] ) ) {
 
 			if( !empty( $Afd->Current['multisite'] ) ) {
 						

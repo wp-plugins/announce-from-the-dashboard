@@ -29,9 +29,9 @@ class Afd_Config
 		$Afd->Plugin['ltd']          = 'afd';
 		$Afd->Plugin['nonces']       = array( 'field' => $Afd->Plugin['ltd'] . '_field' , 'value' => $Afd->Plugin['ltd'] . '_value' );
 		$Afd->Plugin['UPFN']         = 'Y';
+		$Afd->Plugin['form'] = array( 'field' => $Afd->Plugin['ltd'] . '_settings' );
 		$Afd->Plugin['msg_notice']   = $Afd->Plugin['ltd'] . '_msg';
 		$Afd->Plugin['default_role'] = array( 'child' => 'manage_options' , 'network' => 'manage_network' );
-		$Afd->Plugin['form'] = array( 'field' => $Afd->Plugin['ltd'] . '_settings' );
 
 		$Afd->Plugin['dir_admin_assets'] = $Afd->Plugin['url'] . trailingslashit( 'admin' ) . trailingslashit( 'assets' );
 		
@@ -54,8 +54,11 @@ class Afd_Config
 		$Afd->Current['blog_id'] = get_current_blog_id();
 
 		$Afd->Current['main_blog'] = false;
+
 		if( $Afd->Current['blog_id'] == 1 ) {
+
 			$Afd->Current['main_blog'] = true;
+
 		}
 		
 	}
@@ -81,15 +84,19 @@ class Afd_Config
 		global $Afd;
 		
 		$Afd->Current['user_login']    = is_user_logged_in();
-
 		$Afd->Current['user_role']     = false;
 
 		$User = wp_get_current_user();
 		if( !empty( $User->roles ) ) {
+
 			foreach( $User->roles as $role ) {
+
 				$Afd->Current['user_role'] = $role;
+
 				break;
+
 			}
+
 		}
 
 		$Afd->Current['superadmin']    = false;

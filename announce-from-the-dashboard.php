@@ -3,9 +3,9 @@
 Plugin Name: Announce from the Dashboard
 Description: Announcement to the dashboard screen for users.
 Plugin URI: http://wordpress.org/extend/plugins/announce-from-the-dashboard/
-Version: 1.4.2
+Version: 1.4.3
 Author: gqevu6bsiz
-Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_4_2
+Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_4_3
 Text Domain: afd
 Domain Path: /languages
 */
@@ -33,7 +33,7 @@ if ( !class_exists( 'Afd' ) ) :
 class Afd
 {
 
-	var	$Ver = '1.4.2';
+	var	$Ver = '1.4.3';
 
 	var $Plugin = array();
 	var $Current = array();
@@ -65,8 +65,6 @@ class Afd
 	function init() {
 		
 		load_plugin_textdomain( $this->Plugin['ltd'] , false , $this->Plugin['plugin_slug'] . '/languages' );
-
-		add_action( 'wp_ajax_afd_sort_settings' , array( $this , 'wp_ajax_afd_sort_settings' ) );
 
 		add_action( 'load-index.php' , array( $this , 'FilterStart' ) );
 
@@ -247,34 +245,6 @@ class Afd
 		
 	}
 
-	// Ajax
-	function wp_ajax_afd_sort_settings() {
-
-		if( !empty( $_POST['afd_sort'] ) && is_array( $_POST['afd_sort'] ) ) {
-			
-			$Data = $this->ClassData->get_data_announces();
-			$NewData = array();
-			
-			foreach( $_POST['afd_sort'] as $key => $id ) {
-				$NewData[$id] = $Data[$id];
-			}
-			
-			if( $Data !== $NewData ) {
-				
-				$this->ClassData->update_sort( $NewData );
-				wp_send_json_success( array( 'msg' => __( 'Saved' ) ) );
-
-			}
-
-		}
-		
-		die();
-
-	}
-
-
-
-
 	// SetList
 	function specify_date_check( $range_type , $data ) {
 
@@ -304,6 +274,7 @@ class Afd
 		if( !$this->Current['network_admin'] && $this->Current['admin'] && !$this->Current['ajax'] ) {
 			
 			$Data = $this->ClassData->get_user_data( $this->Current['user_role'] );
+
 			if( !empty( $Data ) ) {
 
 				add_action( 'admin_print_scripts' , array( $this , 'admin_print_scripts' ) );
@@ -330,6 +301,7 @@ class Afd
 		global $wp_version;
 		
 		wp_enqueue_style( $this->Plugin['ltd'] , $this->Plugin['dir_admin_assets'] . 'dashboard.css', array() , $this->Ver );
+
 		if( version_compare( $wp_version , '3.8' , '<' ) )
 			wp_enqueue_style( $this->Plugin['ltd'] . '-37' , $this->Plugin['dir_admin_assets'] . 'dashboard-3.7.css', array() , $this->Ver );
 		

@@ -43,20 +43,40 @@ class Afd_Plugin_Info
 
 			} else {
 
-				add_action( 'wp_ajax_afd_donation_toggle' , array( $this , 'wp_ajax_donation_toggle' ) );
+				add_action( 'wp_ajax_' . $Afd->Plugin['ltd'] . '_donation_toggle' , array( $this , 'ajax_donation_toggle' ) );
 
 			}
+			
+			add_action( 'admin_print_scripts' , array( $this , 'admin_print_scripts' ) );
 
 		}
 
 	}
 
-	function wp_ajax_donation_toggle() {
+	function admin_print_scripts() {
+		
+		global $Afd;
+		
+		if( $Afd->ClassManager->is_settings_page() ) {
+			
+			$translation = array( $this->nonces['field'] => wp_create_nonce( $this->nonces['value'] ) );
+			wp_localize_script( $Afd->Plugin['page_slug'] , $Afd->Plugin['ltd'] . '_donate' , $translation );
+
+		}
+
+	}
+
+	function ajax_donation_toggle() {
 		
 		if( isset( $_POST['f'] ) ) {
 
-			$val = intval( $_POST['f'] );
-			$this->update_donate_toggle( $val );
+			$is_donated = $this->is_donated();
+
+			if( !empty( $is_donated ) ) {
+
+				$this->update_donate_toggle( intval( $_POST['f'] ) );
+
+			}
 
 		}
 		
@@ -66,8 +86,6 @@ class Afd_Plugin_Info
 
 	function is_donated() {
 		
-		global $Afd;
-
 		$donated = false;
 		$donateKey = $this->get_donate_key( $this->DonateRecord );
 
@@ -127,8 +145,6 @@ class Afd_Plugin_Info
 
 	function author_url( $args ) {
 		
-		global $Afd;
-
 		$url = 'http://gqevu6bsiz.chicappa.jp/';
 		
 		if( !empty( $args['translate'] ) ) {
@@ -213,9 +229,13 @@ class Afd_Plugin_Info
 		global $Afd;
 
 		if( $Afd->Current['multisite'] ) {
+
 			$donateKey = get_site_option( $record );
+
 		} else {
+
 			$donateKey = get_option( $record );
+
 		}
 		
 		return $donateKey;
@@ -228,9 +248,13 @@ class Afd_Plugin_Info
 		
 		$width = false;
 		if( $Afd->Current['multisite'] ) {
+
 			$GetData = get_site_option( $this->DonateOptionRecord );
+
 		} else {
+
 			$GetData = get_option( $this->DonateOptionRecord );
+
 		}
 
 		if( !empty( $GetData ) ) {
@@ -247,7 +271,7 @@ class Afd_Plugin_Info
 		
 		$RecordField = false;
 		
-		if( !empty( $_POST ) && !empty( $Afd->ClassManager ) && !empty( $_POST[$Afd->Plugin['form']['field']] ) && $_POST[$Afd->Plugin['form']['field']] == $Afd->Plugin['UPFN'] ) {
+		if( !empty( $_POST ) && !empty( $Afd->ClassManager->is_manager ) && !empty( $_POST[$Afd->Plugin['form']['field']] ) && $_POST[$Afd->Plugin['form']['field']] == $Afd->Plugin['UPFN'] ) {
 
 			if( !empty( $_POST[$this->nonces['field']] ) && check_admin_referer( $this->nonces['value'] , $this->nonces['field'] ) ) {
 					
@@ -294,7 +318,7 @@ class Afd_Plugin_Info
 		
 		global $Afd;
 
-		if( $Afd->ClassManager->is_manager ) {
+		if( $Afd->ClassManager->is_manager && check_ajax_referer( $this->nonces['value'] , $this->nonces['field'] ) ) {
 
 			if( $Afd->Current['multisite'] ) {
 						
