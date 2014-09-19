@@ -137,9 +137,11 @@ class Afd_Config
 		$check_plugins = array();
 		$check_plugins['mp6'] = 'mp6/mp6.php';
 		
-		foreach( $check_plugins as $name => $base_name ) {
-			if( is_plugin_active( $base_name ) )
-				$Afd->ThirdParty[$name] = true;
+		if( !empty( $check_plugins ) ) {
+			foreach( $check_plugins as $name => $base_name ) {
+				if( is_plugin_active( $base_name ) )
+					$Afd->ThirdParty[$name] = true;
+			}
 		}
 		
 	}
