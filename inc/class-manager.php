@@ -135,7 +135,6 @@ class Afd_Manager
 
 	function admin_print_scripts() {
 		
-		global $wp_version;
 		global $Afd;
 		
 		if( $this->is_settings_page() ) {
@@ -145,9 +144,6 @@ class Afd_Manager
 			add_thickbox();
 			
 			wp_enqueue_style( $Afd->Plugin['page_slug'] , $Afd->Plugin['url'] . $Afd->Plugin['ltd'] . '.css', array() , $Afd->Ver );
-			if( version_compare( $wp_version , '3.8' , '<' ) )
-				wp_enqueue_style( $Afd->Plugin['page_slug'] . '-37' , $Afd->Plugin['url'] . $Afd->Plugin['ltd'] . '-3.7.css', array() , $Afd->Ver );
-
 			$translation = array( 'msg' => array( 'delete_confirm' => __( 'Confirm Deletion' ) ) , $Afd->Plugin['nonces']['field'] => wp_create_nonce( $Afd->Plugin['nonces']['value'] ) );
 			wp_localize_script( $Afd->Plugin['page_slug'] , $Afd->Plugin['ltd'] , $translation );
 

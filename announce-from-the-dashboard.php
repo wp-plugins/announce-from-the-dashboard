@@ -3,9 +3,9 @@
 Plugin Name: Announce from the Dashboard
 Description: Announcement to the dashboard screen for users.
 Plugin URI: http://wordpress.org/extend/plugins/announce-from-the-dashboard/
-Version: 1.4.3
+Version: 1.4.4
 Author: gqevu6bsiz
-Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_4_3
+Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=afd&utm_campaign=1_4_4
 Text Domain: afd
 Domain Path: /languages
 */
@@ -33,7 +33,7 @@ if ( !class_exists( 'Afd' ) ) :
 class Afd
 {
 
-	var	$Ver = '1.4.3';
+	var	$Ver = '1.4.4';
 
 	var $Plugin = array();
 	var $Current = array();
@@ -298,13 +298,8 @@ class Afd
 	// FilterStart
 	function admin_print_scripts() {
 		
-		global $wp_version;
-		
 		wp_enqueue_style( $this->Plugin['ltd'] , $this->Plugin['dir_admin_assets'] . 'dashboard.css', array() , $this->Ver );
 
-		if( version_compare( $wp_version , '3.8' , '<' ) )
-			wp_enqueue_style( $this->Plugin['ltd'] . '-37' , $this->Plugin['dir_admin_assets'] . 'dashboard-3.7.css', array() , $this->Ver );
-		
 	}
 
 	// FilterStart

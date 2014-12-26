@@ -87,9 +87,12 @@ class Afd_Config
 		$Afd->Current['user_role']     = false;
 
 		$User = wp_get_current_user();
+
 		if( !empty( $User->roles ) ) {
 
-			foreach( $User->roles as $role ) {
+			$current_roles = $User->roles;
+
+			foreach( $current_roles as $role ) {
 
 				$Afd->Current['user_role'] = $role;
 
@@ -135,7 +138,6 @@ class Afd_Config
 		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		
 		$check_plugins = array();
-		$check_plugins['mp6'] = 'mp6/mp6.php';
 		
 		if( !empty( $check_plugins ) ) {
 			foreach( $check_plugins as $name => $base_name ) {
@@ -148,26 +150,12 @@ class Afd_Config
 
 	function get_show_all_types() {
 
-		global $wp_version;
 		global $Afd;
 
 		$show_all_types = array();
 
 		$show_all_types['normal']  = array( 'color' => __( 'Gray' , $Afd->Plugin['ltd'] ) , 'label' => __( 'Normal' , $Afd->Plugin['ltd'] ) );
 		$show_all_types['updated'] = array( 'color' => __( 'Green' , $Afd->Plugin['ltd'] ) , 'label' => __( 'Update' ) );
-		
-		if( version_compare( $wp_version , '3.8' , '<' ) ) {
-
-			$show_all_types['updated']['color'] = __( 'Yellow' , $Afd->Plugin['ltd'] );
-
-			if( !empty( $Afd->ThirdParty['mp6'] ) ) {
-			
-				$show_all_types['updated']['color'] = __( 'Yellowish Green' , $Afd->Plugin['ltd'] );
-			
-			}
-
-		}
-		
 		$show_all_types['error']  = array( 'color' => __( 'Red' , $Afd->Plugin['ltd'] ) , 'label' => __( 'Error' ) );
 		$show_all_types['metabox']  = array( 'color' => __( 'Gray' , $Afd->Plugin['ltd'] ) , 'label' => __( 'Metabox' , $Afd->Plugin['ltd'] ) );
 		$show_all_types['nonstyle']  = array( 'color' => '' , 'label' => __( 'Non Styles' , $Afd->Plugin['ltd'] ) );
