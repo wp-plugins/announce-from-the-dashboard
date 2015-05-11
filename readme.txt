@@ -1,17 +1,43 @@
 === Announce from the Dashboard ===
 Contributors: gqevu6bsiz
-Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/?utm_source=wporg&utm_medium=donate&utm_content=afd&utm_campaign=1_4_5
+Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/?utm_source=wporg&utm_medium=donate&utm_content=afd&utm_campaign=1_5
 Tags: admin, dashboard, news, announce, role, user
 Requires at least: 3.8
-Tested up to: 4.1.1
-Stable tag: 1.4.4
+Tested up to: 4.2.2
+Stable tag: 1.5
 License: GPL2
 
 Announcement to users on the Dashboard.
 
 == Description ==
 
-This plugin to show announce for user basis.
+This plugin to show announce for per user roles.
+
+And, if you want to change plugin capability, please refer to this code.
+
+For example add filter:
+`
+function afd_custom_change_capability( $capability ) {
+	// plugin minimum capability
+	$capability = 'edit_posts';
+	return $capability;
+}
+add_filter( 'afd_capability_manager' , 'afd_custom_change_capability' );
+`
+
+And, if you want to add filter, please refer to this code.
+
+For example add filter:
+
+`
+function afd_custom_filter( $announces ) {
+	// filter
+	return $announces;
+}
+
+add_filter( 'afd_before_announce' , 'afd_custom_filter' );
+`
+
 
 
 == Installation ==
@@ -35,8 +61,13 @@ This plugin to show announce for user basis.
 
 == Changelog ==
 
-= 1.4.5 =
-* Added: Support to do shortcode.
+= 1.5 =
+* Added: Support to do_shortcode.
+* Added: Add to some actions/filters.
+* Added: Add class for metabox.
+* Fixed: How to date range check at main blog tymezone.
+* Updated: Improve useful to settings interface.
+* Changed: Specification Change.
 
 = 1.4.4 =
 * Fixed: Get the current user role.

@@ -1,9 +1,6 @@
 div.updated.announce.normal {
 	border-color: #A6A6A6;
 }
-div.updated.announce.error {
-	border-color: #CC0000;
-}
 div.updated.announce.nonstyle {
 	background: none;
 	border: 0 none;

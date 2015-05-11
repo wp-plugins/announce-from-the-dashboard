@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Announce from the Dashboard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-26 14:02+0900\n"
-"PO-Revision-Date: 2014-08-26 14:06+0900\n"
+"POT-Creation-Date: 2015-05-11 19:45+0900\n"
+"PO-Revision-Date: 2015-05-11 20:08+0900\n"
 "Last-Translator: gqevu6bsiz <gqevu6bsiz@gmail.com>\n"
 "Language-Team: gqevu6bsiz <gqevu6bsiz@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -23,246 +23,162 @@ msgstr ""
 msgid "Announcement to the dashboard screen for users."
 msgstr "ユーザーのダッシュボードにお知らせを表示します。"
 
-#: announce-from-the-dashboard.php:133
-#: announce-from-the-dashboard.php:240
-msgid "Hold the CTRL key and click the items in a list to choose them."
-msgstr "CTRLキーを押しながら選択することができます。"
+#: admin/manager-announce-settng.php:171
+msgid "Please <strong>%1$s</strong> is later than the <strong>%2$s</strong>."
+msgstr "<strong>%1$s</strong>は<strong>%2$s</strong>よりも後にしてください。"
 
-#: announce-from-the-dashboard.php:137
-msgid "Please <strong>End</strong> date is later than the <strong>Start</strong> date."
-msgstr "<strong>終了時間</strong>は<strong>開始時間</strong>よりも後にしてください。"
-
-#: announce-from-the-dashboard.php:154
+#: admin/manager-announce-settng.php:193
 msgid "Specify"
 msgstr "指定する"
 
-#: announce-from-the-dashboard.php:192
+#: admin/manager-announce-settng.php:235
 msgid "Now"
 msgstr "現在"
 
-#: announce-from-the-dashboard.php:220
+#: admin/manager-announce-settng.php:259
+#: admin/manager-announce-settng.php:295
+msgid "Hold the CTRL key and click the items in a list to choose them."
+msgstr "CTRLキーを押しながら選択することができます。"
+
+#: admin/manager-announce-settng.php:279
 msgid "Choose the site if you want to <strong>hide announce</strong>."
 msgstr "<strong>お知らせを表示させたくない</strong>サイトを選択してください。"
 
-#: announce-from-the-dashboard.php:221
+#: admin/manager-announce-settng.php:280
 msgid "Choose the site if you want to <strong>show announce</strong>."
 msgstr "<strong>お知らせを表示させたい</strong>サイトを選択してください。"
 
-#: inc/class-config.php:135
-#: inc/class-config.php:151
-msgid "Gray"
-msgstr "灰色"
-
-#: inc/class-config.php:135
-msgid "Normal"
-msgstr "標準"
-
-#: inc/class-config.php:136
-msgid "Green"
-msgstr "緑"
-
-#: inc/class-config.php:140
-msgid "Yellow"
-msgstr "黄色"
-
-#: inc/class-config.php:144
-msgid "Yellowish Green"
-msgstr "黄緑"
-
-#: inc/class-config.php:150
-msgid "Red"
-msgstr "赤"
-
-#: inc/class-config.php:150
-msgid "Error"
-msgstr "エラー"
-
-#: inc/class-config.php:151
-msgid "Metabox"
-msgstr "メタボックス"
-
-#: inc/class-config.php:152
-msgid "Non Styles"
-msgstr "スタイル無し"
-
-#: inc/class-config.php:187
-msgid "Start"
-msgstr "開始"
-
-#: inc/class-config.php:187
-msgid "End"
-msgstr "終了"
-
-#: inc/class-config.php:198
-msgid "Default show to all child-sites"
-msgstr "デフォルトは全ての子サイトに表示"
-
-#: inc/class-config.php:199
-msgid "Default show to not all child-sites"
-msgstr "デフォルトは全ての子サイトに表示しない"
-
-#: inc/class-manager.php:98
-#: inc/class-manager.php:102
-#: inc/setting.php:14
-msgid "Announcement settings for Dashboard"
-msgstr "ダッシュボードへのお知らせ設定"
-
-#: inc/class-manager.php:218
-msgid "Announce settings"
-msgstr "お知らせ設定"
-
-#: inc/class-manager.php:219
-#: inc/other.php:34
-msgid "Other Settings"
-msgstr "その他の設定"
-
-#: inc/class-plugin-info.php:90
-#: inc/information.php:3
-msgid "Thank you for your donation."
-msgstr "寄付いただきありがとうございます。"
-
-#: inc/class-plugin-info.php:97
-#: inc/information.php:14
-msgid "Please consider making a donation."
-msgstr "宜しければ寄付のご検討をお願いします。"
-
-#: inc/information.php:16
-msgid "Thank you very much for your support."
-msgstr "あなたの支援をよろしくお願いします。"
-
-#: inc/information.php:17
-msgid "Donate"
-msgstr "寄付へ"
-
-#: inc/information.php:18
-msgid "Please enter the 'Donation delete key' that have been described in the 'Line Break First and End download page'."
-msgstr "'Line Break First and End ダウンロードページ' に記載されていた'寄付削除キー'を入力して、寄付メッセージを削除できます。"
-
-#: inc/information.php:22
-msgid "Donation delete key"
-msgstr "寄付メッセージ削除キー"
-
-#: inc/information.php:32
-msgid "Have you want to customize?"
-msgstr "何かカスタマイズしたい事はありますか？"
-
-#: inc/information.php:39
-msgid "I am good at Admin Screen Customize."
-msgstr "私は管理画面のカスタマイズを得意とします。"
-
-#: inc/information.php:40
-msgid "Please consider the request to me if it is good."
-msgstr "このプラグインに満足できたら寄付のご検討を宜しくお願いします。"
-
-#: inc/information.php:42
-msgid "Contact"
-msgstr "お問い合わせ"
-
-#: inc/information.php:44
-msgid "Example Customize"
-msgstr "カスタマイズ例"
-
-#: inc/information.php:49
-msgid "About plugin"
-msgstr "プラグインについて"
-
-#: inc/information.php:51
-msgid "Version checked"
-msgstr "動作確認済み"
-
-#: inc/information.php:53
-msgid "Developer's site"
-msgstr "開発者のサイト"
-
-#: inc/information.php:55
-msgid "Reviews"
-msgstr "レビュー"
-
-#: inc/information.php:63
-msgid "Useful plugins"
-msgstr "便利なプラグイン"
-
-#: inc/information.php:66
-msgid "Customize a variety of screen management."
-msgstr "管理画面の様々なカスタマイズ"
-
-#: inc/information.php:68
-msgid "Customize the list of the post and page. custom post type page, too. You can customize the column display items freely."
-msgstr "投稿と固定ページ一覧をカスタマイズします。カスタム投稿タイプも。カラム一覧を自由にカスタマイズできます。"
-
-#: inc/information.php:70
-msgid "The plugin that allows you to add the value of the options. Option value that you have created, can be used in addition to the template tag, Short code can be used in the body of the article."
-msgstr "オプション値作成プラグインです。作成したオプション値は、ショートコードとして記事に、テンプレートタグとしても使用できます。"
-
-#: inc/other.php:15
-msgid "Announcement other settings"
-msgstr "お知らせ以外の設定"
-
-#: inc/other.php:43
-#, php-format
-msgid "Please choose the minimum role that can modify %s settings."
-msgstr "%s の設定ができる最小限の権限を選択してください。"
-
-#: inc/other.php:72
-msgid "Settings data import of Child blog"
-msgstr "子サイトのデータをインポート"
-
-#: inc/other.php:75
-msgid "Please if you want to import, choose the settings data of the child blog."
-msgstr "子サイトのお知らせ設定データをインポートする場合のみ選択してください。（旧バージョン互換性）"
-
-#: inc/setting.php:36
-msgid "Create a new announce to the dashboard."
-msgstr "ダッシュボードへのお知らせを作成します。"
-
-#: inc/setting.php:42
-msgid "Create Announcement"
-msgstr "お知らせを作成"
-
-#: inc/setting.php:53
-#: inc/setting.php:140
-#: inc/setting.php:168
+#: admin/view/manager-announce-setting.php:41
+#: admin/view/manager-announce-setting.php:138
+#: admin/view/elements/announce-list.php:54
 msgid "Announce title"
 msgstr "お知らせタイトル"
 
-#: inc/setting.php:57
-#: inc/setting.php:144
+#: admin/view/manager-announce-setting.php:49
+#: admin/view/manager-announce-setting.php:145
 msgid "Announce content"
 msgstr "お知らせ内容"
 
-#: inc/setting.php:61
-#: inc/setting.php:189
-msgid "Date Range"
-msgstr "期間を指定"
-
-#: inc/setting.php:67
-#: inc/setting.php:141
-#: inc/setting.php:177
+#: admin/view/manager-announce-setting.php:57
+#: admin/view/manager-announce-setting.php:139
+#: admin/view/elements/announce-list.php:58
+#: model/announces.php:380
 msgid "Announce type"
 msgstr "お知らせの種類"
 
-#: inc/setting.php:80
-msgid "Default show for announce of Child-sites."
+#: admin/view/manager-announce-setting.php:65
+#: admin/view/elements/announce-list.php:62
+msgid "Date Range"
+msgstr "表示期間を指定"
+
+#: admin/view/manager-announce-setting.php:84
+#: admin/view/elements/announce-list.php:113
+msgid "Default show for announce of Child-sites"
 msgstr "子サイトへのお知らせ設定"
 
-#: inc/setting.php:107
-msgid "Not created announce."
-msgstr "作成したお知らせはありません。"
+#: admin/view/manager-announce-setting.php:92
+#: admin/view/elements/announce-list.php:117
+msgid "Select the sub-sites"
+msgstr "サイトを選択"
 
-#: inc/setting.php:121
-msgid "List of announce that you created"
-msgstr "作成したお知らせ一覧"
-
-#: inc/setting.php:122
+#: admin/view/manager-announce-setting.php:115
 msgid "It is will show in order from the top."
 msgstr "上から順に表示されます。"
 
-#: inc/setting.php:149
+#: admin/view/manager-announce-setting.php:143
 msgid "Child-sites"
 msgstr "サイト設定"
 
-#: inc/setting.php:274
+#: admin/view/manager-announce-setting.php:165
+msgid "Not created announce."
+msgstr "作成したお知らせはありません。"
+
+#: admin/view/manager-announce-setting.php:379
+#: admin/view/manager-announce-setting.php:393
+msgid "Are you sure you wish to delete this Announce?"
+msgstr "このお知らせを本当に削除してもよろしいですか？"
+
+#: admin/view/elements/information.php:25
+msgid "About plugin"
+msgstr "プラグインについて"
+
+#: admin/view/elements/information.php:28
+msgid "Version checked"
+msgstr "動作確認済み"
+
+#: admin/view/elements/information.php:35
+msgid "Reviews"
+msgstr "レビュー"
+
+#: admin/view/elements/information.php:39
+msgid "Developer's site"
+msgstr "開発者のサイト"
+
+#: admin/view/elements/information.php:46
+msgid "Useful plugins"
+msgstr "便利なプラグイン"
+
+#: admin/view/elements/information.php:52
+msgid "Customize a variety of screen management."
+msgstr "管理画面の様々なカスタマイズ"
+
+#: admin/view/elements/information.php:57
+msgid "Customize the list of the post and page. custom post type page, too. You can customize the column display items freely."
+msgstr "投稿と固定ページ一覧をカスタマイズします。カスタム投稿タイプも。カラム一覧を自由にカスタマイズできます。"
+
+#: admin/view/elements/information.php:62
+msgid "The plugin that allows you to add the value of the options. Option value that you have created, can be used in addition to the template tag, Short code can be used in the body of the article."
+msgstr "オプション値作成プラグインです。作成したオプション値は、ショートコードとして記事に、テンプレートタグとしても使用できます。"
+
+#: core/helper.php:182
+msgid "Normal"
+msgstr "標準"
+
+#: core/helper.php:186
+msgid "Update"
+msgstr "更新"
+
+#: core/helper.php:194
+msgid "Metabox"
+msgstr "メタボックス"
+
+#: core/helper.php:198
+msgid "Non Styles"
+msgstr "スタイル無し"
+
+#: core/helper.php:226
+msgid "Default show to all child-sites"
+msgstr "デフォルトは全ての子サイトに表示"
+
+#: core/helper.php:227
+msgid "Default show to not all child-sites"
+msgstr "デフォルトは全ての子サイトに表示しない"
+
+#: model/announces.php:76
+msgid "Empty Add Data."
+msgstr ""
+
+#: model/announces.php:148
+msgid "Empty Update Data."
+msgstr ""
+
+#: model/announces.php:250
+#: model/announces.php:272
+#: model/announces.php:380
+#: model/announces.php:389
 #, php-format
-msgid "You are about to delete. <strong>%s</strong>"
-msgstr "削除してもよろしいですか？ <strong>%s</strong>"
+msgid "There is no %s."
+msgstr "%s はありません。"
+
+#: model/announces.php:250
+msgid "change item"
+msgstr "変更アイテム"
+
+#: model/announces.php:272
+msgid "delete ID"
+msgstr "削除ID"
+
+#: model/announces.php:399
+msgid "Please correctly set the time."
+msgstr "正しい時間を設定してください。"
 
