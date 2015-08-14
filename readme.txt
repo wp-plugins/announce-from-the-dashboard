@@ -1,10 +1,10 @@
 === Announce from the Dashboard ===
 Contributors: gqevu6bsiz
-Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/?utm_source=wporg&utm_medium=donate&utm_content=afd&utm_campaign=1_5
+Donate link: http://gqevu6bsiz.chicappa.jp/please-donation/?utm_source=wporg&utm_medium=donate&utm_content=afd&utm_campaign=1_5_1
 Tags: admin, dashboard, news, announce, role, user
 Requires at least: 3.8
-Tested up to: 4.2.2
-Stable tag: 1.5
+Tested up to: 4.3
+Stable tag: 1.5.1
 License: GPL2
 
 Announcement to users on the Dashboard.
@@ -60,6 +60,9 @@ add_filter( 'afd_before_announce' , 'afd_custom_filter' );
 4. Metabox for Example
 
 == Changelog ==
+
+= 1.5.1 =
+* Fixed: Html miss.
 
 = 1.5 =
 * Added: Support to do_shortcode.

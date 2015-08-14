@@ -3,7 +3,7 @@
 Plugin Name: Announce from the Dashboard
 Description: Announcement to the dashboard screen for users.
 Plugin URI: http://wordpress.org/extend/plugins/announce-from-the-dashboard/
-Version: 1.5
+Version: 1.5.1
 Author: gqevu6bsiz
 Author URI: http://gqevu6bsiz.chicappa.jp/
 Text Domain: afd
@@ -97,7 +97,7 @@ final class Afd
 	{
 		
 		$this->name        = 'Announce from the Dashboard';
-		$this->ver         = '1.5';
+		$this->ver         = '1.5.1';
 		$this->plugin_slug = 'announce-from-the-dashboard';
 		$this->main_slug   = 'announce_from_the_dashboard';
 		$this->ltd         = 'afd';

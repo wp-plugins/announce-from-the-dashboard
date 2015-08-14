@@ -119,7 +119,7 @@ final class Afd_Admin_Setup
 		
 		global $Afd;
 		
-		wp_enqueue_style( $this->script_slug ,  $this->assets_url . 'css/setup.css', array() , $Afd->ver );
+		//wp_enqueue_style( $this->script_slug ,  $this->assets_url . 'css/setup.css', array() , $Afd->ver );
 
 	}
 	

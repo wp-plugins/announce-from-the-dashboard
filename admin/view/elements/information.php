@@ -67,8 +67,8 @@
 						
 						<p><span class="dashicons dashicons-admin-plugins"></span> <a href="<?php echo $Afd->Links->profile; ?>" target="_blank"><?php _e( 'Plugins' ); ?></a></p>
 						
-					</strong>
-	
+					</div>
+
 				</div>
 			
 			</div>

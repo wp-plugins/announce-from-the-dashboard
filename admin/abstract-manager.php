@@ -163,7 +163,7 @@ abstract class Afd_Admin_Abstract_Manager
 
 		wp_enqueue_script( $this->script_slug ,  $this->assets_url . 'js/manager.js' , $include_files , $Afd->ver );
 		wp_enqueue_style( 'jquery-style' , 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.css' );
-		wp_enqueue_style( $this->script_slug ,  $this->assets_url . 'css/manager.css' , array() , $Afd->ver );
+		//wp_enqueue_style( $this->script_slug ,  $this->assets_url . 'css/manager.css' , array() , $Afd->ver );
 
 	}
 	
